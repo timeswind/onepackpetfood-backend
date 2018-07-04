@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>增加追踪标签</h1>
+<div mat-dialog-content style="padding-bottom: 16px;">
+    <mat-form-field>
+        <input matInput placeholder="名字" autocomplete="off" [(ngModel)]="data.name">
+    </mat-form-field>
+    <mat-form-field style="width: 100%">
+        <mat-select placeholder="包装代码" [(ngModel)]="data.packageCode">
+            <mat-option *ngFor="let packageCode of packageCodes" [value]="packageCode">
+                {{packageCode}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-radio-group [(ngModel)]="data.type">
+        <mat-radio-button value="store" style="margin-right: 16px">宠物店</mat-radio-button>
+        <mat-radio-button value="pack">包装</mat-radio-button>
+    </mat-radio-group>
+
+    <mat-form-field style="margin-top: 16px" *ngIf="data.type === 'pack'">
+        <input matInput placeholder="数量" type="number" [(ngModel)]="data.count">
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">取消</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>添加</button>
+</div>

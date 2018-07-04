@@ -1,0 +1,28 @@
+<mat-nav-list>
+    <a mat-list-item>
+        <span mat-line>_id</span>
+        <span mat-line>{{data._id}}</span>
+    </a>
+
+    <a mat-list-item>
+        <span mat-line>追踪代码</span>
+        <span mat-line>{{data.code}}</span>
+    </a>
+
+    <a mat-list-item>
+        <span mat-line>名字</span>
+        <span mat-line>{{data.name}}</span>
+    </a>
+
+    <a mat-list-item>
+            <span mat-line>包装代码</span>
+            <span mat-line>{{data.packageCode}}</span>
+        </a>
+
+    <mat-form-field style="margin: 0 16px;width: calc(100% - 32px);">
+        <textarea matInput placeholder="备注" [(ngModel)]="data.note"></textarea>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="updateTagtrace()" style="float: right">更新</button>
+
+</mat-nav-list>

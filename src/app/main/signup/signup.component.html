@@ -1,0 +1,23 @@
+<div class="page-layout blank p-24" fusePerfectScrollbar>
+    <form class="login-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <h1>注册</h1>
+        <mat-form-field class="example-full-width">
+            <input matInput type="text" placeholder="邮箱" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+            />
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <input matInput type="password" placeholder="密码" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+            />
+        </mat-form-field>
+        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+            <div *ngIf="f.email.errors.required">填写邮箱</div>
+            <div *ngIf="f.email.errors.email">邮箱地址不正确</div>
+        </div>
+        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+            <div *ngIf="f.password.errors.required">填写密码</div>
+            <div *ngIf="f.password.errors.minlength">密码至少大于6位</div>
+        </div>
+        <button mat-raised-button color="primary">注册</button>
+    </form>
+</div>
