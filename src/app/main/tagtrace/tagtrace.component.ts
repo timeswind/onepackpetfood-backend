@@ -7,6 +7,7 @@ export interface TagtrackScheme {
     name: string;
     code: string;
     type: string;
+    packageCode: string;
     active: boolean;
     active_date: Date;
     created_at: Date;
