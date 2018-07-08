@@ -9,7 +9,7 @@ import { AuthenticationService } from '../../../services/authentication.service'
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AppState } from '../../../app.state';
-import { navigation } from 'app/navigation/navigation';
+// import { navigation } from 'app/navigation/navigation';
 
 @Component({
     selector   : 'toolbar',
@@ -23,7 +23,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
     rightNavbar: boolean;
     hiddenNavbar: boolean;
     languages: any;
-    navigation: any;
+    // navigation: any;
     selectedLanguage: any;
     showLoadingBar: boolean;
     userStatusOptions: any[];
@@ -48,7 +48,8 @@ export class ToolbarComponent implements OnInit, OnDestroy
         private appState: AppState
     )
     {
-        this.useremail = appState.email;
+        this.appState.name
+        .subscribe((value: string) => this.useremail = value)
         // Set the defaults
         // this.userStatusOptions = [
         //     {
@@ -91,7 +92,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
         //     }
         // ];
 
-        this.navigation = navigation;
+        // this.navigation = navigation;
 
         // Set the private defaults
         this._unsubscribeAll = new Subject();
@@ -117,7 +118,6 @@ export class ToolbarComponent implements OnInit, OnDestroy
             )
             .subscribe((event) => {
                 this.showLoadingBar = true;
-                this.useremail = this.appState.email;
             });
 
         this._router.events

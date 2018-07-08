@@ -27,3 +27,22 @@ export class AuthGuard implements CanActivate {
     return false;
   }
 }
+
+@Injectable()
+export class AlreadyLoginAuthGuard implements CanActivate {
+  constructor(private appState: AppState, private router: Router) {}
+
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    let url: string = state.url;
+    return this.checkLogin(url);
+  }
+
+  checkLogin(url: string): boolean {
+    if (this.appState.islogin) {
+    this.router.navigate(['/tagtrace']);
+    return false;
+    } else {
+      return true;
+    }
+  }
+}

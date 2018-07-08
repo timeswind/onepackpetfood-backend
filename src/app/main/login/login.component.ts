@@ -5,6 +5,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication.service';
 import { AppState } from '../../app.state';
 import { first } from 'rxjs/operators';
+import { navigationForAdmin, navigationForShopOwnerUser } from 'app/navigation/navigation';
+import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 // import { locale as english } from './i18n/en';
 // import { locale as turkish } from './i18n/tr';
 
@@ -22,7 +24,8 @@ export class LoginComponent implements OnInit {
         private formBuilder: FormBuilder,
         private router: Router,
         private authenticationService: AuthenticationService,
-        private appState: AppState
+        private appState: AppState,
+        private fuseNavigationService: FuseNavigationService
     ) { }
  
     ngOnInit() {
@@ -53,10 +56,35 @@ export class LoginComponent implements OnInit {
                 this.appState.token = data.token;
                 this.appState.islogin = true;
                 this.appState.role = data.role;
-                this.router.navigate(['/tagtrace']);
+                this.appState.setName(data.name || "")
+                if (data.role === 100) {
+                    this.router.navigate(['/tagtrace']);
+                } else {
+                    console.error('need to fix')
+                    alert('see console')
+                }
+                this.reloadNavigation();
             },
             error => {
                 // this.loading = false;
             });
+     }
+
+     private reloadNavigation():void {
+        let navigation:any;
+
+        if (this.appState.role === 100) {
+            navigation = navigationForAdmin;
+        } else {
+            navigation = navigationForShopOwnerUser;
+        }
+        // Get default navigation
+
+        // Register the navigation to the service
+        this.fuseNavigationService.unregister('main')
+        this.fuseNavigationService.register('main', navigation)
+
+        // Set the main navigation as our current navigation
+        this.fuseNavigationService.setCurrentNavigation('main');
      }
 }

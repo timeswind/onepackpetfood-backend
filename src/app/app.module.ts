@@ -18,10 +18,13 @@ import { SampleModule } from 'app/main/sample/sample.module';
 import { TagtraceModule } from 'app/main/tagtrace/tagtrace.module';
 import { LoginModule } from 'app/main/login/login.module';
 import { SignupModule } from 'app/main/signup/signup.module';
+import { UserSettingModule } from 'app/main/userSetting/user.setting.module';
+import { StoreManagementModule } from 'app/main/storeManagement/store.management.module';
 import { AuthenticationService } from 'app/services/authentication.service';
 import { TagtraceApiService } from 'app/services/tagtrace.api.service';
+import  { StoreApiService } from 'app/services/store.api.service';
 import { AppState } from 'app/app.state';
-import { AuthGuard } from 'app/services/auth.guard.service';
+import { AuthGuard, AlreadyLoginAuthGuard } from 'app/services/auth.guard.service';
 import { TokenInterceptor } from 'app/services/token.interceptor';
 
 const appRoutes: Routes = [
@@ -58,13 +61,17 @@ const appRoutes: Routes = [
         SampleModule,
         SignupModule,
         TagtraceModule,
-        LoginModule
+        LoginModule,
+        StoreManagementModule,
+        UserSettingModule
     ],
     providers: [
         AuthenticationService,
         TagtraceApiService,
+        StoreApiService,
         AppState,
         AuthGuard,
+        AlreadyLoginAuthGuard,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: TokenInterceptor,

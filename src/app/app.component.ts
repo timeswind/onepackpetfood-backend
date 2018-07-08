@@ -8,10 +8,10 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
-import { navigation } from 'app/navigation/navigation';
+import { navigationForAdmin, navigationForShopOwnerUser } from 'app/navigation/navigation';
 import { locale as navigationEnglish } from 'app/navigation/i18n/en';
 import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
-
+import { AppState } from 'app/app.state';
 @Component({
     selector   : 'app',
     templateUrl: './app.component.html',
@@ -41,17 +41,11 @@ export class AppComponent implements OnInit, OnDestroy
         private _fuseSidebarService: FuseSidebarService,
         private _fuseSplashScreenService: FuseSplashScreenService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
-        private _translateService: TranslateService
+        private _translateService: TranslateService,
+        private _appState:AppState
     )
     {
-        // Get default navigation
-        this.navigation = navigation;
-
-        // Register the navigation to the service
-        this._fuseNavigationService.register('main', this.navigation);
-
-        // Set the main navigation as our current navigation
-        this._fuseNavigationService.setCurrentNavigation('main');
+        this.loadNavigationSettings();
 
         // Add languages
         this._translateService.addLangs(['en', 'tr']);
@@ -67,6 +61,21 @@ export class AppComponent implements OnInit, OnDestroy
 
         // Set the private defaults
         this._unsubscribeAll = new Subject();
+    }
+
+    public loadNavigationSettings():void {
+        if (this._appState.role === 100) {
+            this.navigation = navigationForAdmin;
+        } else {
+            this.navigation = navigationForShopOwnerUser;
+        }
+        // Get default navigation
+
+        // Register the navigation to the service
+        this._fuseNavigationService.register('main', this.navigation);
+
+        // Set the main navigation as our current navigation
+        this._fuseNavigationService.setCurrentNavigation('main');
     }
 
     // -----------------------------------------------------------------------------------------------------

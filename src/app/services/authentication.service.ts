@@ -9,7 +9,6 @@ export class AuthenticationService {
     constructor(private http: HttpClient, private router: Router, private appState: AppState) { }
 
     login(email: string, password: string) {
-        console.log(environment)
         return this.http.post<any>(`${environment.apiUrl}/public/login`, { email: email, password: password })
             .pipe(map(data => {
                 console.log('data', data)
@@ -24,7 +23,6 @@ export class AuthenticationService {
     }
 
     signup(email: string, password: string) {
-        console.log(environment)
         return this.http.post<any>(`${environment.apiUrl}/public/signup`, { email: email, password: password })
             .pipe(map(data => {
                 console.log('data', data)
@@ -32,6 +30,23 @@ export class AuthenticationService {
                 if (data.success) {
                     localStorage.setItem('currentUser', JSON.stringify(data));
                 }
+
+                return data;
+            }));
+    }
+
+    getMyInfo() {
+        return this.http.get<any>(`${environment.apiUrl}/protect/myinfo`)
+            .pipe(map(data => {
+                return data;
+            }));
+    }
+
+    updateMyInfo(data: any) {
+        return this.http.post<any>(`${environment.apiUrl}/protect/myinfo`, data)
+            .pipe(map(data => {
+                console.log('data', data)
+                // login successful if there's a jwt token in the response
 
                 return data;
             }));

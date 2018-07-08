@@ -1,0 +1,32 @@
+<mat-nav-list style="display: flex;flex-direction: column;">
+    <a mat-list-item>
+        <span mat-line>_id</span>
+        <span mat-line>{{storeInfoData._id}}</span>
+    </a>
+
+    <a mat-list-item>
+        <span mat-line>追踪代码</span>
+        <span mat-line>{{storeInfoData.tagtrack_code}}</span>
+    </a>
+
+    <mat-form-field class="form-field-margin-fix">
+        <input matInput placeholder="店铺名字" autocomplete="off" [(ngModel)]="storeInfoData.name">
+    </mat-form-field>
+
+    <mat-form-field class="form-field-margin-fix">
+        <input matInput placeholder="店主名字" autocomplete="off" [(ngModel)]="storeInfoData.owner_name">
+    </mat-form-field>
+    <mat-form-field class="form-field-margin-fix">
+        <input matInput placeholder="电话" autocomplete="off" [(ngModel)]="storeInfoData.phone">
+    </mat-form-field>
+    <mat-form-field class="form-field-margin-fix">
+        <input matInput placeholder="地址" autocomplete="off" [(ngModel)]="storeInfoData.address">
+    </mat-form-field>
+
+    <mat-form-field class="form-field-margin-fix">
+        <textarea matInput placeholder="备注" [(ngModel)]="storeInfoData.note"></textarea>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="updateStoreInfo()" style="float: right">更新</button>
+
+</mat-nav-list>

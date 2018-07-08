@@ -1,0 +1,34 @@
+<div class="page-layout blank p-24" fusePerfectScrollbar>
+
+    <div style="display: felx;flex-direction: column;margin-bottom: 16px">
+        <h2>店家管理</h2>
+        <button mat-raised-button color="primary" (click)="openDialog()">添加店铺</button>
+    </div>
+    <mat-form-field style="width: 100%">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="过滤搜索">
+    </mat-form-field>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 tagtrace-table" style="width: 100%">
+        <ng-container matColumnDef="tagtrack_code">
+            <th mat-header-cell *matHeaderCellDef> 追踪代码 </th>
+            <td mat-cell *matCellDef="let element"> {{element.tagtrack_code}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> 店铺名字 </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="owner_name">
+            <th mat-header-cell *matHeaderCellDef> 店主名字 </th>
+            <td mat-cell *matCellDef="let element"> {{element.owner_name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="phone">
+            <th mat-header-cell *matHeaderCellDef> 电话 </th>
+            <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="rowClick(row)"></tr>
+    </table>
+</div>

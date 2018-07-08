@@ -1,0 +1,29 @@
+<h1 mat-dialog-title>增加追踪标签</h1>
+<div mat-dialog-content style="padding-bottom: 16px;">
+    <mat-form-field>
+        <mat-select placeholder="追踪代码(不选自动生成)" [(ngModel)]="data.tagtrack_code">
+            <mat-option *ngFor="let tagtrack of inactive_tagtracks" [value]="tagtrack.code">
+                {{ tagtrack.code + "(" + tagtrack.name + ")" }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="店铺名字" autocomplete="off" [(ngModel)]="data.name">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="店主名字" autocomplete="off" [(ngModel)]="data.owner_name">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="电话" autocomplete="off" [(ngModel)]="data.phone">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="地址" autocomplete="off" [(ngModel)]="data.address">
+    </mat-form-field>
+    <mat-form-field>
+        <textarea matInput placeholder="备注" [(ngModel)]="data.note"></textarea>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">取消</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>添加</button>
+</div>

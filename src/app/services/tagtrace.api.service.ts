@@ -32,6 +32,14 @@ export class TagtraceApiService {
             return result;
         }));
     }
+
+    getAllInactiveTagrackOfStore() {
+        return this.http.get<any>(`${environment.apiUrl}/internal/inactive_store_tagtrack_list`)
+        .pipe(map(result => {
+            console.log('result', result)
+            return result;
+        }));
+    }
     // login(email: string, password: string) {
     //     console.log(environment)
     //     return this.http.post<any>(`${environment.apiUrl}/public/login`, { email: email, password: password })

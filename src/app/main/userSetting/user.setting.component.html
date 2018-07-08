@@ -1,0 +1,14 @@
+<div class="page-layout blank p-24" fusePerfectScrollbar>
+    <form class="current-user-info-form" (ngSubmit)="onSubmit()">
+        <h1>我的信息</h1>
+        <mat-form-field style="width: 300px">
+            <input matInput type="text" placeholder="姓名" class="form-control" name="name" [(ngModel)]="userInfo.name" />
+        </mat-form-field>
+
+        <mat-form-field style="width: 300px">
+                <input matInput type="number" placeholder="电话" class="form-control" name="phone" [(ngModel)]="userInfo.phone" />
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" style="width: 88px">更新</button>
+    </form>
+</div>

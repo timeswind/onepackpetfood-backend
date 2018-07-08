@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
 import { userInfo } from 'os';
 import { Router } from '@angular/router';
-// import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 // import { Observable } from 'rxjs/Observable';
 
-interface User {
-    name:    string;
-    id:     string;
-    role: number;
-
-  }
+// interface User {
+//     name:    string;
+//     id:     string;
+//     role: number;
+// }
 
 @Injectable()
 export class AppState {
@@ -19,6 +18,7 @@ export class AppState {
             this.email = userInfo.email;
             this.token = userInfo.token;
             this.role = userInfo.role;
+            this.name.next(userInfo.name);
             this.islogin = true;
         }
  
@@ -26,13 +26,12 @@ export class AppState {
     // private _isRed = new BehaviorSubject<boolean>(false);
     // isRed: Observable<boolean> = this._isRed.asObservable();
     private _islogin:boolean = false;
-    private _name:string;
     private _token:string;
     private _email:string;
     private _role:number;
     private _redirectUrl: string;
+    public name = new BehaviorSubject("");
 
-    
     public set redirectUrl(url : string) {
         this._redirectUrl = url;
     }
@@ -76,10 +75,14 @@ export class AppState {
         return this._email;
     }
 
+    public setName(name:string):void {
+        this.name.next(name)
+    }
+
     logout():void {
         console.log('reset hit')
         this._islogin = false;
-        this._name = "";
+        this.name.next("");
         this._token = "";
         this._email = "";
         this._role = 0;
