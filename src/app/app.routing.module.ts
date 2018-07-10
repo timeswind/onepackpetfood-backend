@@ -1,8 +1,13 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { LoginModule } from 'app/main/login/login.module';
+import { AdminAuthGuard } from 'app/services/auth.guard.service';
 
 const routes: Routes = [
+    {
+        path: '',
+        redirectTo: '/login',
+        pathMatch: 'full'
+    },
     {
         path: "login",
         loadChildren: 'app/main/login/login.module#LoginModule'
@@ -13,15 +18,18 @@ const routes: Routes = [
     },
     {
         path: "tagtrace",
-        loadChildren: 'app/main/tagtrace/tagtrace.module#TagtraceModule'
+        loadChildren: 'app/main/tagtrace/tagtrace.module#TagtraceModule',
+        canLoad: [AdminAuthGuard]
     },
     {
         path: "ordertrack",
-        loadChildren: 'app/main/ordertrack/ordertrack.module#OrdertrackModule'
+        loadChildren: 'app/main/ordertrack/ordertrack.module#OrdertrackModule',
+        canLoad: [AdminAuthGuard]
     },
     {
         path: "store_management",
-        loadChildren: 'app/main/storeManagement/store.management.module#StoreManagementModule'
+        loadChildren: 'app/main/storeManagement/store.management.module#StoreManagementModule',
+        canLoad: [AdminAuthGuard]
     },
     {
         path: "user_setting",

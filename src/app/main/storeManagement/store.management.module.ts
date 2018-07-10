@@ -6,13 +6,13 @@ import  { MatTableModule, MatFormFieldModule, MatInputModule, MatButtonModule, M
 import { FuseSharedModule } from '@fuse/shared.module';
 
 import { StoreManagementComponent, AddNewStoreDialog, StoreInfoBottomSheet } from './store.management.component';
-import { AuthGuard } from 'app/services/auth.guard.service';
+import { AdminAuthGuard } from 'app/services/auth.guard.service';
 
 const routes = [
     {
         path     : '',
         component: StoreManagementComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AdminAuthGuard]
     }
 ];
 

@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import {
   CanActivate, Router,
   ActivatedRouteSnapshot,
-  RouterStateSnapshot
+  RouterStateSnapshot,
+  CanLoad,
+  Route
 } from '@angular/router';
 import { AppState } from '../app.state';
 
@@ -18,6 +20,33 @@ export class AuthGuard implements CanActivate {
   checkLogin(url: string): boolean {
     if (this.appState.islogin) { return true; }
 
+    // Store the attempted URL for redirecting
+    this.appState.redirectUrl = url;
+
+    // Navigate to the login page with extras
+    this.router.navigate(['/login']);
+    return false;
+  }
+}
+
+@Injectable()
+export class AdminAuthGuard implements CanLoad, CanActivate {
+  constructor(private appState: AppState, private router: Router) { }
+
+  canLoad(route: Route): boolean {
+    let url = `/${route.path}`;
+    return this.checkPermission(url);
+  }
+
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    let url: string = state.url;
+    return this.checkPermission(url);
+  }
+
+  checkPermission(url: string): boolean {
+    if (this.appState.islogin && this.appState.role === 100) { 
+      return true; 
+    }
     // Store the attempted URL for redirecting
     this.appState.redirectUrl = url;
 

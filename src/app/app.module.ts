@@ -20,7 +20,7 @@ import { TagtraceApiService } from 'app/services/tagtrace.api.service';
 import { OrderApiService } from 'app/services/order.api.service';
 import  { StoreApiService } from 'app/services/store.api.service';
 import { AppState } from 'app/app.state';
-import { AuthGuard, AlreadyLoginAuthGuard } from 'app/services/auth.guard.service';
+import { AuthGuard, AdminAuthGuard, AlreadyLoginAuthGuard } from 'app/services/auth.guard.service';
 import { NotificationService } from 'app/services/notification.service';
 import { TokenInterceptor } from 'app/services/token.interceptor';
 import {
@@ -70,6 +70,7 @@ import {
         NotificationService,
         AppState,
         AuthGuard,
+        AdminAuthGuard,
         AlreadyLoginAuthGuard,
         {
             provide: HTTP_INTERCEPTORS,

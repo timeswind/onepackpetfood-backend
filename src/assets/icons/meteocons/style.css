@@ -1,4 +1,27 @@
 @font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://onepackpetfood.oss-cn-hangzhou.aliyuncs.com/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2?Expires=1531229938&OSSAccessKeyId=TMP.AQFjTk3BLLlQQHxVwQnkhAR96w274LJr4wfxFjZTM7YKfKqpzSMA0jA8OtUSADAtAhUAp-Qy7KyGkyDIvsOuPKP1CHAipE8CFAHL1nHk-Fglq5mQITXoGnQCVNnj&Signature=pjtilbG%2FJJy5QfCuFaqdZc9I9gQ%3D) format('woff2');
+  }
+  
+  .material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+
+@font-face {
     font-family: 'meteocons';
     src: url('fonts/meteocons.ttf?1o770y') format('truetype'),
     url('fonts/meteocons.woff?1o770y') format('woff'),

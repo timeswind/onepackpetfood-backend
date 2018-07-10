@@ -7,13 +7,13 @@ import  { MatTableModule,
 import { FuseSharedModule } from '@fuse/shared.module';
 
 import { TagtraceComponent, DialogOverviewExampleDialog, BottomSheetOverviewExampleSheet } from './tagtrace.component';
-import { AuthGuard } from 'app/services/auth.guard.service';
+import { AdminAuthGuard } from 'app/services/auth.guard.service';
 
 const routes = [
     {
         path     : '',
         component: TagtraceComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AdminAuthGuard]
     }
 ];
 
