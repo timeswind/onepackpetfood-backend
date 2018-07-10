@@ -24,12 +24,12 @@ export const navigationForAdmin: FuseNavigation[] = [
                 url      : '/store_management'
             },
             {
-                id       : 'ordertrace',
+                id       : 'ordertrack',
                 title    : '订单追踪',
                 // translate: 'NAV.TAGTRACE.TITLE',
                 type     : 'item',
                 icon     : 'list',
-                url      : '/ordertrace'
+                url      : '/ordertrack'
                 // badge    : {
                 //     title    : '',
                 //     translate: 'NAV.TAGTRACE.BADGE',
@@ -57,7 +57,7 @@ export const navigationForAdmin: FuseNavigation[] = [
                 // translate: 'NAV.TAGTRACE.TITLE',
                 type     : 'item',
                 icon     : 'settings',
-                url      : '/usersetting'
+                url      : '/user_setting'
                 // badge    : {
                 //     title    : '',
                 //     translate: 'NAV.TAGTRACE.BADGE',

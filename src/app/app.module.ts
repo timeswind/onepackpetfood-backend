@@ -14,25 +14,24 @@ import { fuseConfig } from 'app/fuse-config';
 
 import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
-import { SampleModule } from 'app/main/sample/sample.module';
-import { TagtraceModule } from 'app/main/tagtrace/tagtrace.module';
-import { LoginModule } from 'app/main/login/login.module';
-import { SignupModule } from 'app/main/signup/signup.module';
-import { UserSettingModule } from 'app/main/userSetting/user.setting.module';
-import { StoreManagementModule } from 'app/main/storeManagement/store.management.module';
+import {AppRoutingModule } from 'app/app.routing.module';
 import { AuthenticationService } from 'app/services/authentication.service';
 import { TagtraceApiService } from 'app/services/tagtrace.api.service';
+import { OrderApiService } from 'app/services/order.api.service';
 import  { StoreApiService } from 'app/services/store.api.service';
 import { AppState } from 'app/app.state';
 import { AuthGuard, AlreadyLoginAuthGuard } from 'app/services/auth.guard.service';
+import { NotificationService } from 'app/services/notification.service';
 import { TokenInterceptor } from 'app/services/token.interceptor';
-
-const appRoutes: Routes = [
-    {
-        path: '**',
-        redirectTo: 'login'
-    }
-];
+import {
+    MatSnackBarModule
+  } from '@angular/material';
+// const appRoutes: Routes = [
+//     {
+//         path: '**',
+//         redirectTo: 'login'
+//     }
+// ];
 @NgModule({
     declarations: [
         AppComponent
@@ -41,15 +40,13 @@ const appRoutes: Routes = [
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
-        RouterModule.forRoot(appRoutes),
-
+        // RouterModule.forRoot(appRoutes),
         TranslateModule.forRoot(),
-
         // Material moment date module
         MatMomentDateModule,
 
         // Material
-
+        MatSnackBarModule,
         // Fuse modules
         FuseModule.forRoot(fuseConfig),
         FuseSharedModule,
@@ -58,17 +55,19 @@ const appRoutes: Routes = [
 
         // App modules
         LayoutModule,
-        SampleModule,
-        SignupModule,
-        TagtraceModule,
-        LoginModule,
-        StoreManagementModule,
-        UserSettingModule
+        AppRoutingModule,
+        // SignupModule,
+        // TagtraceModule,
+        // LoginModule,
+        // StoreManagementModule,
+        // UserSettingModule
     ],
     providers: [
         AuthenticationService,
         TagtraceApiService,
         StoreApiService,
+        OrderApiService,
+        NotificationService,
         AppState,
         AuthGuard,
         AlreadyLoginAuthGuard,

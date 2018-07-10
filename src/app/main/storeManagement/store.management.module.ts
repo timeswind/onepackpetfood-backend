@@ -10,7 +10,7 @@ import { AuthGuard } from 'app/services/auth.guard.service';
 
 const routes = [
     {
-        path     : 'store_management',
+        path     : '',
         component: StoreManagementComponent,
         canActivate: [AuthGuard]
     }
@@ -38,10 +38,7 @@ const routes = [
         MatSelectModule,
         MatBottomSheetModule
     ],
-    entryComponents: [StoreManagementComponent, AddNewStoreDialog, StoreInfoBottomSheet],
-    exports     : [
-        StoreManagementComponent
-    ]
+    entryComponents: [StoreManagementComponent, AddNewStoreDialog, StoreInfoBottomSheet]
 })
 
 export class StoreManagementModule

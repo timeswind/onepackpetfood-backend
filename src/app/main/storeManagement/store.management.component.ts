@@ -5,6 +5,7 @@ import { TagtraceApiService } from '../../services/tagtrace.api.service';
 import { StoreApiService } from '../../services/store.api.service';
 import { first, filter } from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
+import { NotificationService } from '../../services/notification.service';
 // export interface StoreInfoScheme {
 //     name: string;
 //     code: string;
@@ -43,16 +44,11 @@ export class StoreManagementComponent {
         private storeApiService: StoreApiService,
         private router: Router,
         private bottomSheet: MatBottomSheet) {
-        this.router.events
-            .pipe(filter(e => e instanceof NavigationEnd && e.url === '/store_management'))
-            .subscribe(e => {
-                this.fetchStores();
-            });
     }
 
-    // ngOnInit(): void {
-
-    // }
+    ngOnInit(): void {
+        this.fetchStores();
+    }
     applyFilter(filterValue: string) {
         this.dataSource.filter = filterValue.trim().toLowerCase();
     }
@@ -150,7 +146,8 @@ export class AddNewStoreDialog {
 })
 export class StoreInfoBottomSheet {
     storeInfoData: any;
-    constructor(private bottomSheetRef: MatBottomSheetRef<StoreInfoBottomSheet>,
+    constructor(private notificationService:NotificationService,
+        private bottomSheetRef: MatBottomSheetRef<StoreInfoBottomSheet>,
         @Inject(MAT_BOTTOM_SHEET_DATA) public data: any, private storeApiService: StoreApiService) {
         this.storeInfoData = data
     }
@@ -163,9 +160,11 @@ export class StoreInfoBottomSheet {
                     console.log(data)
                     this.bottomSheetRef.dismiss();
                     // this.fetchTagtracks();
+                    this.notificationService.subj_notification.next("更新成功")
                 },
                 error => {
                     // this.loading = false;
+                    this.notificationService.subj_notification.next("更新失败")
                 });
     }
 }

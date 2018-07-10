@@ -7,11 +7,12 @@ import { FuseNavigationService } from '@fuse/components/navigation/navigation.se
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
+import { NotificationService } from 'app/services/notification.service';
 import { navigationForAdmin, navigationForShopOwnerUser } from 'app/navigation/navigation';
 import { locale as navigationEnglish } from 'app/navigation/i18n/en';
 import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
 import { AppState } from 'app/app.state';
+import { MatSnackBar } from '../../node_modules/@angular/material';
 @Component({
     selector   : 'app',
     templateUrl: './app.component.html',
@@ -36,6 +37,8 @@ export class AppComponent implements OnInit, OnDestroy
      * @param {TranslateService} _translateService
      */
     constructor(
+        private notificationService:NotificationService,
+        private snackBar: MatSnackBar,
         private _fuseConfigService: FuseConfigService,
         private _fuseNavigationService: FuseNavigationService,
         private _fuseSidebarService: FuseSidebarService,
@@ -45,6 +48,10 @@ export class AppComponent implements OnInit, OnDestroy
         private _appState:AppState
     )
     {
+        this.notificationService.subj_notification.subscribe(message => {
+            snackBar.open(message, "", {duration: 2000});
+          });
+
         this.loadNavigationSettings();
 
         // Add languages

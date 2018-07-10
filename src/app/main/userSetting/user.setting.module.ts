@@ -6,7 +6,7 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { UserSettingComponent } from './user.setting.component';
 const routes = [
     {
-        path     : 'usersetting',
+        path     : '',
         component: UserSettingComponent
     }
 ];
@@ -24,9 +24,6 @@ const routes = [
         MatFormFieldModule,
         MatButtonModule,
         MatInputModule
-    ],
-    exports     : [
-        UserSettingComponent
     ]
 })
 

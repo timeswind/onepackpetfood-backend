@@ -6,7 +6,7 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { SignupComponent } from './signup.component';
 const routes = [
     {
-        path     : 'signup',
+        path     : "",
         component: SignupComponent
     }
 ];
@@ -24,9 +24,6 @@ const routes = [
         MatFormFieldModule,
         MatButtonModule,
         MatInputModule
-    ],
-    exports     : [
-        SignupComponent
     ]
 })
 

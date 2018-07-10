@@ -3,6 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MAT_BOTTOM_SHEET_DATA, MatTab
 import { Router, NavigationEnd } from '@angular/router';
 import { TagtraceApiService } from '../../services/tagtrace.api.service';
 import { first, filter } from 'rxjs/operators';
+import { NotificationService } from '../../services/notification.service';
 export interface TagtrackScheme {
     name: string;
     code: string;
@@ -43,17 +44,15 @@ export class TagtraceComponent {
     //     this._fuseTranslationLoaderService.loadTranslations(english, turkish);
     // }
     dataSource: any;
-    constructor(public dialog: MatDialog, private tagTraceApiService: TagtraceApiService, private router: Router, private bottomSheet: MatBottomSheet) {
-        this.router.events
-            .pipe(filter(e => e instanceof NavigationEnd && e.url === '/tagtrace'))
-            .subscribe(e => {
-                this.fetchTagtracks();
-            });
+    constructor(
+        public dialog: MatDialog,
+        private tagTraceApiService: TagtraceApiService,
+        private router: Router,
+        private bottomSheet: MatBottomSheet) {}
+
+    ngOnInit(): void {
+        this.fetchTagtracks();
     }
-
-    // ngOnInit(): void {
-
-    // }
     applyFilter(filterValue: string) {
         this.dataSource.filter = filterValue.trim().toLowerCase();
     }
@@ -135,6 +134,7 @@ export class DialogOverviewExampleDialog {
 export class BottomSheetOverviewExampleSheet {
     tagtrackData: any;
     constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheetOverviewExampleSheet>,
+        private notificationService:NotificationService,
         @Inject(MAT_BOTTOM_SHEET_DATA) public data: any, private tagTraceApiService: TagtraceApiService) {
         this.tagtrackData = data
     }
@@ -147,9 +147,11 @@ export class BottomSheetOverviewExampleSheet {
                     console.log(data)
                     this.bottomSheetRef.dismiss();
                     // this.fetchTagtracks();
+                    this.notificationService.subj_notification.next("更新成功")
                 },
                 error => {
                     // this.loading = false;
+                    this.notificationService.subj_notification.next("更新失败")
                 });
     }
 }

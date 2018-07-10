@@ -1,18 +1,17 @@
-import { Injectable }       from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   CanActivate, Router,
   ActivatedRouteSnapshot,
   RouterStateSnapshot
-}                           from '@angular/router';
-import { AppState }      from '../app.state';
+} from '@angular/router';
+import { AppState } from '../app.state';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private appState: AppState, private router: Router) {}
+  constructor(private appState: AppState, private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     let url: string = state.url;
-    console.log('AuthGuard#canActivate called');
     return this.checkLogin(url);
   }
 
@@ -30,7 +29,7 @@ export class AuthGuard implements CanActivate {
 
 @Injectable()
 export class AlreadyLoginAuthGuard implements CanActivate {
-  constructor(private appState: AppState, private router: Router) {}
+  constructor(private appState: AppState, private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     let url: string = state.url;
@@ -39,8 +38,8 @@ export class AlreadyLoginAuthGuard implements CanActivate {
 
   checkLogin(url: string): boolean {
     if (this.appState.islogin) {
-    this.router.navigate(['/tagtrace']);
-    return false;
+      this.router.navigate(['/tagtrace']);
+      return false;
     } else {
       return true;
     }
