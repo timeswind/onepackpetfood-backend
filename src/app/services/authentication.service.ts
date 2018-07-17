@@ -3,10 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 import { Router } from '@angular/router';
-import { AppState } from '../app.state';
 @Injectable()
 export class AuthenticationService {
-    constructor(private http: HttpClient, private router: Router, private appState: AppState) { }
+    constructor(private http: HttpClient, private router: Router) { }
 
     login(email: string, password: string) {
         return this.http.post<any>(`${environment.apiUrl}/public/login`, { email: email, password: password })
@@ -54,6 +53,6 @@ export class AuthenticationService {
 
     logout() {
         // remove user from local storage to log user out
-        this.appState.logout();
+        // this.appState.logout();
     }
 }

@@ -3,44 +3,71 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 // import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import { AuthenticationService } from '../../services/authentication.service';
-import { AppState } from '../../app.state';
+// import { AppState } from '../../app.state';
 import { first } from 'rxjs/operators';
-import { navigationForAdmin, navigationForShopOwnerUser } from 'app/navigation/navigation';
-import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 // import { locale as english } from './i18n/en';
 // import { locale as turkish } from './i18n/tr';
+import { Store, select, createSelector } from '@ngrx/store';
+import { AppState } from '../../app.state';
+import { selectAuthIsLogin } from '../../reducers/auth.reducer';
+import * as AuthActions from '../../actions/auth.action'
 
 @Component({
-    selector   : 'login',
+    selector: 'login',
     templateUrl: './login.component.html',
-    styleUrls  : ['./login.component.scss']
+    styleUrls: ['./login.component.scss']
 })
 
 export class LoginComponent implements OnInit {
     registerForm: FormGroup;
     submitted = false;
- 
+    token: any;
     constructor(
         private formBuilder: FormBuilder,
         private router: Router,
+        private route: ActivatedRoute,
         private authenticationService: AuthenticationService,
-        private appState: AppState,
-        private fuseNavigationService: FuseNavigationService
-    ) { }
- 
+        private store: Store<AppState>
+    ) {
+        this.route.queryParams.subscribe(params => {
+            //处理微信登入
+            if (!!params["name"] && !!params["role"] && !!params["avatar"] && !!params["token"]) {
+                localStorage.setItem('currentUser', JSON.stringify({ token: params["token"], avatar: params["avatar"], name: params["name"], role: params["role"] }));
+                let data = {
+                    name: params["name"],
+                    email: "",
+                    role: parseInt(params["role"]) || 0,
+                    avatar: params["avatar"] || "",
+                    token: params["token"],
+                    isLogin: true,
+                    redirectUrl: ""
+                }
+                if (params["state"]) {
+                    localStorage.setItem("wx_state", params["state"])
+                }
+                this.login(data)
+            }
+        });
+    }
+
     ngOnInit() {
+        console.log('ngOnInit')
+        this.store.pipe(select(selectAuthIsLogin)).subscribe(data => {
+            console.log(data)
+        })
+
         this.registerForm = this.formBuilder.group({
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required, Validators.minLength(6)]]
         });
     }
- 
+
     // convenience getter for easy access to form fields
     get f() { return this.registerForm.controls; }
- 
+
     onSubmit() {
         this.submitted = true;
- 
+
         // stop here if form is invalid
         if (this.registerForm.invalid) {
             return;
@@ -48,43 +75,30 @@ export class LoginComponent implements OnInit {
 
         // console.log(this.registerForm)
         this.authenticationService.login(this.f.email.value, this.f.password.value)
-        .pipe(first())
-        .subscribe(
-            data => {
-                console.log(data)
-                this.appState.email = data.email;
-                this.appState.token = data.token;
-                this.appState.islogin = true;
-                this.appState.role = data.role;
-                this.appState.setName(data.name || "")
-                if (data.role === 100) {
-                    this.router.navigate(['/tagtrace']);
-                } else {
-                    console.error('need to fix')
-                    alert('see console')
-                }
-                this.reloadNavigation();
-            },
-            error => {
-                // this.loading = false;
-            });
-     }
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.login(data);
+                },
+                error => {
+                    // this.loading = false;
+                });
+    }
 
-     private reloadNavigation():void {
-        let navigation:any;
-
-        if (this.appState.role === 100) {
-            navigation = navigationForAdmin;
+    private login(data): void {
+        this.store.dispatch(new AuthActions.UserLogin({
+            name: data.name,
+            email: data.email || "",
+            role: data.role || 0,
+            avatar: data.avatar || "",
+            token: data.token,
+            isLogin: true,
+            redirectUrl: ""
+        }))
+        if (data.role === 100) {
+            this.router.navigate(['/tagtrace'])
         } else {
-            navigation = navigationForShopOwnerUser;
+            this.router.navigate(['/my_store'])
         }
-        // Get default navigation
-
-        // Register the navigation to the service
-        this.fuseNavigationService.unregister('main')
-        this.fuseNavigationService.register('main', navigation)
-
-        // Set the main navigation as our current navigation
-        this.fuseNavigationService.setCurrentNavigation('main');
-     }
+    }
 }

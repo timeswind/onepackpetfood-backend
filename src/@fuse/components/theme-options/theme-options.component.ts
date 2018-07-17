@@ -62,23 +62,28 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy
         // noinspection TypeScriptValidateTypes
         this.form = this._formBuilder.group({
             layout          : this._formBuilder.group({
-                style  : new FormControl(),
-                width  : new FormControl(),
-                navbar : this._formBuilder.group({
-                    hidden    : new FormControl(),
-                    position  : new FormControl(),
+                style    : new FormControl(),
+                width    : new FormControl(),
+                navbar   : this._formBuilder.group({
+                    background: new FormControl(),
                     folded    : new FormControl(),
-                    background: new FormControl()
-                }),
-                toolbar: this._formBuilder.group({
                     hidden    : new FormControl(),
                     position  : new FormControl(),
-                    background: new FormControl()
+                    variant   : new FormControl()
                 }),
-                footer : this._formBuilder.group({
+                toolbar  : this._formBuilder.group({
+                    background: new FormControl(),
                     hidden    : new FormControl(),
-                    position  : new FormControl(),
-                    background: new FormControl()
+                    position  : new FormControl()
+                }),
+                footer   : this._formBuilder.group({
+                    background: new FormControl(),
+                    hidden    : new FormControl(),
+                    position  : new FormControl()
+                }),
+                sidepanel: this._formBuilder.group({
+                    hidden: new FormControl(),
+                    position  : new FormControl()
                 })
             }),
             customScrollbars: new FormControl()
@@ -174,20 +179,21 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy
                     layout: {
                         width  : 'fullwidth',
                         navbar : {
+                            background: 'mat-fuse-dark-700-bg',
+                            folded    : false,
                             hidden    : false,
                             position  : 'left',
-                            folded    : false,
-                            background: 'mat-fuse-dark-700-bg'
+                            variant   : 'vertical-style-1'
                         },
                         toolbar: {
+                            background: 'mat-white-500-bg',
                             hidden    : false,
-                            position  : 'below-static',
-                            background: 'mat-white-500-bg'
+                            position  : 'below-static'
                         },
                         footer : {
+                            background: 'mat-fuse-dark-900-bg',
                             hidden    : false,
-                            position  : 'below-static',
-                            background: 'mat-fuse-dark-900-bg'
+                            position  : 'below-static'
                         }
                     }
                 });
@@ -202,20 +208,21 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy
                     layout: {
                         width  : 'fullwidth',
                         navbar : {
+                            background: 'mat-fuse-dark-700-bg',
+                            folded    : false,
                             hidden    : false,
                             position  : 'left',
-                            folded    : false,
-                            background: 'mat-fuse-dark-700-bg'
+                            variant   : 'vertical-style-1'
                         },
                         toolbar: {
+                            background: 'mat-white-500-bg',
                             hidden    : false,
-                            position  : 'below',
-                            background: 'mat-white-500-bg'
+                            position  : 'below'
                         },
                         footer : {
+                            background: 'mat-fuse-dark-900-bg',
                             hidden    : false,
-                            position  : 'below',
-                            background: 'mat-fuse-dark-900-bg'
+                            position  : 'below'
                         }
                     }
                 });
@@ -230,20 +237,21 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy
                     layout: {
                         width  : 'fullwidth',
                         navbar : {
+                            background: 'mat-fuse-dark-700-bg',
+                            folded    : false,
                             hidden    : false,
                             position  : 'left',
-                            folded    : false,
-                            background: 'mat-fuse-dark-700-bg'
+                            layout    : 'vertical-style-1'
                         },
                         toolbar: {
+                            background: 'mat-white-500-bg',
                             hidden    : false,
-                            position  : 'above-static',
-                            background: 'mat-white-500-bg'
+                            position  : 'above-static'
                         },
                         footer : {
+                            background: 'mat-fuse-dark-900-bg',
                             hidden    : false,
-                            position  : 'above-static',
-                            background: 'mat-fuse-dark-900-bg'
+                            position  : 'above-static'
                         }
                     }
                 });
@@ -258,20 +266,21 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy
                     layout: {
                         width  : 'fullwidth',
                         navbar : {
+                            background: 'mat-fuse-dark-700-bg',
+                            folded    : false,
                             hidden    : false,
                             position  : 'top',
-                            folded    : false,
-                            background: 'mat-fuse-dark-700-bg'
+                            variant   : 'vertical-style-1'
                         },
                         toolbar: {
+                            background: 'mat-white-500-bg',
                             hidden    : false,
-                            position  : 'above',
-                            background: 'mat-white-500-bg'
+                            position  : 'above'
                         },
                         footer : {
+                            background: 'mat-fuse-dark-900-bg',
                             hidden    : false,
-                            position  : 'above-fixed',
-                            background: 'mat-fuse-dark-900-bg'
+                            position  : 'above-fixed'
                         }
                     }
                 });

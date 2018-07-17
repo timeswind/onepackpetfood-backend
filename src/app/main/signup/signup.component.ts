@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 // import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import { AuthenticationService } from '../../services/authentication.service';
-import { AppState } from '../../app.state';
+// import { AppState } from '../../app.state';
 
 import { first } from 'rxjs/operators';
 // import { locale as english } from './i18n/en';
@@ -22,8 +22,7 @@ export class SignupComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private router: Router,
-        private authenticationService: AuthenticationService,
-        private appState: AppState
+        private authenticationService: AuthenticationService
     ) { }
  
     ngOnInit() {
@@ -49,11 +48,11 @@ export class SignupComponent implements OnInit {
         .pipe(first())
         .subscribe(
             data => {
-                this.appState.email = data.email;
-                this.appState.token = data.token;
-                this.appState.islogin = true;
-                this.appState.role = data.role;
-                this.router.navigate(['/tagtrace']);
+                // this.appState.email = data.email;
+                // this.appState.token = data.token;
+                // this.appState.islogin.next(true);
+                // this.appState.role.next(data.role);
+                // this.router.navigate(['/tagtrace']);
             },
             error => {
                 // this.loading = false;

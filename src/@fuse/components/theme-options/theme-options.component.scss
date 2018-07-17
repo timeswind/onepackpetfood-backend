@@ -19,6 +19,7 @@
         flex: 1 0 auto;
         padding: 40px 24px 24px 24px;
         overflow: auto;
+        -webkit-overflow-scrolling: touch;
 
         .header {
             display: flex;
@@ -72,11 +73,6 @@
                         margin-top: 0;
                     }
                 }
-            }
-
-            .colors {
-                display: block !important;
-                width: 100%;
             }
         }
     }

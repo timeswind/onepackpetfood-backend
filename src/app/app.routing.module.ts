@@ -34,6 +34,10 @@ const routes: Routes = [
     {
         path: "user_setting",
         loadChildren: 'app/main/userSetting/user.setting.module#UserSettingModule'
+    },
+    {
+        path: "my_store",
+        loadChildren: 'app/store_owner/my_store/my_store.module#MyStoreModule'
     }
 ];
 

@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 // import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import { AuthenticationService } from '../../services/authentication.service';
-import { AppState } from '../../app.state';
 
 import { first } from 'rxjs/operators';
 // import { locale as english } from './i18n/en';
@@ -27,8 +26,7 @@ export class UserSettingComponent implements OnInit {
     };
     constructor(
         private router: Router,
-        private authenticationService: AuthenticationService,
-        private appState: AppState
+        private authenticationService: AuthenticationService
     ) {
 
     }
@@ -54,10 +52,10 @@ export class UserSettingComponent implements OnInit {
         .subscribe(
             data => {
                 if (data.success) {
-                    this.appState.setName(this.userInfo.name)
-                    let userInfo: any = JSON.parse(localStorage.getItem('currentUser'));
-                    userInfo["name"] = this.userInfo.name
-                    localStorage.setItem("currentUser", JSON.stringify(userInfo));
+                    // this.appState.setName(this.userInfo.name)
+                    // let userInfo: any = JSON.parse(localStorage.getItem('currentUser'));
+                    // userInfo["name"] = this.userInfo.name
+                    // localStorage.setItem("currentUser", JSON.stringify(userInfo));
                 }
             },
             error => {

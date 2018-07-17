@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import  { MatTableModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDialogModule, MatRadioModule, MatListModule, MatBottomSheetModule,MatSelectModule} from '@angular/material';
+import { QRCodeModule } from 'angularx-qrcode';
 
 import { FuseSharedModule } from '@fuse/shared.module';
 
@@ -36,7 +37,8 @@ const routes = [
         MatRadioModule,
         MatListModule,
         MatSelectModule,
-        MatBottomSheetModule
+        MatBottomSheetModule,
+        QRCodeModule
     ],
     entryComponents: [StoreManagementComponent, AddNewStoreDialog, StoreInfoBottomSheet]
 })

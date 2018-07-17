@@ -4,6 +4,8 @@
         <span mat-line>{{storeInfoData._id}}</span>
     </a>
 
+    <qrcode [qrdata]="qrcode_data" [size]="200" [level]="'M'" style="width: 200px;align-self:center"></qrcode>
+
     <a mat-list-item>
         <span mat-line>追踪代码</span>
         <span mat-line>{{storeInfoData.tagtrack_code}}</span>

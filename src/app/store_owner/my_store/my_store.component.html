@@ -1,0 +1,23 @@
+<div class="page-layout blank p-24" fusePerfectScrollbar>
+    <p>{{haveCreatedStore}}</p>
+    <div>
+        <div *ngIf="haveCreatedStore === false" style="display: flex;flex-direction: column;width: 300px;margin: 0 auto;">
+            <mat-form-field class="example-full-width">
+                <input matInput placeholder="店铺代码" [(ngModel)]="storeTagtrackCode">
+            </mat-form-field>
+            <button mat-raised-button color="primary" style="margin-bottom: 8px" (click)="getStoreInfoByTagtrackCode(storeTagtrackCode)">查询</button>
+            <button mat-raised-button color="primary" (click)="bindStore(storeTagtrackCode)">提交</button>
+            <mat-card style="margin-top: 16px" *ngIf="storeData">
+                <div *ngFor="let keyValuePair of storeData | mapToIterable">
+                    <p class="data-key">{{keyValuePair.key}}</p>
+                    <p class="data-value">{{keyValuePair.val}}</p>
+                </div>
+            </mat-card>
+        </div>
+        <div *ngIf="haveCreatedStore === true" style="display: flex;flex-direction: column;width: 300px;margin: 0 auto;">
+            <div>{{storeData | json}}</div>
+            <div>{{storeAccountData | json}}</div>
+        </div>
+    </div>
+
+</div>

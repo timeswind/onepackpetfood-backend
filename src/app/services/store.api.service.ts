@@ -18,20 +18,11 @@ export class StoreApiService {
     getAllStore() {
         console.log('getAllStore api called')
         return this.http.get<any>(`${environment.apiUrl}/internal/stores`)
-        .pipe(map(result => {
-            console.log('result', result)
-            return result;
-        }));
+            .pipe(map(result => {
+                console.log('result', result)
+                return result;
+            }));
     }
-
-    // newTagtrack(data: any) {
-    //     console.log('newTagtrace api called')
-    //     return this.http.post<any>(`${environment.apiUrl}/internal/tagtrack`, data)
-    //         .pipe(map(result => {
-    //             console.log('result', result)
-    //             return result;
-    //         }));
-    // }
 
     updateStoreInfo(storeInfoData: any) {
         console.log('updateStoreInfo api called')
@@ -42,34 +33,28 @@ export class StoreApiService {
             }));
     }
 
-    // getAllTagrack() {
-    //     return this.http.get<any>(`${environment.apiUrl}/internal/tagtracks`)
-    //     .pipe(map(result => {
-    //         console.log('result', result)
-    //         return result;
-    //     }));
-    // }
+    getStoreOwnerStore() {
+        console.log('updateStoreInfo api called')
+        return this.http.get<any>(`${environment.apiUrl}/protect/my_store`)
+            .pipe(map(result => {
+                console.log('result', result)
+                return result;
+            }));
+    }
 
-    // getAllInactiveTagrackOfStore() {
-    //     return this.http.get<any>(`${environment.apiUrl}/internal/inactive_store_tagtrack_list`)
-    //     .pipe(map(result => {
-    //         console.log('result', result)
-    //         return result;
-    //     }));
-    // }
-    // login(email: string, password: string) {
-    //     console.log(environment)
-    //     return this.http.post<any>(`${environment.apiUrl}/public/login`, { email: email, password: password })
-    //         .pipe(map(data => {
-    //             console.log('data', data)
-    //             // login successful if there's a jwt token in the response
-    //             if (data.success) {
-    //                 // store user details and jwt token in local storage to keep user logged in between page refreshes
-    //                 localStorage.setItem('currentUser', JSON.stringify(data));
-    //             }
+    getStoreInfoByTagtrackCode(tagtrack_code: string) {
+        console.log('getStoreInfoByTagtrackCode api called')
+        return this.http.get<any>(`${environment.apiUrl}/protect/store_by_tagtrack?tagtrack=${tagtrack_code}`)
+            .pipe(map(result => {
+                return result;
+            }));
+    }
 
-    //             return data;
-    //         }));
-    // }
-
+    bindStore(tagtrack_code: string) {
+        console.log('bindStore api called')
+        return this.http.post<any>(`${environment.apiUrl}/protect/bind_store`, { tagtrack_code: tagtrack_code })
+            .pipe(map(result => {
+                return result;
+            }));
+    }
 }

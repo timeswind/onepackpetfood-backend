@@ -1,5 +1,6 @@
 export const environment = {
     production: false,
     hmr       : true,
-    apiUrl: 'api'
+    apiUrl: 'api',
+    domain: 'xiaoquanju.ap.ngrok.io'
 };

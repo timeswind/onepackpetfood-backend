@@ -11,15 +11,19 @@ import { NotificationService } from 'app/services/notification.service';
 import { navigationForAdmin, navigationForShopOwnerUser } from 'app/navigation/navigation';
 import { locale as navigationEnglish } from 'app/navigation/i18n/en';
 import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
-import { AppState } from 'app/app.state';
 import { MatSnackBar } from '../../node_modules/@angular/material';
+
+import { Store, select } from '@ngrx/store';
+import { AppState } from './app.state';
+import { selectAuthRole, selectAuthIsLogin } from './reducers/auth.reducer';
+import { Router } from '@angular/router';
+import * as AuthActions from './actions/auth.action';
 @Component({
-    selector   : 'app',
+    selector: 'app',
     templateUrl: './app.component.html',
-    styleUrls  : ['./app.component.scss']
+    styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy
-{
+export class AppComponent implements OnInit, OnDestroy {
     navigation: any;
     fuseConfig: any;
 
@@ -37,7 +41,7 @@ export class AppComponent implements OnInit, OnDestroy
      * @param {TranslateService} _translateService
      */
     constructor(
-        private notificationService:NotificationService,
+        private notificationService: NotificationService,
         private snackBar: MatSnackBar,
         private _fuseConfigService: FuseConfigService,
         private _fuseNavigationService: FuseNavigationService,
@@ -45,15 +49,15 @@ export class AppComponent implements OnInit, OnDestroy
         private _fuseSplashScreenService: FuseSplashScreenService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _translateService: TranslateService,
-        private _appState:AppState
-    )
-    {
+        private store: Store<AppState>,
+        private router: Router
+    ) {
         this.notificationService.subj_notification.subscribe(message => {
-            snackBar.open(message, "", {duration: 2000});
-          });
-
+            snackBar.open(message, "", { duration: 2000 });
+        });
+        this.relogin();
         this.loadNavigationSettings();
-
+        this.observeUserLoginStatus();
         // Add languages
         this._translateService.addLangs(['en', 'tr']);
 
@@ -70,19 +74,40 @@ export class AppComponent implements OnInit, OnDestroy
         this._unsubscribeAll = new Subject();
     }
 
-    public loadNavigationSettings():void {
-        if (this._appState.role === 100) {
-            this.navigation = navigationForAdmin;
-        } else {
-            this.navigation = navigationForShopOwnerUser;
+    public relogin(): void {
+        if (localStorage.getItem('currentUser')) {
+            let data: any = JSON.parse(localStorage.getItem('currentUser'));
+            this.store.dispatch(new AuthActions.UserLogin({
+                name: data.name,
+                email: data.email || "",
+                role: data.role || 0,
+                avatar: data.avatar || "",
+                token: data.token,
+                isLogin: true,
+                redirectUrl: ""
+            }))
         }
-        // Get default navigation
+    }
 
-        // Register the navigation to the service
-        this._fuseNavigationService.register('main', this.navigation);
+    public observeUserLoginStatus(): void {
+        this.store.pipe(select(selectAuthIsLogin)).subscribe(isLogin => {
+            if (!isLogin && window.location.pathname !== "/login") {
+                this.router.navigate(['/login']);
+            }
+        })
+    }
 
-        // Set the main navigation as our current navigation
-        this._fuseNavigationService.setCurrentNavigation('main');
+    public loadNavigationSettings(): void {
+        this.store.pipe(select(selectAuthRole)).subscribe(role => {
+            if (role === 100) {
+                this.navigation = navigationForAdmin;
+            } else {
+                this.navigation = navigationForShopOwnerUser;
+            }
+            this._fuseNavigationService.unregister('main');
+            this._fuseNavigationService.register('main', this.navigation);
+            this._fuseNavigationService.setCurrentNavigation('main');
+        })
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -92,8 +117,7 @@ export class AppComponent implements OnInit, OnDestroy
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         // Subscribe to config changes
         this._fuseConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
@@ -105,8 +129,7 @@ export class AppComponent implements OnInit, OnDestroy
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
@@ -121,8 +144,7 @@ export class AppComponent implements OnInit, OnDestroy
      *
      * @param key
      */
-    toggleSidebarOpen(key): void
-    {
+    toggleSidebarOpen(key): void {
         this._fuseSidebarService.getSidebar(key).toggleOpen();
     }
 }

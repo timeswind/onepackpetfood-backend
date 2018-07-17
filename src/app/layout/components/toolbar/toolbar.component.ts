@@ -9,6 +9,10 @@ import { AuthenticationService } from '../../../services/authentication.service'
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AppState } from '../../../app.state';
+import { Store, select, createSelector } from '@ngrx/store';
+import { selectAuthName, selectAuthAvatar, selectAuthIsLogin } from '../../../reducers/auth.reducer';
+import { Observable } from 'rxjs/Observable'
+import * as AuthActions from '../../../actions/auth.action';
 // import { navigation } from 'app/navigation/navigation';
 
 @Component({
@@ -27,7 +31,10 @@ export class ToolbarComponent implements OnInit, OnDestroy
     selectedLanguage: any;
     showLoadingBar: boolean;
     userStatusOptions: any[];
-    useremail: string;
+
+    name: Observable<string>;
+    avatar: Observable<string>;
+    isLogin: Observable<boolean>;
     // Private
     private _unsubscribeAll: Subject<any>;
 
@@ -45,11 +52,20 @@ export class ToolbarComponent implements OnInit, OnDestroy
         private _router: Router,
         private _translateService: TranslateService,
         private authenticationService: AuthenticationService,
-        private appState: AppState
+        private store: Store<AppState>
     )
     {
-        this.appState.name
-        .subscribe((value: string) => this.useremail = value)
+        this.name = this.store.pipe(select(selectAuthName))
+        this.avatar = this.store.pipe(select(selectAuthAvatar))
+        this.isLogin = this.store.pipe(select(selectAuthIsLogin))
+        // this.appState.name
+        // .subscribe((value: string) => this.useremail = value)
+
+        // this.appState.avatar
+        // .subscribe((value: string) => this.avatar = value)
+
+        // this.appState.islogin
+        // .subscribe((value: boolean) => this.isLogin = value)
         // Set the defaults
         // this.userStatusOptions = [
         //     {
@@ -191,6 +207,6 @@ export class ToolbarComponent implements OnInit, OnDestroy
     }
 
     logout(): void {
-        this.authenticationService.logout();
+        this.store.dispatch(new AuthActions.UserLogout())
     }
 }

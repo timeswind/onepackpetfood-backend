@@ -38,20 +38,6 @@ export const navigationForAdmin: FuseNavigation[] = [
                 // }
             },
             {
-                id       : 'login',
-                title    : '登入',
-                // translate: 'NAV.TAGTRACE.TITLE',
-                type     : 'item',
-                icon     : 'supervised_user_circle',
-                url      : '/login'
-                // badge    : {
-                //     title    : '',
-                //     translate: 'NAV.TAGTRACE.BADGE',
-                //     bg       : '#F44336',
-                //     fg       : '#FFFFFF'
-                // }
-            },
-            {
                 id       : 'usersetting',
                 title    : '用户设置',
                 // translate: 'NAV.TAGTRACE.TITLE',
@@ -78,12 +64,12 @@ export const navigationForShopOwnerUser: FuseNavigation[] = [
         type     : 'group',
         children : [
             {
-                id       : 'login',
-                title    : '登入',
+                id       : 'usersettings',
+                title    : '用户设置',
                 // translate: 'NAV.TAGTRACE.TITLE',
                 type     : 'item',
-                icon     : 'supervised_user_circle',
-                url      : '/login'
+                icon     : 'settings',
+                url      : '/user_setting'
                 // badge    : {
                 //     title    : '',
                 //     translate: 'NAV.TAGTRACE.BADGE',
@@ -92,12 +78,12 @@ export const navigationForShopOwnerUser: FuseNavigation[] = [
                 // }
             },
             {
-                id       : 'settings',
-                title    : '设置',
+                id       : 'mystore',
+                title    : '我的店铺',
                 // translate: 'NAV.TAGTRACE.TITLE',
                 type     : 'item',
-                icon     : 'settings',
-                url      : '/settings'
+                icon     : 'store',
+                url      : '/my_store'
                 // badge    : {
                 //     title    : '',
                 //     translate: 'NAV.TAGTRACE.BADGE',

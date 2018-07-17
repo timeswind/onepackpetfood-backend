@@ -7,8 +7,7 @@ import {  LoginComponent } from './login.component';
 const routes: Routes = [
     { 
         path: "",
-        component: LoginComponent,
-        canActivate: [AlreadyLoginAuthGuard]
+        component: LoginComponent
     },
 
 ];

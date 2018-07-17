@@ -4,8 +4,9 @@ import { Router, NavigationEnd } from '@angular/router';
 import { TagtraceApiService } from '../../services/tagtrace.api.service';
 import { StoreApiService } from '../../services/store.api.service';
 import { first, filter } from 'rxjs/operators';
-import {FormControl} from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { NotificationService } from '../../services/notification.service';
+import { environment } from '../../../environments/environment';
 // export interface StoreInfoScheme {
 //     name: string;
 //     code: string;
@@ -72,7 +73,7 @@ export class StoreManagementComponent {
     openDialog(): void {
         const dialogRef = this.dialog.open(AddNewStoreDialog, {
             width: '250px',
-            data: { }
+            data: {}
         });
 
         dialogRef.afterClosed().subscribe(result => {
@@ -80,15 +81,15 @@ export class StoreManagementComponent {
             if (result) {
                 console.log(result)
                 this.storeApiService.newStore(result)
-                .pipe(first())
-                .subscribe(
-                    data => {
-                        // console.log(data)
-                        this.fetchStores();
-                    },
-                    error => {
-                        // this.loading = false;
-                    });
+                    .pipe(first())
+                    .subscribe(
+                        data => {
+                            // console.log(data)
+                            this.fetchStores();
+                        },
+                        error => {
+                            // this.loading = false;
+                        });
             }
         });
     }
@@ -145,11 +146,13 @@ export class AddNewStoreDialog {
     styleUrls: ['./store.management.component.scss']
 })
 export class StoreInfoBottomSheet {
+    qrcode_data: string;
     storeInfoData: any;
-    constructor(private notificationService:NotificationService,
+    constructor(private notificationService: NotificationService,
         private bottomSheetRef: MatBottomSheetRef<StoreInfoBottomSheet>,
         @Inject(MAT_BOTTOM_SHEET_DATA) public data: any, private storeApiService: StoreApiService) {
         this.storeInfoData = data
+        this.qrcode_data = `http://${environment.domain}/api/public/bind_store?tagtrack=${data.tagtrack_code}`
     }
 
     updateStoreInfo(): void {

@@ -10,23 +10,28 @@ import { FuseConfig } from '@fuse/types';
 
 export const fuseConfig: FuseConfig = {
     layout          : {
-        style         : 'vertical-layout-1',
-        width         : 'fullwidth',
-        navbar        : {
+        style    : 'vertical-layout-1',
+        width    : 'fullwidth',
+        navbar   : {
+            background: 'mat-fuse-dark-700-bg',
+            folded    : false,
             hidden    : false,
             position  : 'left',
-            folded    : false,
-            background: 'mat-fuse-dark-700-bg'
+            variant   : 'vertical-style-1'
         },
-        toolbar       : {
+        toolbar  : {
+            background: 'mat-white-500-bg',
             hidden    : false,
-            position  : 'below-static',
-            background: 'mat-white-500-bg'
+            position  : 'below-static'
         },
-        footer        : {
+        footer   : {
+            background: 'mat-fuse-dark-900-bg',
             hidden    : false,
-            position  : 'below-static',
-            background: 'mat-fuse-dark-900-bg'
+            position  : 'below-fixed'
+        },
+        sidepanel: {
+            hidden  : false,
+            position: 'right'
         }
     },
     customScrollbars: true
