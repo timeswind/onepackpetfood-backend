@@ -9,6 +9,7 @@ import { first } from 'rxjs/operators';
 })
 
 export class MyStoreComponent implements OnInit {
+    loading = true;
     haveCreatedStore: boolean = false
     storeData: any;
     storeAccountData: any;
@@ -30,36 +31,41 @@ export class MyStoreComponent implements OnInit {
 
     // convenience getter for easy access to form fields
     private getMyStoreInfo(): void {
+        this.loading = true
         this.storeApiService.getStoreOwnerStore()
             .pipe(first())
             .subscribe(
                 data => {
                     if (data.success) {
                         this.haveCreatedStore = true
-                        this.storeData = data.user_store
+                        this.storeData = data.store
+                        this.storeAccountData = data.storeAccount;
                     }
+                    this.loading = false;
                 },
                 error => {
-                    // this.loading = false;
+                    this.loading = false;
                 });
     }
 
     private getStoreInfoByTagtrackCode(code: string): void {
+        this.loading = true
         this.storeApiService.getStoreInfoByTagtrackCode(code)
             .pipe(first())
             .subscribe(
                 data => {
                     if (data.success) {
-                        console.log(data)
                         this.storeData = data.store;
                     }
+                    this.loading = false;
                 },
                 error => {
-                    // this.loading = false;
+                    this.loading = false;
                 });
     }
 
     private bindStore(code:string):void {
+        this.loading = true
         this.storeApiService.bindStore(code)
         .pipe(first())
         .subscribe(
@@ -70,9 +76,10 @@ export class MyStoreComponent implements OnInit {
                     this.storeData = data.store;
                     this.storeAccountData = data.storeAccount;
                 }
+                this.loading = false;
             },
             error => {
-                // this.loading = false;
+                this.loading = false;
             });
     }
 }

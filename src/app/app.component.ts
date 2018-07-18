@@ -91,7 +91,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     public observeUserLoginStatus(): void {
         this.store.pipe(select(selectAuthIsLogin)).subscribe(isLogin => {
-            if (!isLogin && window.location.pathname !== "/login") {
+            if (!isLogin && window.location.pathname !== "/login" && window.location.pathname !== "/signup") {
                 this.router.navigate(['/login']);
             }
         })

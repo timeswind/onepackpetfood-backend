@@ -1,7 +1,9 @@
 <div class="page-layout blank p-24" fusePerfectScrollbar>
-    <p>{{haveCreatedStore}}</p>
     <div>
-        <div *ngIf="haveCreatedStore === false" style="display: flex;flex-direction: column;width: 300px;margin: 0 auto;">
+        <div *ngIf="loading === true" style="display: flex;flex-direction: column;width: 300px;margin: 0 auto;">
+            加载中...
+        </div>
+        <div *ngIf="haveCreatedStore === false && loading === false" style="display: flex;flex-direction: column;width: 300px;margin: 0 auto;">
             <mat-form-field class="example-full-width">
                 <input matInput placeholder="店铺代码" [(ngModel)]="storeTagtrackCode">
             </mat-form-field>
@@ -14,7 +16,7 @@
                 </div>
             </mat-card>
         </div>
-        <div *ngIf="haveCreatedStore === true" style="display: flex;flex-direction: column;width: 300px;margin: 0 auto;">
+        <div *ngIf="haveCreatedStore === true && loading === false" style="display: flex;flex-direction: column;width: 300px;margin: 0 auto;">
             <div>{{storeData | json}}</div>
             <div>{{storeAccountData | json}}</div>
         </div>
