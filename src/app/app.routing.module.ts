@@ -32,6 +32,11 @@ const routes: Routes = [
         canLoad: [AdminAuthGuard]
     },
     {
+        path: "category_management",
+        loadChildren: 'app/main/categoryManagement/category_management.module#CategoryManagementModule',
+        canLoad: [AdminAuthGuard]
+    },
+    {
         path: "user_setting",
         loadChildren: 'app/main/userSetting/user.setting.module#UserSettingModule'
     },

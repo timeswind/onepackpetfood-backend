@@ -146,12 +146,16 @@ export class AddNewStoreDialog {
     styleUrls: ['./store.management.component.scss']
 })
 export class StoreInfoBottomSheet {
+    has_binded_owner = false;
     qrcode_data: string;
     storeInfoData: any;
     constructor(private notificationService: NotificationService,
         private bottomSheetRef: MatBottomSheetRef<StoreInfoBottomSheet>,
         @Inject(MAT_BOTTOM_SHEET_DATA) public data: any, private storeApiService: StoreApiService) {
         this.storeInfoData = data
+        if ("owner_user" in data && data["owner_user"]) {
+            this.has_binded_owner = true
+        }
         this.qrcode_data = `http://${environment.domain}/api/public/bind_store?tagtrack=${data.tagtrack_code}`
     }
 

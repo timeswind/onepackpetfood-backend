@@ -4,8 +4,12 @@
         <span mat-line>{{storeInfoData._id}}</span>
     </a>
 
-    <qrcode [qrdata]="qrcode_data" [size]="200" [level]="'M'" style="width: 200px;align-self:center"></qrcode>
-
+    <qrcode *ngIf="!has_binded_owner" [qrdata]="qrcode_data" [size]="200" [level]="'M'" style="width: 200px;align-self:center"></qrcode>
+    
+    <a mat-list-item *ngIf="has_binded_owner">
+        <span mat-line>已绑定店主账户</span>
+        <span mat-line>{{storeInfoData.owner_user}}</span>
+    </a>
     <a mat-list-item>
         <span mat-line>追踪代码</span>
         <span mat-line>{{storeInfoData.tagtrack_code}}</span>

@@ -38,6 +38,14 @@ export const navigationForAdmin: FuseNavigation[] = [
                 // }
             },
             {
+                id       : 'category_management',
+                title    : '商品类型管理',
+                // translate: 'NAV.TAGTRACE.TITLE',
+                type     : 'item',
+                icon     : 'category',
+                url      : '/category_management'
+            },
+            {
                 id       : 'usersetting',
                 title    : '用户设置',
                 // translate: 'NAV.TAGTRACE.TITLE',

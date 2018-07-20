@@ -18,6 +18,8 @@ import { AuthenticationService } from 'app/services/authentication.service';
 import { TagtraceApiService } from 'app/services/tagtrace.api.service';
 import { OrderApiService } from 'app/services/order.api.service';
 import { StoreApiService } from 'app/services/store.api.service';
+import { CategoryApiService } from 'app/services/category.api.service';
+
 // import { AppState } from 'app/app.state';
 import { AuthGuard, AdminAuthGuard, AlreadyLoginAuthGuard } from 'app/services/auth.guard.service';
 import { NotificationService } from 'app/services/notification.service';
@@ -83,6 +85,7 @@ import { environment } from '../environments/environment'; // Angular CLI enviro
         AuthenticationService,
         TagtraceApiService,
         StoreApiService,
+        CategoryApiService,
         OrderApiService,
         NotificationService,
         AuthGuard,

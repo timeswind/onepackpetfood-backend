@@ -16,9 +16,42 @@
                 </div>
             </mat-card>
         </div>
-        <div *ngIf="haveCreatedStore === true && loading === false" style="display: flex;flex-direction: column;width: 300px;margin: 0 auto;">
-            <div>{{storeData | json}}</div>
-            <div>{{storeAccountData | json}}</div>
+        <div *ngIf="haveCreatedStore === true && loading === false" style="display: flex;flex-direction: column;max-width: 800px;margin: 0 auto;">
+            <mat-card style="margin-top: 16px; padding: 0" *ngIf="storeData">
+                <mat-grid-list cols="3" rowHeight="100px" style="background: #ddd">
+                    <mat-grid-tile>
+                        <div>
+                            <p class="data-key">店铺</p>
+                            <p class="data-value">{{storeData.name}}</p>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <div>
+                            <p class="data-key">追踪码</p>
+                            <p class="data-value">{{storeData.tagtrack_code}}</p>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <div>
+                            <p class="data-key">账户余额</p>
+                            <p class="data-value">{{storeAccountData.balance || 0}}</p>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <div>
+                            <p class="data-key">订单数量</p>
+                            <p class="data-value">{{storeAccountData.balance || 0}}</p>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <div>
+                            <p class="data-key">累积返佣</p>
+                            <p class="data-value">{{storeAccountData.balance || 0}}</p>
+                        </div>
+                    </mat-grid-tile>
+                </mat-grid-list>
+
+            </mat-card>
         </div>
     </div>
 
