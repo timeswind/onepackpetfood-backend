@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpHeaders, HttpEvent } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
+
 @Injectable()
 export class AuthenticationService {
     constructor(private http: HttpClient, private router: Router) { }
@@ -49,6 +52,36 @@ export class AuthenticationService {
 
                 return data;
             }));
+    }
+
+    getCosUploadSigniture(pathname: string, method: string) {
+        return this.http.get<any>(`${environment.apiUrl}/protect/tencent_cloud_bucket_upload_signiture?pathname=${pathname}&method=${method}`)
+            .pipe(map(data => {
+                console.log('data', data)
+                // login successful if there's a jwt token in the response
+                return data;
+            }));
+    }
+
+    uploadFile(file: any, key: string, authdata: any): Observable<HttpEvent<{}>> {
+        var Bucket = 'xiaoquanju-1257075795';
+        var Region = 'ap-shanghai';
+        var protocol = location.protocol === 'https:' ? 'https:' : 'http:';
+        var prefix = protocol + '//' + Bucket + '.cos.' + Region + '.myqcloud.com/';
+        var auth = authdata.Authorization;
+        var XCosSecurityToken = authdata.XCosSecurityToken;
+        var url = prefix + key;
+
+
+        const req = new HttpRequest('PUT', url, file, {
+            reportProgress: true,
+            headers: new HttpHeaders({
+                'Authorization': auth,
+                'x-cos-security-token': XCosSecurityToken
+            })
+        });
+
+        return this.http.request(req);
     }
 
     logout() {

@@ -1,0 +1,124 @@
+<!-- name: "", description: "", images: [], category: "", subtitle: "", price: -1, price_sets: [], strike_price: -1, stock: -1,
+show_stock: false, bar_code: "" -->
+<h1 mat-dialog-title>发布商品</h1>
+<input hidden type="file" accept="image/*" #uploader (change)="prepareTokenToUploadImage($event)" />
+<form name="new_good_form" #f="ngForm" novalidate>
+    <div mat-dialog-content>
+        <div style="display: flex;flex-direction: column">
+            <mat-form-field appearance="outline" style="margin-bottom: 16px">
+                <mat-label>商品名</mat-label>
+                <input matInput placeholder="商品名" name="name" [(ngModel)]="newGoodData.name" #name="ngModel">
+                <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->
+                <mat-hint>商品的名称</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="margin-bottom: 16px">
+                <mat-label>分享描述</mat-label>
+                <textarea matInput placeholder="分享描述" name="description" [(ngModel)]="newGoodData.description" #description="ngModel"></textarea>
+                <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->
+                <mat-hint>微信分享卡片中的描述文字</mat-hint>
+            </mat-form-field>
+        </div>
+        <div style="display: flex;margin-top: 8px; margin-bottom: 16px">
+            <ul class="app-image-list">
+                <li *ngFor="let image of newGoodData.images; let i = index">
+                    <div class="rc-upload">
+                        <img [src]="IMAGE_CDN_URL + image + '?' + GOOD_IMAGE_SMALL_SQUARE_SUFFIX" />
+                        <a class="close-modal small" (click)="removeImage(i)">×</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="rc-upload" (click)="uploader.click()">
+                        <div>
+                            <a class="add-goods" href="javascript:;">+ 添加图片</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div style="display: flex;flex-direction: row; margin-bottom: 16px">
+            <mat-form-field style="flex: 1" appearance="outline">
+                <mat-label>商品主类目</mat-label>
+                <mat-select placeholder="一级目录" [(ngModel)]="rootCategorySelected" name="category" (selectionChange)="getSecondaryCategories(rootCategorySelected)">
+                    <mat-option *ngFor="let category of rootCategories" [value]="category._id">
+                        {{category.name}}
+                    </mat-option>
+                </mat-select>
+                <mat-hint>商品大类</mat-hint>
+            </mat-form-field>
+            <mat-form-field style="margin-left: 16px;flex:1" appearance="outline">
+                <mat-label>二级类目</mat-label>
+                <mat-select placeholder="二级目录" [(ngModel)]="newGoodData.category" name="category" #category="ngModel">
+                    <mat-option *ngFor="let category of childCategories" [value]="category._id">
+                        {{category.name}}
+                    </mat-option>
+                </mat-select>
+                <mat-hint>商品小类</mat-hint>
+            </mat-form-field>
+        </div>
+        <div style="display: flex;flex-direction: column; margin-bottom: 16px">
+            <mat-form-field appearance="outline">
+                <mat-label>商品卖点</mat-label>
+                <input matInput placeholder="商品卖点" name="subtitle" [(ngModel)]="newGoodData.subtitle" #subtitle="ngModel">
+                <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->
+                <mat-hint>商品名字下方的卖点描述文字</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>价格</mat-label>
+                <input matInput type="number" placeholder="价格" name="price" [(ngModel)]="newGoodData.price" #price="ngModel">
+                <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->
+                <mat-hint>商品原价</mat-hint>
+            </mat-form-field>
+        </div>
+
+        <p>价格组合（如：买二送一 80元 数量3）</p>
+        <div style="display: flex;flex-direction: row;" *ngFor="let price_set of newGoodData.price_sets;let i = index">
+            <mat-form-field appearance="outline" style="flex: 1">
+                <mat-label>名称</mat-label>
+                <input matInput placeholder="名称" [(ngModel)]="price_set.name" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="flex: 1;margin-left: 8px">
+                <mat-label>价格</mat-label>
+                <input matInput type="number" placeholder="价格" [(ngModel)]="price_set.price" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="flex: 1;margin-left: 8px">
+                <mat-label>数量</mat-label>
+                <input matInput type="number" placeholder="数量" [(ngModel)]="price_set.count" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+            <div style="display: flex;flex-direction: row;align-items: center;cursor: pointer;">
+                <mat-icon (click)="removePriceSet(i)" style="margin-bottom: 20px;">delete</mat-icon>
+            </div>
+        </div>
+        <div style="margin-bottom: 16px;">
+            <button mat-raised-button color="primary" (click)="addNewPriceSet()">+价格组合</button>
+        </div>
+        <div style="display: flex;flex-direction: column">
+            <mat-form-field appearance="outline" style="margin-bottom: 16px">
+                <mat-label>划线价</mat-label>
+                <input matInput type="number" placeholder="划线价" name="strike_price" [(ngModel)]="newGoodData.strike_price" #strikePrice="ngModel">
+                <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->
+                <mat-hint>原价下方的划线价</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="margin-bottom: 16px">
+                <mat-label>库存</mat-label>
+                <input matInput type="number" placeholder="划线价" name="stock" [(ngModel)]="newGoodData.stock" #stock="ngModel">
+                <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->
+                <mat-hint>商品存货数量</mat-hint>
+            </mat-form-field>
+
+            <mat-checkbox name="show_stock" [(ngModel)]="newGoodData.show_stock" #showStock="ngModel" style="margin-bottom: 16px">
+                显示库存
+            </mat-checkbox>
+            <mat-form-field appearance="outline" style="margin-bottom: 16px">
+                <mat-label>商品编码</mat-label>
+                <input matInput placeholder="商品编码" name="bar_code" [(ngModel)]="newGoodData.bar_code" #barCode="ngModel">
+                <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->
+                <mat-hint>例如：条形码</mat-hint>
+            </mat-form-field>
+        </div>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button (click)="onNoClick()">取消</button>
+        <button mat-button [mat-dialog-close]="{data: newGoodData}" cdkFocusInitial>添加</button>
+    </div>
+</form>

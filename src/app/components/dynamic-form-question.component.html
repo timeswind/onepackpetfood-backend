@@ -1,0 +1,51 @@
+<div [formGroup]="form" class="q-form">
+    <!-- <label [attr.for]="question.key">{{question.label}}</label> -->
+
+    <div [ngSwitch]="question.controlType">
+        <mat-form-field style="width: 100%" *ngSwitchCase="'textbox'" appearance="outline" style="margin-bottom: 16px">
+            <mat-label>{{question.label}}</mat-label>
+            <input matInput [placeholder]="question.label" [formControlName]="question.key" [id]="question.key" [type]="question.type">
+            <mat-error *ngIf="!isValid">
+                填写{{question.label}}
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" *ngSwitchCase="'dropdown'">
+            <mat-label>{{question.label}}</mat-label>
+            <mat-select [placeholder]="question.label" [id]="question.key" [formControlName]="question.key">
+                <mat-option *ngFor="let opt of question.options" [value]="opt.key">
+                    {{opt.value}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="!isValid">
+                填写{{question.label}}
+            </mat-error>
+        </mat-form-field>
+        <div *ngSwitchCase="'image_upload'">
+            <input hidden type="file" accept="image/*" #uploader (change)="prepareTokenToUploadImage($event)" />
+            <ul class="app-image-list">
+                <li *ngFor="let image of images; let i = index">
+                    <div class="rc-upload">
+                        <img [src]="IMAGE_CDN_URL + image + '?' + GOOD_IMAGE_SMALL_SQUARE_SUFFIX" />
+                        <a class="close-modal small" (click)="removeImage(i)">×</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="rc-upload" (click)="uploader.click()">
+                        <div>
+                            <a class="add-goods" href="javascript:;">+ 添加图片</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <!-- <input matInput [placeholder]="question.label" [formControlName]="question.key" [id]="question.key" [value]="'imageurl'"> -->
+        </div>
+
+    </div>
+</div>
+
+
+<!-- 
+      Copyright 2017-2018 Google Inc. All Rights Reserved.
+      Use of this source code is governed by an MIT-style license that
+      can be found in the LICENSE file at http://angular.io/license
+      -->

@@ -1,0 +1,9 @@
+<mat-nav-list style="display: flex;flex-direction: column;">
+    <div *ngFor="let keyValuePair of dropshippingInfoData | mapToIterable">
+        <p class="data-key">{{keyValuePair.key}}</p>
+        <p class="data-value">{{keyValuePair.val}}</p>
+    </div>
+
+    <!-- <button mat-raised-button color="primary" (click)="updateStoreInfo()" style="float: right">更新</button> -->
+
+</mat-nav-list>

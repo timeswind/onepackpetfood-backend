@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatFormFieldModule, MatInputModule, MatButtonModule } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatButtonModule, MatDialogModule, MatSelectModule
+,MatTableModule } from '@angular/material';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { CategoryManagementRoutingModule } from "./category_management.routing.module";
-import { CategoryManagementComponent } from './category_management.component';
+import { CategoryManagementComponent, AddRootCategoryDialog } from './category_management.component';
 
 @NgModule({
     declarations: [
-        CategoryManagementComponent
+        CategoryManagementComponent,
+        AddRootCategoryDialog
     ],
     imports: [
         CategoryManagementRoutingModule,
@@ -15,8 +17,13 @@ import { CategoryManagementComponent } from './category_management.component';
         FuseSharedModule,
         MatFormFieldModule,
         MatButtonModule,
-        MatInputModule
-    ]
+        MatInputModule,
+        MatDialogModule,
+        MatSelectModule,
+        MatTableModule
+    ],
+    entryComponents: [CategoryManagementComponent, AddRootCategoryDialog]
+
 })
 
 export class CategoryManagementModule {

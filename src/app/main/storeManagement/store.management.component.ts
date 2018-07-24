@@ -120,7 +120,6 @@ export class AddNewStoreDialog {
         private tagtraceApiService: TagtraceApiService,
         @Inject(MAT_DIALOG_DATA) public data: NewStoreInfoScheme
     ) {
-        console.log(this.data)
         this.tagtraceApiService.getAllInactiveTagrackOfStore()
             .pipe(first())
             .subscribe(

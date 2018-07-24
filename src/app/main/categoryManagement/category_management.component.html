@@ -1,8 +1,37 @@
 <div class="page-layout blank p-24" fusePerfectScrollbar>
     <div style="display: felx;flex-direction: column;margin-bottom: 16px">
         <h2>商品类型管理</h2>
-        <button mat-raised-button color="primary">增加一级类目</button>
+        <div>
+            <button mat-raised-button color="primary" (click)="openAddRootCategoryDialog()">增加一级类目</button>
+            <mat-form-field style="margin-left: 16px;">
+                <mat-select placeholder="一级目录" [(ngModel)]="rootCategorySelected" name="category" (selectionChange)="getSecondaryCategories(rootCategorySelected)">
+                    <mat-option *ngFor="let category of rootCategories" [value]="category._id">
+                        {{category.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div>
+            <button mat-raised-button color="primary" (click)="openAddCategoryDialog(rootCategorySelected)">增加二级类目</button>
+        </div>
+        <table mat-table [dataSource]="childCategories" class="mat-elevation-z8" style="width: 100%;margin-top: 16px;">
+            <input hidden type="file" accept="image/*" #uploader (change)="prepareTokenToUploadImage($event)" />
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> 名字 </th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+            <ng-container matColumnDef="image">
+                <th mat-header-cell *matHeaderCellDef> 图标 </th>
+                <td mat-cell *matCellDef="let element" (click)="tdClick(element)"><img [src]="IMAGE_CDN_URL + element.image + '?' + CATEGORY_ICON_RESIZE_SUFFIX"/></td>
+            </ng-container>
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> id </th>
+                <td mat-cell *matCellDef="let element"> {{element._id}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
     </div>
-    <div>{{rootCategories | json}}</div>
-    
+    <!-- <div>{{rootCategories | json}}</div> -->
+
 </div>

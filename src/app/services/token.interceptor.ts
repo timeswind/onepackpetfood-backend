@@ -18,18 +18,19 @@ export class TokenInterceptor implements HttpInterceptor {
     this.observeTokenChange()
   }
 
-  private observeTokenChange():void {
+  private observeTokenChange(): void {
     this.store.pipe(select(selectAuthToken)).subscribe(token => {
       this.token = token
     })
   }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    
-    request = request.clone({
-      setHeaders: {
-        Authorization: `Bearer ${this.token}`
-      }
-    });
+    if (!request.headers.has("Authorization")) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${this.token}`
+        }
+      });
+    }
     return next.handle(request);
   }
 }

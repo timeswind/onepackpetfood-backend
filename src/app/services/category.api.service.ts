@@ -14,9 +14,17 @@ export class CategoryApiService {
             }));
     }
 
+    updateCategory(data: any) {
+        console.log('newCategory api called')
+        return this.http.put<any>(`${environment.apiUrl}/internal/category`, data)
+            .pipe(map(result => {
+                return result;
+            }));
+    }
+
     getRootCategories(scope: string) {
         console.log('getRootCategories api called')
-        return this.http.get<any>(`${environment.apiUrl}/internal/categories?scope=${scope}`)
+        return this.http.get<any>(`${environment.apiUrl}/protect/categories?scope=${scope}`)
             .pipe(map(result => {
                 return result;
             }));
@@ -24,7 +32,7 @@ export class CategoryApiService {
     
     getChildCategories(parent: string) {
         console.log('getChildCategories api called')
-        return this.http.get<any>(`${environment.apiUrl}/internal/categories?parent=${parent}`)
+        return this.http.get<any>(`${environment.apiUrl}/protect/categories?parent=${parent}`)
             .pipe(map(result => {
                 return result;
             }));

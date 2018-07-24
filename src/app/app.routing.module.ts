@@ -32,6 +32,16 @@ const routes: Routes = [
         canLoad: [AdminAuthGuard]
     },
     {
+        path: "dropshipping_management",
+        loadChildren: 'app/main/dropshippingManagement/dropshipping_management.module#DropshippingManagementModule',
+        canLoad: [AdminAuthGuard]
+    },
+    {
+        path: "good_management",
+        loadChildren: 'app/main/goodManagement/good_management.module#GoodManagementModule',
+        canLoad: [AdminAuthGuard]
+    },
+    {
         path: "category_management",
         loadChildren: 'app/main/categoryManagement/category_management.module#CategoryManagementModule',
         canLoad: [AdminAuthGuard]

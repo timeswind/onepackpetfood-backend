@@ -1,0 +1,41 @@
+<div class="page-layout blank p-24" fusePerfectScrollbar>
+    <div style="display: felx;flex-direction: column;margin-bottom: 16px">
+        <h2>商品管理</h2>
+        <div>
+            <button mat-raised-button color="primary" (click)="openAddGoodDialog()">发布商品</button>
+        </div>
+        <table mat-table [dataSource]="allGoods" class="mat-elevation-z8" style="width: 100%;margin-top: 16px;">
+            <ng-container matColumnDef="images">
+                <th mat-header-cell *matHeaderCellDef> 图片 </th>
+                <td mat-cell *matCellDef="let element">
+                    <img *ngIf="element.images[0]" class="item_image" [src]="IMAGE_CDN_URL + element.images[0] + '?' + GOOD_IMAGE_SMALL_SQUARE_SUFFIX"
+                    />
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> 商品 </th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+            <ng-container matColumnDef="view_count">
+                <th mat-header-cell *matHeaderCellDef> 访问量 </th>
+                <td mat-cell *matCellDef="let element"> {{element.view_count}} </td>
+            </ng-container>
+            <ng-container matColumnDef="stock">
+                <th mat-header-cell *matHeaderCellDef> 库存 </th>
+                <td mat-cell *matCellDef="let element"> {{element.stock}} </td>
+            </ng-container>
+            <ng-container matColumnDef="total_sales_count">
+                <th mat-header-cell *matHeaderCellDef> 总销量 </th>
+                <td mat-cell *matCellDef="let element"> {{element.total_sales_count}} </td>
+            </ng-container>
+            <ng-container matColumnDef="created_at">
+                <th mat-header-cell *matHeaderCellDef> 创建时间 </th>
+                <td mat-cell *matCellDef="let element"> {{element.created_at | date: 'mediumDate'}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+    <!-- <div>{{rootCategories | json}}</div> -->
+
+</div>

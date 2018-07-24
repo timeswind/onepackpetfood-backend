@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>新增一件代发信息</h1>
+<div mat-dialog-content style="padding-bottom: 16px;">
+    <form (ngSubmit)="onSubmit()" [formGroup]="form" style="display: flex; flex-wrap: wrap; justify-content: space-between">
+
+        <div *ngFor="let question of questions" [ngClass]="{'form-row': true, 'form-row-100': question.controlType == 'image_upload'}">
+            <dynamic-question [question]="question" [form]="form"></dynamic-question>
+        </div>
+
+        <!-- <div class="form-row">
+            <button type="submit" [disabled]="!form.valid">Save</button>
+        </div> -->
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">取消</button>
+    <button mat-button [mat-dialog-close]="form.value" cdkFocusInitial>添加</button>
+</div>
