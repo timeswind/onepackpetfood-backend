@@ -7,8 +7,7 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { DynamicFormQuestionComponent } from '../../components/dynamic-form-question.component'
 import { DropshippingManagementComponent, AddNewDropshippingDialog, DropshippingInfoBottomSheet } from './dropshipping_management.component';
 import { AdminAuthGuard } from 'app/services/auth.guard.service';
-import {  MapToIterable } from '../../pipes/map-to-iterable.pipe'
-
+import { PipeModule } from 'app/pipes/pipi.module';
 const routes = [
     {
         path: '',
@@ -22,13 +21,13 @@ const routes = [
         DropshippingManagementComponent,
         AddNewDropshippingDialog,
         DropshippingInfoBottomSheet,
-        DynamicFormQuestionComponent,
-        MapToIterable
+        DynamicFormQuestionComponent
     ],
     imports: [
         RouterModule.forChild(routes),
         ReactiveFormsModule,
         FuseSharedModule,
+        PipeModule,
         MatTableModule,
         MatFormFieldModule,
         MatInputModule,

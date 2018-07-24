@@ -23,12 +23,11 @@ import {
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
 import { reducer as AuthReducer } from './reducers/auth.reducer';
-
 import { environment } from '../environments/environment'; // Angular CLI environemnt
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
     ],
     imports: [
         BrowserModule,

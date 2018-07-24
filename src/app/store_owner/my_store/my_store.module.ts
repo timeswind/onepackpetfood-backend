@@ -4,16 +4,17 @@ import { MatInputModule, MatButtonModule, MatCardModule, MatGridListModule} from
 import { FuseSharedModule } from '@fuse/shared.module';
 import { MyStoreRoutingModule } from "./my_store.routing.module";
 import { MyStoreComponent } from './my_store.component';
-import {  MapToIterable } from '../../pipes/map-to-iterable.pipe'
+import { PipeModule } from 'app/pipes/pipi.module';
+
 @NgModule({
     declarations: [
-        MyStoreComponent,
-        MapToIterable
+        MyStoreComponent
     ],
     imports: [
         MyStoreRoutingModule,
         TranslateModule,
         FuseSharedModule,
+        PipeModule,
         MatButtonModule,
         MatInputModule,
         MatCardModule,

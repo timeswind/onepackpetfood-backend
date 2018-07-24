@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
-import { HttpClient, HttpResponse, HttpEventType } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { first } from 'rxjs/operators';
 // import { locale as english } from './i18n/en';
 // import { locale as turkish } from './i18n/tr';
@@ -79,7 +79,7 @@ export class CategoryManagementComponent implements OnInit {
         });
     }
 
-    private getRootCategories(): void {
+    getRootCategories(): void {
         const scope = DEFAULT_ROOT_CATEGORY_SCOPE
         this.categoryApiService.getRootCategories(scope)
             .pipe(first())
@@ -96,7 +96,7 @@ export class CategoryManagementComponent implements OnInit {
                 });
     }
 
-    private getSecondaryCategories(parent: string): void {
+    getSecondaryCategories(parent: string): void {
         const scope = DEFAULT_ROOT_CATEGORY_SCOPE
         this.categoryApiService.getChildCategories(parent)
             .pipe(first())
@@ -203,6 +203,7 @@ export class CategoryManagementComponent implements OnInit {
     `
 })
 export class AddRootCategoryDialog {
+    name: string;
     scope = DEFAULT_ROOT_CATEGORY_SCOPE;
     constructor(
         public dialogRef: MatDialogRef<AddRootCategoryDialog>,

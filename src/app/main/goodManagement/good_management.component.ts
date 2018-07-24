@@ -162,7 +162,7 @@ export class AddGoodDialog {
         });
     }
 
-    private getRootCategories(): void {
+    getRootCategories(): void {
         const scope = DEFAULT_ROOT_CATEGORY_SCOPE
         this.categoryApiService.getRootCategories(scope)
             .pipe(first())
@@ -179,7 +179,7 @@ export class AddGoodDialog {
                 });
     }
 
-    private getSecondaryCategories(parent: string): void {
+    getSecondaryCategories(parent: string): void {
         const scope = DEFAULT_ROOT_CATEGORY_SCOPE
         this.categoryApiService.getChildCategories(parent)
             .pipe(first())
