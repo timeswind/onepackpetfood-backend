@@ -1,13 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-// import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import { AuthenticationService } from '../../services/authentication.service';
-// import { AppState } from '../../app.state';
 import { first } from 'rxjs/operators';
-// import { locale as english } from './i18n/en';
-// import { locale as turkish } from './i18n/tr';
-import { Store, select, createSelector } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { AppState } from '../../app.state';
 import { selectAuthIsLogin } from '../../reducers/auth.reducer';
 import * as AuthActions from '../../actions/auth.action'

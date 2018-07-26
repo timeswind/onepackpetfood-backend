@@ -1,8 +1,8 @@
-<h1 mat-dialog-title>新增一件代发信息</h1>
+<h1 mat-dialog-title>{{title}}</h1>
 <div mat-dialog-content style="padding-bottom: 16px;">
-    <form (ngSubmit)="onSubmit()" [formGroup]="form" style="display: flex; flex-wrap: wrap; justify-content: space-between">
+    <form [formGroup]="form" style="display: flex; flex-wrap: wrap">
 
-        <div *ngFor="let question of questions" [ngClass]="{'form-row': true, 'form-row-100': question.controlType == 'image_upload'}">
+        <div *ngFor="let question of questions" [ngClass]="{'form-row': true, 'form-row-100': question.controlType === 'image_upload' || question.controlType === 'array_set'}">
             <dynamic-question [question]="question" [form]="form"></dynamic-question>
         </div>
 
@@ -12,6 +12,6 @@
     </form>
 </div>
 <div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">取消</button>
+    <button mat-button (click)="onNoClick(form)">取消</button>
     <button mat-button [mat-dialog-close]="form.value" cdkFocusInitial>添加</button>
 </div>

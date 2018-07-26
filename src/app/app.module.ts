@@ -24,6 +24,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
 import { reducer as AuthReducer } from './reducers/auth.reducer';
 import { environment } from '../environments/environment'; // Angular CLI environemnt
+import { MatPaginatorIntl } from '@angular/material';
+import { MatPaginatorIntlChinese } from '../customize/MatPaginatorIntlChinese';
 
 @NgModule({
     declarations: [
@@ -60,8 +62,11 @@ import { environment } from '../environments/environment'; // Angular CLI enviro
         AppServiceModule
 
     ],
+    providers: [
+        { provide: MatPaginatorIntl, useClass: MatPaginatorIntlChinese }
+    ],
     bootstrap: [
         AppComponent
     ]
 })
-export class AppModule {}
+export class AppModule { }

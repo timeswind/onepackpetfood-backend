@@ -6,6 +6,16 @@ import { environment } from 'environments/environment';
 @Injectable()
 export class DropshippingApiService {
     constructor(private http: HttpClient) { }
+
+    delete(id: string) {
+        console.log('DropshippingApiService delete api called')
+        return this.http.delete<any>(`${environment.apiUrl}/internal/dropshipping?id=${id}`)
+            .pipe(map(result => {
+                return result;
+            }));
+    }
+    
+
     newDropshipping(data: any) {
         console.log('newDropshipping api called')
         return this.http.post<any>(`${environment.apiUrl}/internal/dropshipping`, data)

@@ -45,9 +45,18 @@ export class DropdownQuestion extends QuestionBase<string> {
 
 export class ImageUploadQuestion extends QuestionBase<string> {
     controlType = 'image_upload';
-    options: { key: string, value: string }[] = [];
 
     constructor(options: {} = {}) {
         super(options);
+    }
+}
+
+export class ArraySetQuestion extends QuestionBase<string> {
+    controlType = 'array_set';
+    array: QuestionBase<string>[] = [];
+
+    constructor(options: {} = {}) {
+        super(options);
+        this.array = options['array'] || [];
     }
 }

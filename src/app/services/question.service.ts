@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { QuestionBase, DropdownQuestion, TextboxQuestion, ImageUploadQuestion } from './question-base';
+import { QuestionBase, DropdownQuestion, TextboxQuestion, ImageUploadQuestion, ArraySetQuestion } from './question-base';
 
 @Injectable()
 export class QuestionService {
@@ -61,13 +61,44 @@ export class QuestionService {
                 required: true,
                 order: 7
             }),
+            new ArraySetQuestion({
+                key: 'price_sets',
+                label: '价格组合',
+                value: [],
+                array: [
+                    new TextboxQuestion({
+                        key: 'name',
+                        label: '组合名字',
+                        value: '',
+                        type: "text",
+                        required: true
+                    }),
+                    new TextboxQuestion({
+                        key: 'price',
+                        label: '价格',
+                        value: '',
+                        type: "number",
+                        required: true
+                    }),
+                    new TextboxQuestion({
+                        key: 'count',
+                        label: '数量',
+                        value: '',
+                        type: "number",
+                        required: true
+                    })
+                ],
+                type: "number",
+                required: true,
+                order: 8
+            }),
             new TextboxQuestion({
                 key: 'weight',
                 label: '重量',
                 value: '',
                 type: "text",
                 required: true,
-                order: 8
+                order: 9
             }),
             new TextboxQuestion({
                 key: 'average_shipping_time',
@@ -75,7 +106,7 @@ export class QuestionService {
                 value: '',
                 type: "text",
                 required: true,
-                order: 9
+                order: 10
             }),
             new TextboxQuestion({
                 key: 'shipping_cost',
@@ -83,7 +114,7 @@ export class QuestionService {
                 value: '',
                 type: "number",
                 required: true,
-                order: 10
+                order: 11
             }),
             new TextboxQuestion({
                 key: 'seller_credit',
@@ -91,14 +122,14 @@ export class QuestionService {
                 value: '',
                 type: "text",
                 required: true,
-                order: 10
+                order: 12
             }),
             new ImageUploadQuestion({
                 key: 'good_images',
                 label: '图片',
                 value: '',
                 required: false,
-                order: 11
+                order: 13
             })
             //   new DropdownQuestion({
             //     key: 'brave',

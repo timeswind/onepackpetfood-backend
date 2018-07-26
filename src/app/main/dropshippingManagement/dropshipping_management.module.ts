@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { MatTableModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDialogModule, MatRadioModule, MatListModule, MatBottomSheetModule, MatSelectModule } from '@angular/material';
-import { QRCodeModule } from 'angularx-qrcode';
+import {
+    MatTableModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDialogModule, MatRadioModule, MatListModule, MatBottomSheetModule,
+    MatSelectModule, MatPaginatorModule, MatSortModule, MatCheckboxModule, MatIconModule
+} from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { DynamicFormQuestionComponent } from '../../components/dynamic-form-question.component'
@@ -28,7 +30,9 @@ const routes = [
         ReactiveFormsModule,
         FuseSharedModule,
         PipeModule,
+        MatIconModule,
         MatTableModule,
+        MatCheckboxModule,
         MatFormFieldModule,
         MatInputModule,
         MatButtonModule,
@@ -36,11 +40,11 @@ const routes = [
         MatRadioModule,
         MatListModule,
         MatSelectModule,
+        MatSortModule,
         MatBottomSheetModule,
-        QRCodeModule
+        MatPaginatorModule
     ],
     entryComponents: [DropshippingManagementComponent, AddNewDropshippingDialog, DropshippingInfoBottomSheet, DynamicFormQuestionComponent]
 })
 
-export class DropshippingManagementModule {
-}
+export class DropshippingManagementModule { }

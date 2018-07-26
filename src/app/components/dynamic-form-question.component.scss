@@ -46,3 +46,25 @@
 .item_image {
     margin: 16px
 }
+
+.form-row {
+    margin: 4px;
+}
+
+.form-row-100 {
+    flex: 100%
+}
+
+.array_set {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border: 1px solid #ddd;
+    padding: 8px;
+    border-radius: 5px;
+    
+    h {
+        margin-top: 0;
+        width: 100%
+    }
+}

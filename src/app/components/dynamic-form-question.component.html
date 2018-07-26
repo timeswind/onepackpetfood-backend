@@ -2,7 +2,7 @@
     <!-- <label [attr.for]="question.key">{{question.label}}</label> -->
 
     <div [ngSwitch]="question.controlType">
-        <mat-form-field style="width: 100%" *ngSwitchCase="'textbox'" appearance="outline" style="margin-bottom: 16px">
+        <mat-form-field style="width: 100%" *ngSwitchCase="'textbox'" appearance="outline">
             <mat-label>{{question.label}}</mat-label>
             <input matInput [placeholder]="question.label" [formControlName]="question.key" [id]="question.key" [type]="question.type">
             <mat-error *ngIf="!isValid">
@@ -23,7 +23,7 @@
         <div *ngSwitchCase="'image_upload'">
             <input hidden type="file" accept="image/*" #uploader (change)="prepareTokenToUploadImage($event)" />
             <ul class="app-image-list">
-                <li *ngFor="let image of images; let i = index">
+                <li *ngFor="let image of form.get(question.key).value; let i = index">
                     <div class="rc-upload">
                         <img [src]="IMAGE_CDN_URL + image + '?' + GOOD_IMAGE_SMALL_SQUARE_SUFFIX" />
                         <a class="close-modal small" (click)="removeImage(i)">×</a>
@@ -38,6 +38,31 @@
                 </li>
             </ul>
             <!-- <input matInput [placeholder]="question.label" [formControlName]="question.key" [id]="question.key" [value]="'imageurl'"> -->
+        </div>
+
+        <div *ngSwitchCase="'array_set'" class="array_set">
+            <h2 style="width: 100%">{{question.label}}</h2>
+            <div [formArrayName]="question.key" *ngFor="let item of form.get(question.key).controls; let i = index;">
+                <div [formGroupName]="i">
+                    <mat-form-field *ngFor="let q of question.array" appearance="outline" style="margin-right: 4px">
+                        <mat-label>{{q.label}}</mat-label>
+                        <input matInput [placeholder]="q.label" [formControlName]="q.key" [id]="q.key" [type]="q.type">
+                        <mat-error *ngIf="!isValid">
+                            填写{{q.label}}
+                        </mat-error>
+                    </mat-form-field>
+                    <div style="display: inline-block;cursor: pointer;">
+                        <mat-icon (click)="removeFormArray(i)" style="margin-bottom: 20px;">delete</mat-icon>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div *ngFor="let q of question.array" [ngClass]="{'form-row': true, 'form-row-100': question.controlType == 'image_upload'}">
+                <dynamic-question [question]="q" [form]="subform"></dynamic-question>
+            </div> -->
+            <div style="width: 100%">
+                <button mat-raised-button color="primary" (click)="addItem()">加一组</button>
+            </div>
         </div>
 
     </div>
