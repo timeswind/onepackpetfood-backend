@@ -44,5 +44,21 @@
 }
 
 .item_image {
-    margin: 16px
+    margin: 16px;
+    width: fit-content;
+}
+
+.item_dropshipping_text {
+    color: #FF5722;
+    font-size: 13px;
+    border: 1px solid #FF5722;
+    padding: 2px 4px;
+    margin-bottom: 8px;
+}
+
+.price_set_wrapper {
+    border: 1px solid #ddd;
+    padding: 0 16px;
+    border-radius: 5px;
+    margin-bottom: 8px;
 }

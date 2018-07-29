@@ -47,11 +47,6 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log('ngOnInit')
-        this.store.pipe(select(selectAuthIsLogin)).subscribe(data => {
-            console.log(data)
-        })
-
         this.registerForm = this.formBuilder.group({
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required, Validators.minLength(6)]]

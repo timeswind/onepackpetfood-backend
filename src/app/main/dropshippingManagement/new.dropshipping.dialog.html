@@ -1,17 +1,15 @@
 <h1 mat-dialog-title>{{title}}</h1>
 <div mat-dialog-content style="padding-bottom: 16px;">
     <form [formGroup]="form" style="display: flex; flex-wrap: wrap">
-
-        <div *ngFor="let question of questions" [ngClass]="{'form-row': true, 'form-row-100': question.controlType === 'image_upload' || question.controlType === 'array_set'}">
+        <div *ngFor="let question of questions" [ngClass]="{'form-row': true, 'form-row-100': question.controlType === 'image_upload' || question.controlType === 'array_set' || question.textarea}">
             <dynamic-question [question]="question" [form]="form"></dynamic-question>
         </div>
-
         <!-- <div class="form-row">
             <button type="submit" [disabled]="!form.valid">Save</button>
         </div> -->
     </form>
 </div>
 <div mat-dialog-actions>
-    <button mat-button (click)="onNoClick(form)">取消</button>
-    <button mat-button [mat-dialog-close]="form.value" cdkFocusInitial>添加</button>
+    <button mat-button (click)="onNoClick(form.value)">取消</button>
+    <button mat-button cdkFocusInitial (click)="onSubmitClick()">{{proceed_button_text}}</button>
 </div>

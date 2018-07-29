@@ -1,10 +1,12 @@
 import { AuthData } from './models/auth_data.model';
-
+import { essentialData } from './models/essential_data.model';
 export interface AppState {
   readonly auth: AuthData;
+  readonly essentialData: essentialData;
 }
 
 export const selectAuth = (state: AppState) => state.auth;
+export const selectEssentialData = (state: AppState) => state.essentialData;
 
 // import { Injectable } from '@angular/core';
 // import { userInfo } from 'os';

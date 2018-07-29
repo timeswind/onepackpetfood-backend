@@ -2,25 +2,21 @@
     <!-- <label [attr.for]="question.key">{{question.label}}</label> -->
 
     <div [ngSwitch]="question.controlType">
-        <mat-form-field style="width: 100%" *ngSwitchCase="'textbox'" appearance="outline">
+        <mat-form-field *ngSwitchCase="'textbox'" appearance="outline">
             <mat-label>{{question.label}}</mat-label>
-            <input matInput [placeholder]="question.label" [formControlName]="question.key" [id]="question.key" [type]="question.type">
+            <textarea *ngIf="question.textarea === true" matInput [placeholder]="question.label" [formControlName]="question.key" [id]="question.key"></textarea>
+            <input *ngIf="question.textarea === false" matInput [placeholder]="question.label" [formControlName]="question.key" [id]="question.key"
+                [type]="question.type">
             <mat-error *ngIf="!isValid">
                 填写{{question.label}}
             </mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline" *ngSwitchCase="'dropdown'">
-            <mat-label>{{question.label}}</mat-label>
-            <mat-select [placeholder]="question.label" [id]="question.key" [formControlName]="question.key">
-                <mat-option *ngFor="let opt of question.options" [value]="opt.key">
-                    {{opt.value}}
-                </mat-option>
-            </mat-select>
-            <mat-error *ngIf="!isValid">
-                填写{{question.label}}
-            </mat-error>
-        </mat-form-field>
-        <div *ngSwitchCase="'image_upload'">
+        <div *ngSwitchCase="'dropdown'">
+                <dynamic-question-dropdown-input [form]="form" [question]="question" ></dynamic-question-dropdown-input>
+
+        </div>
+        <div *ngSwitchCase="'image_upload'" class="image_upload">
+            <h2 style="width: 100%">{{question.label}}</h2>
             <input hidden type="file" accept="image/*" #uploader (change)="prepareTokenToUploadImage($event)" />
             <ul class="app-image-list">
                 <li *ngFor="let image of form.get(question.key).value; let i = index">
@@ -37,14 +33,13 @@
                     </div>
                 </li>
             </ul>
-            <!-- <input matInput [placeholder]="question.label" [formControlName]="question.key" [id]="question.key" [value]="'imageurl'"> -->
         </div>
 
         <div *ngSwitchCase="'array_set'" class="array_set">
             <h2 style="width: 100%">{{question.label}}</h2>
             <div [formArrayName]="question.key" *ngFor="let item of form.get(question.key).controls; let i = index;">
                 <div [formGroupName]="i">
-                    <mat-form-field *ngFor="let q of question.array" appearance="outline" style="margin-right: 4px">
+                    <mat-form-field *ngFor="let q of question.array" appearance="outline" style="margin-right: 8px">
                         <mat-label>{{q.label}}</mat-label>
                         <input matInput [placeholder]="q.label" [formControlName]="q.key" [id]="q.key" [type]="q.type">
                         <mat-error *ngIf="!isValid">
@@ -52,7 +47,7 @@
                         </mat-error>
                     </mat-form-field>
                     <div style="display: inline-block;cursor: pointer;">
-                        <mat-icon (click)="removeFormArray(i)" style="margin-bottom: 20px;">delete</mat-icon>
+                        <mat-icon (click)="removeFormArray(i)" style="margin-bottom: 20px;">close</mat-icon>
                     </div>
                 </div>
             </div>
@@ -60,7 +55,7 @@
             <!-- <div *ngFor="let q of question.array" [ngClass]="{'form-row': true, 'form-row-100': question.controlType == 'image_upload'}">
                 <dynamic-question [question]="q" [form]="subform"></dynamic-question>
             </div> -->
-            <div style="width: 100%">
+            <div style="width: 100%;margin-bottom: 16px;">
                 <button mat-raised-button color="primary" (click)="addItem()">加一组</button>
             </div>
         </div>

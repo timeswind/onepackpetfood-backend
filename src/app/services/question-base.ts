@@ -26,19 +26,23 @@ export class QuestionBase<T> {
 export class TextboxQuestion extends QuestionBase<string> {
     controlType = 'textbox';
     type: string;
+    textarea: boolean = false;
 
     constructor(options: {} = {}) {
         super(options);
         this.type = options['type'] || '';
+        this.textarea = options['textarea'] || false;
     }
 }
 
 export class DropdownQuestion extends QuestionBase<string> {
     controlType = 'dropdown';
     options: { key: string, value: string }[] = [];
+    LOCAL_OPTIONS_KEY: string = ""
 
     constructor(options: {} = {}) {
         super(options);
+        this.LOCAL_OPTIONS_KEY = options['LOCAL_OPTIONS_KEY'] || "";
         this.options = options['options'] || [];
     }
 }

@@ -6,10 +6,13 @@
         </div>
         <table mat-table [dataSource]="allGoods" class="mat-elevation-z8" style="width: 100%;margin-top: 16px;">
             <ng-container matColumnDef="images">
-                <th mat-header-cell *matHeaderCellDef> 图片 </th>
+                <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let element">
-                    <img *ngIf="element.images[0]" class="item_image" [src]="IMAGE_CDN_URL + element.images[0] + '?' + GOOD_IMAGE_SMALL_SQUARE_SUFFIX"
-                    />
+                    <div style="display: flex;flex-direction: column;align-items: center;">
+                        <img *ngIf="element.images[0]" class="item_image" [src]="IMAGE_CDN_URL + element.images[0] + '?' + GOOD_IMAGE_SMALL_SQUARE_SUFFIX"
+                        />
+                        <span *ngIf="element.drop_shipping" class="item_dropshipping_text">一件代发</span>
+                    </div>
                 </td>
             </ng-container>
             <ng-container matColumnDef="name">
@@ -31,6 +34,22 @@
             <ng-container matColumnDef="created_at">
                 <th mat-header-cell *matHeaderCellDef> 创建时间 </th>
                 <td mat-cell *matCellDef="let element"> {{element.created_at | date: 'mediumDate'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="tools">
+                <th mat-header-cell *matHeaderCellDef> 操作 </th>
+                <td mat-cell *matCellDef="let element; let row">
+                    <div style="display: flex;flex-direction: row">
+                        <div style="display: flex;flex-direction: row;align-items: center;cursor: pointer; color: #2d323e; margin-right: 8px" (click)="deleteItem(element)">
+                            <mat-icon>delete</mat-icon>
+                        </div>
+                        <div style="display: flex;flex-direction: row;align-items: center;cursor: pointer; color: #2d323e; margin-right: 8px" (click)="openEditDialog(element)">
+                            <mat-icon>edit</mat-icon>
+                        </div>
+                        <div style="display: flex;flex-direction: row;align-items: center;cursor: pointer; color: #2d323e">
+                            <button mat-stroked-button color="primary" (click)="togglePublishState(element)">{{element.published ? '下架' : '上架'}}</button>
+                        </div>
+                    </div>
+                </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

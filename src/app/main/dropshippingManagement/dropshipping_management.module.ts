@@ -6,10 +6,11 @@ import {
 } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FuseSharedModule } from '@fuse/shared.module';
-import { DynamicFormQuestionComponent } from '../../components/dynamic-form-question.component'
+import { DynamicFormQuestionComponent } from '../../components/dynamic-form-question/dynamic-form-question.component'
 import { DropshippingManagementComponent, AddNewDropshippingDialog, DropshippingInfoBottomSheet } from './dropshipping_management.component';
 import { AdminAuthGuard } from 'app/services/auth.guard.service';
 import { PipeModule } from 'app/pipes/pipi.module';
+import { DynamicFormQuestionDropdownInputComponent } from 'app/components/dynamic-form-question/dropdown-input.component'
 const routes = [
     {
         path: '',
@@ -23,7 +24,8 @@ const routes = [
         DropshippingManagementComponent,
         AddNewDropshippingDialog,
         DropshippingInfoBottomSheet,
-        DynamicFormQuestionComponent
+        DynamicFormQuestionComponent,
+        DynamicFormQuestionDropdownInputComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -44,7 +46,7 @@ const routes = [
         MatBottomSheetModule,
         MatPaginatorModule
     ],
-    entryComponents: [DropshippingManagementComponent, AddNewDropshippingDialog, DropshippingInfoBottomSheet, DynamicFormQuestionComponent]
+    entryComponents: [DropshippingManagementComponent, AddNewDropshippingDialog, DropshippingInfoBottomSheet, DynamicFormQuestionComponent, DynamicFormQuestionDropdownInputComponent]
 })
 
 export class DropshippingManagementModule { }

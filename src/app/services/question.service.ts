@@ -46,14 +46,6 @@ export class QuestionService {
                 order: 5
             }),
             new TextboxQuestion({
-                key: 'good_description',
-                label: '商品描述',
-                value: '',
-                type: "text",
-                required: true,
-                order: 6
-            }),
-            new TextboxQuestion({
                 key: 'price',
                 label: '价格',
                 value: '',
@@ -126,22 +118,34 @@ export class QuestionService {
             }),
             new ImageUploadQuestion({
                 key: 'good_images',
-                label: '图片',
-                value: '',
+                label: '商品图片',
+                value: [],
                 required: false,
                 order: 13
-            })
-            //   new DropdownQuestion({
-            //     key: 'brave',
-            //     label: 'Bravery Rating',
-            //     options: [
-            //       {key: 'solid',  value: 'Solid'},
-            //       {key: 'great',  value: 'Great'},
-            //       {key: 'good',   value: 'Good'},
-            //       {key: 'unproven', value: 'Unproven'}
-            //     ],
-            //     order: 3
-            //   }),
+            }),
+            new TextboxQuestion({
+                key: 'good_description',
+                label: '商品描述',
+                value: '',
+                type: "text",
+                textarea: true,
+                required: true,
+                order: 14
+            }),
+            new DropdownQuestion({
+                key: 'root_category',
+                label: '主类目',
+                options: [],
+                LOCAL_OPTIONS_KEY: 'ROOT_CATEGORIES_OPTIONS',
+                order: 15
+            }),
+            new DropdownQuestion({
+                key: 'category',
+                label: '副类目',
+                options: [],
+                LOCAL_OPTIONS_KEY: 'CHILD_CATEGORIES_OPTIONS',
+                order: 16
+            }),
         ];
 
         return questions.sort((a, b) => a.order - b.order);

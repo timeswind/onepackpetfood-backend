@@ -23,6 +23,7 @@ import {
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
 import { reducer as AuthReducer } from './reducers/auth.reducer';
+import { reducer as EssentialDataReducer } from './reducers/essential_data.reducer';
 import { environment } from '../environments/environment'; // Angular CLI environemnt
 import { MatPaginatorIntl } from '@angular/material';
 import { MatPaginatorIntlChinese } from '../customize/MatPaginatorIntlChinese';
@@ -35,7 +36,8 @@ import { MatPaginatorIntlChinese } from '../customize/MatPaginatorIntlChinese';
         BrowserModule,
         StoreModule.forRoot({
             // router: routerReducer,
-            auth: AuthReducer
+            auth: AuthReducer,
+            essentialData: EssentialDataReducer
         }),
         StoreDevtoolsModule.instrument({
             maxAge: 25, // Retains last 25 states

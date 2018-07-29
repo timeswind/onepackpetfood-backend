@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { TokenInterceptor } from 'app/services/token.interceptor';
+// import { StorageService } from 'app/services/storage.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthGuard, AdminAuthGuard, AlreadyLoginAuthGuard } from './auth.guard.service'
 import { NotificationService } from 'app/services/notification.service';
@@ -15,6 +16,7 @@ import { DropshippingApiService } from 'app/services/dropshipping.api.service';
         AuthGuard,
         AdminAuthGuard,
         AlreadyLoginAuthGuard,
+        // StorageService,
         AuthenticationService,
         NotificationService,
         TagtraceApiService,

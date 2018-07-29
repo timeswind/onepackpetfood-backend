@@ -1,6 +1,4 @@
-<!-- name: "", description: "", images: [], category: "", subtitle: "", price: -1, price_sets: [], strike_price: -1, stock: -1,
-show_stock: false, bar_code: "" -->
-<h1 mat-dialog-title>发布商品</h1>
+<h1 mat-dialog-title>{{title}}</h1>
 <input hidden type="file" accept="image/*" #uploader (change)="prepareTokenToUploadImage($event)" />
 <form name="new_good_form" #f="ngForm" novalidate>
     <div mat-dialog-content>
@@ -39,9 +37,9 @@ show_stock: false, bar_code: "" -->
         <div style="display: flex;flex-direction: row; margin-bottom: 16px">
             <mat-form-field style="flex: 1" appearance="outline">
                 <mat-label>商品主类目</mat-label>
-                <mat-select placeholder="一级目录" [(ngModel)]="rootCategorySelected" name="category" (selectionChange)="getSecondaryCategories(rootCategorySelected)">
-                    <mat-option *ngFor="let category of rootCategories" [value]="category._id">
-                        {{category.name}}
+                <mat-select placeholder="一级目录" [(ngModel)]="newGoodData.root_category" name="root_category" #rootCategory="ngModel" (selectionChange)="rootCategoryOnSelect($event)">
+                    <mat-option *ngFor="let category of rootCategoryOptions" [value]="category.key">
+                        {{category.value}}
                     </mat-option>
                 </mat-select>
                 <mat-hint>商品大类</mat-hint>
@@ -49,8 +47,8 @@ show_stock: false, bar_code: "" -->
             <mat-form-field style="margin-left: 16px;flex:1" appearance="outline">
                 <mat-label>二级类目</mat-label>
                 <mat-select placeholder="二级目录" [(ngModel)]="newGoodData.category" name="category" #category="ngModel">
-                    <mat-option *ngFor="let category of childCategories" [value]="category._id">
-                        {{category.name}}
+                    <mat-option *ngFor="let category of childCategoryOptions" [value]="category.key">
+                        {{category.value}}
                     </mat-option>
                 </mat-select>
                 <mat-hint>商品小类</mat-hint>
@@ -70,27 +68,28 @@ show_stock: false, bar_code: "" -->
                 <mat-hint>商品原价</mat-hint>
             </mat-form-field>
         </div>
-
-        <p>价格组合（如：买二送一 80元 数量3）</p>
-        <div style="display: flex;flex-direction: row;" *ngFor="let price_set of newGoodData.price_sets;let i = index">
-            <mat-form-field appearance="outline" style="flex: 1">
-                <mat-label>名称</mat-label>
-                <input matInput placeholder="名称" [(ngModel)]="price_set.name" [ngModelOptions]="{standalone: true}">
-            </mat-form-field>
-            <mat-form-field appearance="outline" style="flex: 1;margin-left: 8px">
-                <mat-label>价格</mat-label>
-                <input matInput type="number" placeholder="价格" [(ngModel)]="price_set.price" [ngModelOptions]="{standalone: true}">
-            </mat-form-field>
-            <mat-form-field appearance="outline" style="flex: 1;margin-left: 8px">
-                <mat-label>数量</mat-label>
-                <input matInput type="number" placeholder="数量" [(ngModel)]="price_set.count" [ngModelOptions]="{standalone: true}">
-            </mat-form-field>
-            <div style="display: flex;flex-direction: row;align-items: center;cursor: pointer;">
-                <mat-icon (click)="removePriceSet(i)" style="margin-bottom: 20px;">delete</mat-icon>
+        <div class="price_set_wrapper">
+            <p>价格组合（如：买二送一 80元 数量3）</p>
+            <div style="display: flex;flex-direction: row;" *ngFor="let price_set of newGoodData.price_sets;let i = index">
+                <mat-form-field appearance="outline" style="flex: 1">
+                    <mat-label>名称</mat-label>
+                    <input matInput placeholder="名称" [(ngModel)]="price_set.name" [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="flex: 1;margin-left: 8px">
+                    <mat-label>价格</mat-label>
+                    <input matInput type="number" placeholder="价格" [(ngModel)]="price_set.price" [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="flex: 1;margin-left: 8px">
+                    <mat-label>数量</mat-label>
+                    <input matInput type="number" placeholder="数量" [(ngModel)]="price_set.count" [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+                <div style="display: flex;flex-direction: row;align-items: center;cursor: pointer;">
+                    <mat-icon (click)="removePriceSet(i)" style="margin-bottom: 20px;margin-left: 8px">close</mat-icon>
+                </div>
             </div>
-        </div>
-        <div style="margin-bottom: 16px;">
-            <button mat-raised-button color="primary" (click)="addNewPriceSet()">+价格组合</button>
+            <div style="margin-bottom: 16px;">
+                <button mat-raised-button color="primary" (click)="addNewPriceSet()">+价格组合</button>
+            </div>
         </div>
         <div style="display: flex;flex-direction: column">
             <mat-form-field appearance="outline" style="margin-bottom: 16px">
@@ -119,6 +118,6 @@ show_stock: false, bar_code: "" -->
     </div>
     <div mat-dialog-actions>
         <button mat-button (click)="onNoClick()">取消</button>
-        <button mat-button [mat-dialog-close]="{data: newGoodData}" cdkFocusInitial>添加</button>
+        <button mat-button [mat-dialog-close]="{data: newGoodData}" cdkFocusInitial>{{proceed_button_text}}</button>
     </div>
 </form>

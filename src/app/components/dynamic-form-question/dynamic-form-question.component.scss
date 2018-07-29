@@ -55,14 +55,15 @@
     flex: 100%
 }
 
-.array_set {
+.array_set, .image_upload {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 8px 8px 8px 16px;
     border-radius: 5px;
-    
+    margin-bottom: 16px;
+
     h {
         margin-top: 0;
         width: 100%

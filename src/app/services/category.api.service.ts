@@ -29,10 +29,18 @@ export class CategoryApiService {
                 return result;
             }));
     }
-    
+
     getChildCategories(parent: string) {
         console.log('getChildCategories api called')
         return this.http.get<any>(`${environment.apiUrl}/protect/categories?parent=${parent}`)
+            .pipe(map(result => {
+                return result;
+            }));
+    }
+
+    getCategoriesData(aggregate_scope: string) {
+        console.log('getCategoriesData api called')
+        return this.http.get<any>(`${environment.apiUrl}/protect/categories?aggregate_scope=${aggregate_scope}`)
             .pipe(map(result => {
                 return result;
             }));

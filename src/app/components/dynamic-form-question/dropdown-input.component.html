@@ -1,0 +1,11 @@
+<mat-form-field [formGroup]="form" appearance="outline">
+    <mat-label>{{question.label}}</mat-label>
+    <mat-select [placeholder]="question.label" [id]="question.key" [formControlName]="question.key">
+        <mat-option *ngFor="let opt of question.options" [value]="opt.key">
+            {{opt.value}}
+        </mat-option>
+    </mat-select>
+    <mat-error *ngIf="!isValid">
+        填写{{question.label}}
+    </mat-error>
+</mat-form-field>

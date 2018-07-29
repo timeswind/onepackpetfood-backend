@@ -1,10 +1,10 @@
-import { QuestionBase, ArraySetQuestion } from '../services/question-base';
+import { QuestionBase, ArraySetQuestion } from '../../services/question-base';
 import { Component, Input } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { AuthenticationService } from 'app/services/authentication.service'
 import { first } from 'rxjs/operators';
 import { HttpResponse } from '@angular/common/http';
-import { IMAGE_CDN_URL, GOOD_IMAGE_SMALL_SQUARE_SUFFIX } from '../constants';
+import { IMAGE_CDN_URL, GOOD_IMAGE_SMALL_SQUARE_SUFFIX } from '../../constants';
 
 @Component({
     selector: 'dynamic-question',
@@ -47,6 +47,12 @@ export class DynamicFormQuestionComponent {
         (this.form.get(this.question.key) as FormArray).removeAt(index)
     }
 
+    addImage(path): void {
+        var images = this.form.get(this.question.key).value || []
+        images.push(path)
+        this.form.controls[this.question.key].setValue(images)
+    }
+
     removeImage(index): void {
         var images = this.form.get(this.question.key).value
         images.splice(index, 1)
@@ -73,9 +79,8 @@ export class DynamicFormQuestionComponent {
         this.authenticationService.uploadFile(file, key, data).subscribe(event => {
             if (event instanceof HttpResponse) {
                 if (event.status === 200 || event.status === 206) {
-                    var images = this.form.get(this.question.key).value
-                    images.push('/' + key)
-                    this.form.controls[this.question.key].setValue(images)
+                    console.log('success')
+                    this.addImage('/' + key)
                 }
             }
         });

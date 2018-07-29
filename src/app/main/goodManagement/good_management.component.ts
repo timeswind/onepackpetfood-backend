@@ -7,37 +7,12 @@ import { CategoryApiService } from '../../services/category.api.service';
 import { AuthenticationService } from '../../services/authentication.service';
 import { IMAGE_CDN_URL, GOOD_IMAGE_SMALL_SQUARE_SUFFIX, DEFAULT_ROOT_CATEGORY_SCOPE } from '../../constants';
 import { NotificationService } from '../../services/notification.service';
-
-export interface goodTableDisplayScheme {
-    _id: string;
-    name: string;
-    view_count: number;
-    stock: number;
-    total_sales_count: number;
-    created_at: Date;
-    images: string[];
-}
-
-export interface priceSetScheme {
-    name: string;
-    price: number;
-    count: number
-}
-
-export interface goodDialogScheme {
-    name: string;
-    description: string;
-    images: string[];
-    category: string;
-    subtitle: string;
-    price: number;
-    price_sets: priceSetScheme[];
-    strike_price: number;
-    stock: number;
-    show_stock: boolean;
-    bar_code: string;
-}
-
+import { goodTableDisplayScheme, Good } from '../../models/good.model'
+import * as EssentialDataAction from '../../actions/essential_data.action'
+import { AppState } from '../../app.state';
+import { Store, select } from '@ngrx/store';
+import { selectEssentialDataRootCategories, selectEssentialDataChildCategoriesCollection } from '../../reducers/essential_data.reducer';
+import { Dropshipping } from '../../models/dropshipping.model';
 @Component({
     selector: 'good_management',
     templateUrl: './good_management.component.html',
@@ -47,31 +22,53 @@ export interface goodDialogScheme {
 export class GoodManagementComponent implements OnInit {
     IMAGE_CDN_URL = IMAGE_CDN_URL;
     GOOD_IMAGE_SMALL_SQUARE_SUFFIX = GOOD_IMAGE_SMALL_SQUARE_SUFFIX;
-    displayedColumns: string[] = ['images', 'name', 'view_count', 'stock', 'total_sales_count', 'created_at'];
+    displayedColumns: string[] = ['images', 'name', 'view_count', 'stock', 'total_sales_count', 'created_at', 'tools'];
     allGoods: goodTableDisplayScheme[];
     constructor(
         private goodApiService: GoodApiService,
-        private authenticationService: AuthenticationService,
+        private categoryApiService: CategoryApiService,
         public dialog: MatDialog,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        private store: Store<AppState>
     ) {
 
     }
 
     ngOnInit() {
         this.getAllGoods();
+        this.fetchCategoriesData();
+    }
+
+    fetchCategoriesData() {
+        this.categoryApiService.getCategoriesData(DEFAULT_ROOT_CATEGORY_SCOPE).pipe(first()).subscribe(data => {
+            this.store.dispatch(new EssentialDataAction.SetRootCategories({
+                rootCategories: data.rootCategories
+            }))
+            this.store.dispatch(new EssentialDataAction.SetChildCategoriesCollection({
+                childCategoriesCollection: data.childCategoriesCollection
+            }))
+        })
     }
 
     openAddGoodDialog(): void {
         const dialogRef = this.dialog.open(AddGoodDialog, {
-            width: "100%",
-            maxWidth: "none",
             data: {}
         });
 
         dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed', result);
+            // console.log('The dialog was closed 1', result);
             this.publishGood(result.data)
+        });
+    }
+
+    openEditDialog(data: any): void {
+        const dialogRef = this.dialog.open(AddGoodDialog, {
+            data: data
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed 2', result);
+            this.updateGood(result.data)
         });
     }
 
@@ -87,12 +84,50 @@ export class GoodManagementComponent implements OnInit {
             })
     }
 
+    updateGood(data: any) {
+        this.goodApiService.updateGood(data)
+            .pipe(first())
+            .subscribe(data => {
+                if (data.success) {
+                    this.notificationService.subj_notification.next("更新成功")
+                    this.getAllGoods();
+                }
+                console.log(data)
+            })
+    }
+
+    deleteItem(data: Dropshipping) {
+        const confirmDelete = window.confirm("确认删除？");
+        if (confirmDelete) {
+            this.goodApiService.delete(data._id)
+                .pipe(first())
+                .subscribe(data => {
+                    if (data.success) {
+                        this.notificationService.subj_notification.next("删除成功")
+                        this.getAllGoods();
+                    }
+                    console.log(data)
+                })
+        }
+    }
+
     getAllGoods() {
         this.goodApiService.getStoreGoods()
             .pipe(first())
             .subscribe(data => {
                 this.allGoods = data.goods
                 console.log(data)
+            })
+    }
+
+    togglePublishState(element: Good) {
+        this.goodApiService.togglePublished(element)
+            .pipe(first())
+            .subscribe(data => {
+                if (data.success) {
+                    this.getAllGoods();
+                    this.notificationService.subj_notification.next(`${element.published ? '下架' : '上架'}成功`)
+                }
             })
     }
 }
@@ -105,20 +140,22 @@ export class GoodManagementComponent implements OnInit {
 export class AddGoodDialog {
     IMAGE_CDN_URL = IMAGE_CDN_URL
     GOOD_IMAGE_SMALL_SQUARE_SUFFIX = GOOD_IMAGE_SMALL_SQUARE_SUFFIX
-    rootCategories: any;
-    rootCategorySelected: any = null;
-    childCategories: any;
-    newGoodData: goodDialogScheme;
+    newGoodData: Good;
+
+    rootCategoryOptions: any[];
+    childCategoryOptions: any[];
+    title: string;
+    proceed_button_text: string;
     constructor(
         private authenticationService: AuthenticationService,
-        private categoryApiService: CategoryApiService,
         public dialogRef: MatDialogRef<AddGoodDialog>,
+        private store: Store<AppState>,
         @Inject(MAT_DIALOG_DATA) public data: any) {
-        this.getRootCategories()
         this.newGoodData = {
             name: "",
             description: "",
             images: [],
+            root_category: "",
             category: "",
             subtitle: "",
             price: null,
@@ -126,8 +163,40 @@ export class AddGoodDialog {
             strike_price: null,
             stock: null,
             show_stock: false,
+            published: false,
             bar_code: ""
         }
+        // this.questions = this.questionService.getNewDropShippingFormQuestions();
+        // this.form = this.questionControlService.toFormGroup(this.questions, data);
+        if ('_id' in data) {
+            this.title = "编辑商品信息"
+            this.proceed_button_text = "更新"
+            this.newGoodData = data
+            this.rootCategoryOnSelect({ value: data.root_category })
+        } else {
+            this.title = "发布新商品信息"
+            this.proceed_button_text = "添加"
+        }
+    }
+
+    ngOnInit(): void {
+        //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+        //Add 'implements OnInit' to the class.
+        this.store.pipe(select(selectEssentialDataRootCategories)).subscribe(data => {
+            const mdata = data.map((category) => {
+                return { key: category._id, value: category.name }
+            })
+            this.rootCategoryOptions = mdata
+        })
+    }
+
+    rootCategoryOnSelect(event) {
+        this.store.pipe(select(selectEssentialDataChildCategoriesCollection)).subscribe(data => {
+            const mdata = data[event.value].map((category) => {
+                return { key: category._id, value: category.name }
+            })
+            this.childCategoryOptions = mdata
+        })
     }
 
     onNoClick(): void {
@@ -137,7 +206,7 @@ export class AddGoodDialog {
     prepareTokenToUploadImage(event): void {
         console.log(event.path[0].files[0])
         var file = event.path[0].files[0]
-        const key = 'good_image/' + new Date().getTime()
+        const key = 'good_image/' + new Date().getTime() + file.name
         const pathname = '/' + key
         this.authenticationService.getCosUploadSigniture(pathname, 'put')
             .pipe(first())
@@ -160,38 +229,6 @@ export class AddGoodDialog {
                 }
             }
         });
-    }
-
-    getRootCategories(): void {
-        const scope = DEFAULT_ROOT_CATEGORY_SCOPE
-        this.categoryApiService.getRootCategories(scope)
-            .pipe(first())
-            .subscribe(
-                data => {
-                    this.rootCategories = data.rootCategories
-                    if (this.rootCategorySelected === null && data.rootCategories.length > 0) {
-                        this.rootCategorySelected = data.rootCategories[0]["_id"]
-                        this.getSecondaryCategories(data.rootCategories[0]["_id"])
-                    }
-                },
-                error => {
-                    // this.loading = false;
-                });
-    }
-
-    getSecondaryCategories(parent: string): void {
-        const scope = DEFAULT_ROOT_CATEGORY_SCOPE
-        this.categoryApiService.getChildCategories(parent)
-            .pipe(first())
-            .subscribe(
-                data => {
-                    if (data.success) {
-                        this.childCategories = data.childCategories
-                    }
-                },
-                error => {
-                    // this.loading = false;
-                });
     }
 
     addNewPriceSet() {

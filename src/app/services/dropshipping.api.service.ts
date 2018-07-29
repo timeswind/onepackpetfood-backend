@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { environment } from 'environments/environment';
-
+import { Dropshipping } from '../models/dropshipping.model'
 @Injectable()
 export class DropshippingApiService {
     constructor(private http: HttpClient) { }
@@ -14,9 +14,9 @@ export class DropshippingApiService {
                 return result;
             }));
     }
-    
 
-    newDropshipping(data: any) {
+
+    newDropshipping(data: Dropshipping) {
         console.log('newDropshipping api called')
         return this.http.post<any>(`${environment.apiUrl}/internal/dropshipping`, data)
             .pipe(map(result => {
@@ -35,6 +35,14 @@ export class DropshippingApiService {
     getAllDropshippings() {
         console.log('getAllDropshippings api called')
         return this.http.get<any>(`${environment.apiUrl}/internal/dropshippings`)
+            .pipe(map(result => {
+                return result;
+            }));
+    }
+
+    addToGood(dropshipping_id: string) {
+        console.log('addToGood api called')
+        return this.http.post<any>(`${environment.apiUrl}/internal/dropshipping/add-to-good`, { id: dropshipping_id })
             .pipe(map(result => {
                 return result;
             }));
