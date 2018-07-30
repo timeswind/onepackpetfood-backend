@@ -20,6 +20,7 @@ export interface Dropshipping {
     good_images: string[];
     good_name: string;
     link: string;
+    cost_price: number;
     price: number;
     price_sets: { name: string, price: number, count: number }[];
     seller_credit: string;

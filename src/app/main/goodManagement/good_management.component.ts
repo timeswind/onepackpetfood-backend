@@ -159,6 +159,7 @@ export class AddGoodDialog {
             category: "",
             subtitle: "",
             price: null,
+            cost_price: null,
             price_sets: [],
             strike_price: null,
             stock: null,

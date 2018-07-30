@@ -87,7 +87,7 @@ export class DropshippingManagementComponent {
         });
 
         dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed 1', result);
+            // console.log('The dialog was closed 1', result);
             if (result) {
                 var newDropshipping: Dropshipping;
                 newDropshipping = result;
@@ -108,7 +108,7 @@ export class DropshippingManagementComponent {
         });
         console.log(data)
         dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed 2', result);
+            // console.log('The dialog was closed 2', result);
             if (result) {
                 console.log(result)
                 result["_id"] = data._id

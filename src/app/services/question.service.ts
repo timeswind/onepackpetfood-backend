@@ -53,6 +53,14 @@ export class QuestionService {
                 required: true,
                 order: 7
             }),
+            new TextboxQuestion({
+                key: 'cost_price',
+                label: '成本价',
+                value: '',
+                type: "number",
+                required: true,
+                order: 8
+            }),
             new ArraySetQuestion({
                 key: 'price_sets',
                 label: '价格组合',
@@ -82,7 +90,7 @@ export class QuestionService {
                 ],
                 type: "number",
                 required: true,
-                order: 8
+                order: 9
             }),
             new TextboxQuestion({
                 key: 'weight',
@@ -90,7 +98,7 @@ export class QuestionService {
                 value: '',
                 type: "text",
                 required: true,
-                order: 9
+                order: 10
             }),
             new TextboxQuestion({
                 key: 'average_shipping_time',
@@ -98,7 +106,7 @@ export class QuestionService {
                 value: '',
                 type: "text",
                 required: true,
-                order: 10
+                order: 11
             }),
             new TextboxQuestion({
                 key: 'shipping_cost',
@@ -106,7 +114,7 @@ export class QuestionService {
                 value: '',
                 type: "number",
                 required: true,
-                order: 11
+                order: 12
             }),
             new TextboxQuestion({
                 key: 'seller_credit',
@@ -114,14 +122,14 @@ export class QuestionService {
                 value: '',
                 type: "text",
                 required: true,
-                order: 12
+                order: 13
             }),
             new ImageUploadQuestion({
                 key: 'good_images',
                 label: '商品图片',
                 value: [],
                 required: false,
-                order: 13
+                order: 14
             }),
             new TextboxQuestion({
                 key: 'good_description',
@@ -130,21 +138,21 @@ export class QuestionService {
                 type: "text",
                 textarea: true,
                 required: true,
-                order: 14
+                order: 15
             }),
             new DropdownQuestion({
                 key: 'root_category',
                 label: '主类目',
                 options: [],
                 LOCAL_OPTIONS_KEY: 'ROOT_CATEGORIES_OPTIONS',
-                order: 15
+                order: 16
             }),
             new DropdownQuestion({
                 key: 'category',
                 label: '副类目',
                 options: [],
                 LOCAL_OPTIONS_KEY: 'CHILD_CATEGORIES_OPTIONS',
-                order: 16
+                order: 17
             }),
         ];
 

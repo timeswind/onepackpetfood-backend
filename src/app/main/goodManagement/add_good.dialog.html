@@ -99,6 +99,12 @@
                 <mat-hint>原价下方的划线价</mat-hint>
             </mat-form-field>
             <mat-form-field appearance="outline" style="margin-bottom: 16px">
+                <mat-label>成本价</mat-label>
+                <input matInput type="number" placeholder="成本价" name="cost_price" [(ngModel)]="newGoodData.cost_price" #costPrice="ngModel">
+                <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->
+                <mat-hint>方便记账统计</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="margin-bottom: 16px">
                 <mat-label>库存</mat-label>
                 <input matInput type="number" placeholder="划线价" name="stock" [(ngModel)]="newGoodData.stock" #stock="ngModel">
                 <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->

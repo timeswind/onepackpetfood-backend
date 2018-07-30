@@ -22,6 +22,7 @@ export interface Good {
     root_category: string;
     category: string;
     subtitle: string;
+    cost_price: number;
     price: number;
     price_sets: priceSetScheme[];
     strike_price: number;
