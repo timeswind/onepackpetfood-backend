@@ -18,6 +18,8 @@ export class DynamicFormQuestionDropdownInputComponent {
     hasLocalOptionsKey: boolean = false;
     constructor(private store: Store<AppState>) { }
 
+    get isValid() { return this.form.controls[this.question.key].valid; }
+
     ngOnInit(): void {
         if (this.question.LOCAL_OPTIONS_KEY) {
             this.hasLocalOptionsKey = true;
