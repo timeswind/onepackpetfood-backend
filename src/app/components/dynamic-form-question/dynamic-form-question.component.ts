@@ -17,7 +17,7 @@ export class DynamicFormQuestionComponent {
     GOOD_IMAGE_SMALL_SQUARE_SUFFIX = GOOD_IMAGE_SMALL_SQUARE_SUFFIX
     @Input() question: QuestionBase<any>;
     @Input() form: FormGroup;
-
+    selectedPriceSetIndex = 0;
     get isValid() { return this.form.controls[this.question.key].valid; }
 
     constructor(private authenticationService: AuthenticationService,
@@ -56,19 +56,21 @@ export class DynamicFormQuestionComponent {
             images.push(path)
             this.form.controls[this.question.key].setValue(images)
         } else {
-            const faControl = (<FormArray>this.form.controls[this.question.key]).at(0)
+            console.log(this.selectedPriceSetIndex)
+            const faControl = (<FormArray>this.form.controls[this.question.key]).at(this.selectedPriceSetIndex)
             faControl['controls'].image.setValue(path);
-            console.log(this.form.value)
         }
     }
 
-    removeImage(index?: number): void {
+    removeImage(index: number): void {
         if ((this.question as ImageUploadQuestion).multiple) {
             var images = this.form.get(this.question.key).value
             images.splice(index, 1)
             this.form.controls[this.question.key].setValue(images)
         } else {
-            this.form.controls[this.question.key].setValue("")
+            console.log(index)
+            const faControl = (<FormArray>this.form.controls[this.question.key]).at(index)
+            faControl['controls'].image.setValue(null);
         }
     }
 

@@ -1,6 +1,6 @@
 <div [formGroup]="form" class="q-form">
     <!-- <label [attr.for]="question.key">{{question.label}}</label> -->
-
+    <input hidden type="file" accept="image/*" #uploader (change)="prepareTokenToUploadImage($event)" />
     <div [ngSwitch]="question.controlType">
         <mat-form-field *ngSwitchCase="'textbox'" appearance="outline">
             <mat-label>{{question.label}}</mat-label>
@@ -17,7 +17,6 @@
         </div>
         <div *ngSwitchCase="'image_upload'" class="image_upload">
             <h2 style="width: 100%">{{question.label}}</h2>
-            <input hidden type="file" accept="image/*" #uploader (change)="prepareTokenToUploadImage($event)" />
             <ul class="app-image-list">
                 <li *ngFor="let image of form.get(question.key).value; let i = index">
                     <div class="rc-upload">
@@ -39,7 +38,7 @@
             <h2 style="width: 100%">{{question.label}}</h2>
             <div [formArrayName]="question.key" *ngFor="let item of form.get(question.key).controls; let i = index;">
                 <div [formGroupName]="i" style="display: flex;flex-direction: row">
-                    <div *ngFor="let q of question.array">
+                    <div *ngFor="let q of question.array; let i2 = index;">
                         <div [ngSwitch]="q.controlType">
                             <div *ngSwitchCase="'textbox'">
                                 <mat-form-field appearance="outline" style="margin-right: 8px">
@@ -51,7 +50,6 @@
                                 </mat-form-field>
                             </div>
                             <div *ngSwitchCase="'image_upload'">
-                                <input hidden type="file" accept="image/*" #uploader (change)="prepareTokenToUploadImage($event)" />
                                 <ul class="app-image-list">
                                     <li *ngIf="q.multiple === false && item.value.image">
                                         <div class="rc-upload">
@@ -60,15 +58,15 @@
                                         </div>
                                     </li>
                                     <div *ngIf="q.multiple">
-                                        <li *ngFor="let image of form.get(q.key).value; let i = index">
+                                        <li *ngFor="let image of form.get(q.key).value; let i3 = index">
                                             <div class="rc-upload">
                                                 <img [src]="IMAGE_CDN_URL + image + '?' + GOOD_IMAGE_SMALL_SQUARE_SUFFIX" />
-                                                <a class="close-modal small" (click)="removeImage(i)">×</a>
+                                                <a class="close-modal small" (click)="removeImage(i3)">×</a>
                                             </div>
                                         </li>
                                     </div>
                                     <li *ngIf="item.value.image === null">
-                                        <div class="rc-upload" (click)="uploader.click()">
+                                        <div class="rc-upload" (click)="uploader.click();selectedPriceSetIndex = i">
                                             <div>
                                                 <a class="add-goods" href="javascript:;">+ 添加图片</a>
                                             </div>
