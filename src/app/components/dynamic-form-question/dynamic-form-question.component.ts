@@ -1,4 +1,4 @@
-import { QuestionBase, ArraySetQuestion } from '../../services/question-base';
+import { QuestionBase, ArraySetQuestion, ImageUploadQuestion } from '../../services/question-base';
 import { Component, Input } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { AuthenticationService } from 'app/services/authentication.service'
@@ -41,6 +41,9 @@ export class DynamicFormQuestionComponent {
 
     addItem(): void {
         (this.form.get(this.question.key) as FormArray).push(this.createItem(this.question as ArraySetQuestion));
+        if (this.question.controlType === 'array_set') {
+            console.log(this.form.get(this.question.key)["controls"][0].value)
+        }
     }
 
     removeFormArray(index): void {
@@ -48,15 +51,25 @@ export class DynamicFormQuestionComponent {
     }
 
     addImage(path): void {
-        var images = this.form.get(this.question.key).value || []
-        images.push(path)
-        this.form.controls[this.question.key].setValue(images)
+        if ((this.question as ImageUploadQuestion).multiple) {
+            var images = this.form.get(this.question.key).value || []
+            images.push(path)
+            this.form.controls[this.question.key].setValue(images)
+        } else {
+            const faControl = (<FormArray>this.form.controls[this.question.key]).at(0)
+            faControl['controls'].image.setValue(path);
+            console.log(this.form.value)
+        }
     }
 
-    removeImage(index): void {
-        var images = this.form.get(this.question.key).value
-        images.splice(index, 1)
-        this.form.controls[this.question.key].setValue(images)
+    removeImage(index?: number): void {
+        if ((this.question as ImageUploadQuestion).multiple) {
+            var images = this.form.get(this.question.key).value
+            images.splice(index, 1)
+            this.form.controls[this.question.key].setValue(images)
+        } else {
+            this.form.controls[this.question.key].setValue("")
+        }
     }
 
     prepareTokenToUploadImage(event): void {

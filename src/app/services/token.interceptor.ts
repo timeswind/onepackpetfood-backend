@@ -3,13 +3,16 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
+  HttpErrorResponse,
+  HttpResponse
 } from '@angular/common/http';
-// import { AppState } from '../app.state';
+
 import { Observable } from 'rxjs/Observable';
 import { selectAuthToken } from '../reducers/auth.reducer';
-import { Store, select, createSelector } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { AppState } from '../app.state';
+import 'rxjs/add/operator/do';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -31,6 +34,18 @@ export class TokenInterceptor implements HttpInterceptor {
         }
       });
     }
-    return next.handle(request);
+
+    return next.handle(request).do((event: HttpEvent<any>) => {
+      if (event instanceof HttpResponse) {
+        // do stuff with response if you want
+      }
+    }, (err: any) => {
+      if (err instanceof HttpErrorResponse) {
+        if (err.status === 401) {
+          localStorage.clear()
+          location.reload()
+        }
+      }
+    });
   }
 }

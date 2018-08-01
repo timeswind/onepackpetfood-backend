@@ -1,5 +1,7 @@
 <h1 mat-dialog-title>{{title}}</h1>
 <input hidden type="file" accept="image/*" #uploader (change)="prepareTokenToUploadImage($event)" />
+<input hidden type="file" accept="image/*" #pricesetimageuploader (change)="prepareTokenToUploadImage($event)" />
+
 <form name="new_good_form" #f="ngForm" novalidate>
     <div mat-dialog-content>
         <div style="display: flex;flex-direction: column">
@@ -54,6 +56,25 @@
                 <mat-hint>商品小类</mat-hint>
             </mat-form-field>
         </div>
+        <div class="set_wrapper">
+            <p>商品规格 （如：犬种 泰迪）</p>
+            <div style="display: flex;flex-direction: row;" *ngFor="let specification of newGoodData.specifications;let i = index">
+                <mat-form-field appearance="outline" style="flex: 1">
+                    <mat-label>规格名</mat-label>
+                    <input matInput placeholder="规格名" [(ngModel)]="specification.key" [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="flex: 1;margin-left: 8px">
+                    <mat-label>规格值</mat-label>
+                    <input matInput placeholder="规格值" [(ngModel)]="specification.value" [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+                <div style="display: flex;flex-direction: row;align-items: center;cursor: pointer;">
+                    <mat-icon (click)="removeSpecification(i)" style="margin-bottom: 20px;margin-left: 8px">close</mat-icon>
+                </div>
+            </div>
+            <div style="margin-bottom: 16px;">
+                <button mat-raised-button color="primary" (click)="addNewSpecification()">添加规格项目</button>
+            </div>
+        </div>
         <div style="display: flex;flex-direction: column; margin-bottom: 16px">
             <mat-form-field appearance="outline">
                 <mat-label>商品卖点</mat-label>
@@ -68,9 +89,20 @@
                 <mat-hint>商品原价</mat-hint>
             </mat-form-field>
         </div>
-        <div class="price_set_wrapper">
+        <div class="set_wrapper">
             <p>价格组合（如：买二送一 80元 数量3）</p>
             <div style="display: flex;flex-direction: row;" *ngFor="let price_set of newGoodData.price_sets;let i = index">
+                <div class="rc-upload">
+                    <img [src]="IMAGE_CDN_URL + price_set.image + '?' + GOOD_IMAGE_SMALL_SQUARE_SUFFIX" />
+                    <a class="close-modal small">×</a>
+                </div>
+                <!-- <li *ngIf="!!price_set.image">
+                    <div class="rc-upload" (click)="pricesetimageuploader.click()">
+                        <div>
+                            <a class="add-goods" href="javascript:;">+ 添加图片</a>
+                        </div>
+                    </div>
+                </li> -->
                 <mat-form-field appearance="outline" style="flex: 1">
                     <mat-label>名称</mat-label>
                     <input matInput placeholder="名称" [(ngModel)]="price_set.name" [ngModelOptions]="{standalone: true}">

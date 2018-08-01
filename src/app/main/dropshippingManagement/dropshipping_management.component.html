@@ -33,7 +33,9 @@
             </ng-container>
             <ng-container matColumnDef="good_name">
                 <th mat-header-cell *matHeaderCellDef> 商品名 </th>
-                <td mat-cell *matCellDef="let element"> {{element.good_name}} </td>
+                <td mat-cell *matCellDef="let element">
+                    <p class="good_name">{{element.good_name}}</p>
+                </td>
             </ng-container>
             <ng-container matColumnDef="brand_name">
                 <th mat-header-cell *matHeaderCellDef> 品牌 </th>

@@ -66,6 +66,13 @@ export class QuestionService {
                 label: '价格组合',
                 value: [],
                 array: [
+                    new ImageUploadQuestion({
+                        key: 'image',
+                        label: '图片',
+                        value: '',
+                        multiple: false,
+                        required: false
+                    }),
                     new TextboxQuestion({
                         key: 'name',
                         label: '组合名字',
@@ -91,6 +98,30 @@ export class QuestionService {
                 type: "number",
                 required: true,
                 order: 9
+            }),
+            new ArraySetQuestion({
+                key: 'specifications',
+                label: '商品规格',
+                value: [],
+                array: [
+                    new TextboxQuestion({
+                        key: 'key',
+                        label: '组合名字',
+                        value: '',
+                        type: "text",
+                        required: false
+                    }),
+                    new TextboxQuestion({
+                        key: 'value',
+                        label: '价格',
+                        value: '',
+                        type: "text",
+                        required: false
+                    }),
+                ],
+                type: "number",
+                required: true,
+                order: 9.5
             }),
             new TextboxQuestion({
                 key: 'weight',

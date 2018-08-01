@@ -9,3 +9,10 @@
 .item_image {
     margin: 8px 0;
 }
+
+.good_name {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

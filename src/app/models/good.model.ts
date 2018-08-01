@@ -14,6 +14,16 @@ export interface priceSetScheme {
     count: number
 }
 
+export interface extraScheme {
+    key: string;
+    value: string;
+}
+
+export interface specificationScheme {
+    key: string;
+    value: string;
+}
+
 export interface Good {
     _id?: string;
     name: string;
@@ -30,4 +40,6 @@ export interface Good {
     show_stock: boolean;
     published: boolean;
     bar_code: string;
+    exrtas?: extraScheme[];
+    specifications?: specificationScheme[];
 }

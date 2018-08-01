@@ -8,7 +8,7 @@ import { NotificationService } from '../../services/notification.service';
 import { IMAGE_CDN_URL, GOOD_IMAGE_SMALL_SQUARE_SUFFIX, DEFAULT_ROOT_CATEGORY_SCOPE } from '../../constants';
 import { AppState } from '../../app.state';
 import * as EssentialDataAction from '../../actions/essential_data.action'
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
 import { FormGroup } from '@angular/forms';
 
@@ -117,6 +117,7 @@ export class DropshippingManagementComponent {
                     .subscribe(
                         data => {
                             this.fetchDropshippings();
+                            this.notificationService.subj_notification.next("更新成功")
                         });
             }
         });

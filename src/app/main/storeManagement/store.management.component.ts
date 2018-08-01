@@ -7,19 +7,6 @@ import { first, filter } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { NotificationService } from '../../services/notification.service';
 import { environment } from '../../../environments/environment';
-// export interface StoreInfoScheme {
-//     name: string;
-//     code: string;
-//     type: string;
-//     packageCode: string;
-//     active: boolean;
-//     active_date: Date;
-//     created_at: Date;
-//     _id: string;
-// }
-
-// import { locale as english } from './i18n/en';
-// import { locale as turkish } from './i18n/tr';
 
 @Component({
     selector: 'store_management',
@@ -28,17 +15,6 @@ import { environment } from '../../../environments/environment';
 })
 
 export class StoreManagementComponent {
-    /**
-     * Constructor
-     *
-     * @param {FuseTranslationLoaderService} _fuseTranslationLoaderService
-     */
-    // constructor(
-    //     private _fuseTranslationLoaderService: FuseTranslationLoaderService
-    // )
-    // {
-    //     this._fuseTranslationLoaderService.loadTranslations(english, turkish);
-    // }
     dataSource: any;
     constructor(public dialog: MatDialog,
         private tagTraceApiService: TagtraceApiService,
@@ -65,9 +41,6 @@ export class StoreManagementComponent {
                 data => {
                     console.log(data)
                     this.dataSource = new MatTableDataSource(data.records);
-                },
-                error => {
-                    // this.loading = false;
                 });
     }
     openDialog(): void {
@@ -86,9 +59,6 @@ export class StoreManagementComponent {
                         data => {
                             // console.log(data)
                             this.fetchStores();
-                        },
-                        error => {
-                            // this.loading = false;
                         });
             }
         });
@@ -126,9 +96,6 @@ export class AddNewStoreDialog {
                 data => {
                     console.log(data)
                     this.inactive_tagtracks = data.records
-                },
-                error => {
-                    // this.loading = false;
                 });
     }
 
@@ -165,11 +132,9 @@ export class StoreInfoBottomSheet {
                 data => {
                     console.log(data)
                     this.bottomSheetRef.dismiss();
-                    // this.fetchTagtracks();
                     this.notificationService.subj_notification.next("更新成功")
                 },
                 error => {
-                    // this.loading = false;
                     this.notificationService.subj_notification.next("更新失败")
                 });
     }

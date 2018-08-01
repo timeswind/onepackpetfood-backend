@@ -49,9 +49,12 @@ export class DropdownQuestion extends QuestionBase<string> {
 
 export class ImageUploadQuestion extends QuestionBase<string> {
     controlType = 'image_upload';
-
+    multiple: boolean = true
     constructor(options: {} = {}) {
         super(options);
+        if (options['multiple'] === false) {
+            this.multiple = false;
+        }
     }
 }
 

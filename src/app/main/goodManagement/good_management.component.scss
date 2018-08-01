@@ -56,7 +56,14 @@
     margin-bottom: 8px;
 }
 
-.price_set_wrapper {
+.good_name {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.set_wrapper {
     border: 1px solid #ddd;
     padding: 0 16px;
     border-radius: 5px;

@@ -7,7 +7,7 @@ import { CategoryApiService } from '../../services/category.api.service';
 import { AuthenticationService } from '../../services/authentication.service';
 import { IMAGE_CDN_URL, GOOD_IMAGE_SMALL_SQUARE_SUFFIX, DEFAULT_ROOT_CATEGORY_SCOPE } from '../../constants';
 import { NotificationService } from '../../services/notification.service';
-import { goodTableDisplayScheme, Good } from '../../models/good.model'
+import { goodTableDisplayScheme, Good, priceSetScheme, specificationScheme } from '../../models/good.model'
 import * as EssentialDataAction from '../../actions/essential_data.action'
 import { AppState } from '../../app.state';
 import { Store, select } from '@ngrx/store';
@@ -57,7 +57,9 @@ export class GoodManagementComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(result => {
             // console.log('The dialog was closed 1', result);
-            this.publishGood(result.data)
+            if (result && result.data) {
+                this.publishGood(result.data)
+            }
         });
     }
 
@@ -67,8 +69,10 @@ export class GoodManagementComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed 2', result);
-            this.updateGood(result.data)
+            // console.log('The dialog was closed 2', result);
+            if (result && result.data) {
+                this.updateGood(result.data)
+            }
         });
     }
 
@@ -84,7 +88,7 @@ export class GoodManagementComponent implements OnInit {
             })
     }
 
-    updateGood(data: any) {
+    updateGood(data: Good) {
         this.goodApiService.updateGood(data)
             .pipe(first())
             .subscribe(data => {
@@ -141,7 +145,6 @@ export class AddGoodDialog {
     IMAGE_CDN_URL = IMAGE_CDN_URL
     GOOD_IMAGE_SMALL_SQUARE_SUFFIX = GOOD_IMAGE_SMALL_SQUARE_SUFFIX
     newGoodData: Good;
-
     rootCategoryOptions: any[];
     childCategoryOptions: any[];
     title: string;
@@ -161,14 +164,13 @@ export class AddGoodDialog {
             price: null,
             cost_price: null,
             price_sets: [],
+            specifications: [],
             strike_price: null,
             stock: null,
             show_stock: false,
             published: false,
             bar_code: ""
         }
-        // this.questions = this.questionService.getNewDropShippingFormQuestions();
-        // this.form = this.questionControlService.toFormGroup(this.questions, data);
         if ('_id' in data) {
             this.title = "编辑商品信息"
             this.proceed_button_text = "更新"
@@ -181,8 +183,6 @@ export class AddGoodDialog {
     }
 
     ngOnInit(): void {
-        //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-        //Add 'implements OnInit' to the class.
         this.store.pipe(select(selectEssentialDataRootCategories)).subscribe(data => {
             const mdata = data.map((category) => {
                 return { key: category._id, value: category.name }
@@ -214,9 +214,6 @@ export class AddGoodDialog {
             .subscribe(
                 data => {
                     this.uploadFile(file, key, data.data)
-                },
-                error => {
-                    // this.loading = false;
                 });
 
     }
@@ -233,16 +230,33 @@ export class AddGoodDialog {
     }
 
     addNewPriceSet() {
-        this.newGoodData.price_sets.push({
+        var price_set: priceSetScheme;
+        price_set = {
             name: "",
             price: null,
             count: null
-        })
-        console.log(this.newGoodData.price_sets)
+        }
+        this.newGoodData.price_sets.push(price_set)
     }
 
     removePriceSet(index: number) {
         this.newGoodData.price_sets.splice(index, 1)
+    }
+
+    addNewSpecification() {
+        if (!('specification' in this.newGoodData)) {
+            this.newGoodData["specifications"] = []
+        }
+        var specification: specificationScheme;
+        specification = {
+            key: "",
+            value: "",
+        }
+        this.newGoodData.specifications.push(specification)
+    }
+
+    removeSpecification(index: number) {
+        this.newGoodData.specifications.splice(index, 1)
     }
 
     removeImage(index: number) {
