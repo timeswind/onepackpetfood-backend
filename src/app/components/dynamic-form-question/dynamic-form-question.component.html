@@ -1,6 +1,6 @@
 <div [formGroup]="form" class="q-form">
     <!-- <label [attr.for]="question.key">{{question.label}}</label> -->
-    <input hidden type="file" accept="image/*" #uploader (change)="prepareTokenToUploadImage($event)" />
+    <input hidden type="file" accept="image/*" #uploader (change)="prepareTokenToUploadImage($event)"/>
     <div [ngSwitch]="question.controlType">
         <mat-form-field *ngSwitchCase="'textbox'" appearance="outline">
             <mat-label>{{question.label}}</mat-label>
@@ -13,9 +13,8 @@
         </mat-form-field>
         <div *ngSwitchCase="'dropdown'">
             <dynamic-question-dropdown-input [form]="form" [question]="question"></dynamic-question-dropdown-input>
-
         </div>
-        <div *ngSwitchCase="'image_upload'" class="image_upload">
+        <div *ngSwitchCase="'image_upload'" class="image_upload" (drop)="onImageDrop($event)" (dragover)="onDragOver($event)">
             <h2 style="width: 100%">{{question.label}}</h2>
             <ul class="app-image-list">
                 <li *ngFor="let image of form.get(question.key).value; let i = index">
@@ -50,7 +49,7 @@
                                 </mat-form-field>
                             </div>
                             <div *ngSwitchCase="'image_upload'">
-                                <ul class="app-image-list">
+                                <ul class="app-image-list" (drop)="onImageDrop($event)" (dragover)="onDragOver($event)">
                                     <li *ngIf="q.multiple === false && item.value.image">
                                         <div class="rc-upload">
                                             <img [src]="IMAGE_CDN_URL + item.value.image + '?' + GOOD_IMAGE_SMALL_SQUARE_SUFFIX" />
@@ -81,13 +80,15 @@
                     </div>
                 </div>
             </div>
-
             <!-- <div *ngFor="let q of question.array" [ngClass]="{'form-row': true, 'form-row-100': question.controlType == 'image_upload'}">
                 <dynamic-question [question]="q" [form]="subform"></dynamic-question>
             </div> -->
             <div style="width: 100%;margin-bottom: 16px;">
                 <button mat-raised-button color="primary" (click)="addItem()">加一组</button>
             </div>
+        </div>
+        <div *ngSwitchCase="'richtext'" class="richtext">
+            <rich-text-editor [form]="form" [formKey]="question.key"></rich-text-editor>
         </div>
 
     </div>

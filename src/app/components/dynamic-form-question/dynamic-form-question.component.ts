@@ -2,6 +2,7 @@ import { QuestionBase, ArraySetQuestion, ImageUploadQuestion } from '../../servi
 import { Component, Input } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { AuthenticationService } from 'app/services/authentication.service'
+import { NotificationService } from 'app/services/notification.service'
 import { first } from 'rxjs/operators';
 import { HttpResponse } from '@angular/common/http';
 import { IMAGE_CDN_URL, GOOD_IMAGE_SMALL_SQUARE_SUFFIX } from '../../constants';
@@ -21,12 +22,37 @@ export class DynamicFormQuestionComponent {
     get isValid() { return this.form.controls[this.question.key].valid; }
 
     constructor(private authenticationService: AuthenticationService,
-        private formBuilder: FormBuilder) {
+        private formBuilder: FormBuilder,
+        private notificationService: NotificationService) {
 
     }
 
     ngOnInit(): void {
 
+    }
+
+    onImageDrop(event) {
+        event.preventDefault();
+        var file = event.dataTransfer.files[0]
+        if (file.type.indexOf('image') === -1) {
+            alert("您拖的不是图片！");
+            return false;
+        } else {
+            const key = 'dropshipping_image/' + new Date().getTime() + file.name
+            const pathname = '/' + key
+            this.notificationService.subj_notification.next("图片上传中")
+            this.authenticationService.getCosUploadSigniture(pathname, 'put')
+                .pipe(first())
+                .subscribe(
+                    data => {
+                        this.uploadFile(file, key, data.data)
+                    });
+        }
+    }
+
+    onDragOver(event) {
+        event.stopPropagation();
+        event.preventDefault();
     }
 
     createItem(questions): FormGroup {
@@ -74,27 +100,26 @@ export class DynamicFormQuestionComponent {
         }
     }
 
+
+
     prepareTokenToUploadImage(event): void {
         var file = event.path[0].files[0]
         const key = 'dropshipping_image/' + new Date().getTime() + file.name
         const pathname = '/' + key
+        this.notificationService.subj_notification.next("图片上传中")
         this.authenticationService.getCosUploadSigniture(pathname, 'put')
             .pipe(first())
             .subscribe(
                 data => {
                     this.uploadFile(file, key, data.data)
-                },
-                error => {
-                    // this.loading = false;
                 });
-
     }
 
     uploadFile(file: any, key: string, data: any) {
         this.authenticationService.uploadFile(file, key, data).subscribe(event => {
             if (event instanceof HttpResponse) {
                 if (event.status === 200 || event.status === 206) {
-                    console.log('success')
+                    this.notificationService.subj_notification.next("图片上传成功")
                     this.addImage('/' + key)
                 }
             }

@@ -1,16 +1,25 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
-    MatTableModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDialogModule, MatRadioModule, MatListModule, MatBottomSheetModule,
-    MatSelectModule, MatPaginatorModule, MatSortModule, MatCheckboxModule, MatIconModule
+    MatTableModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatBottomSheetModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatIconModule,
+    MatCheckboxModule,
+    MatListModule
 } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FuseSharedModule } from '@fuse/shared.module';
-import { DynamicFormQuestionComponent } from '../../components/dynamic-form-question/dynamic-form-question.component'
 import { DropshippingManagementComponent, AddNewDropshippingDialog, DropshippingInfoBottomSheet } from './dropshipping_management.component';
 import { AdminAuthGuard } from 'app/services/auth.guard.service';
 import { PipeModule } from 'app/pipes/pipi.module';
-import { DynamicFormQuestionDropdownInputComponent } from 'app/components/dynamic-form-question/dropdown-input.component'
+import { RichTextEdiorModule } from 'app/components/richTextEditor/rich-text-editor.module';
+import { DynamicFormQuestionModule } from 'app/components/dynamic-form-question/dynamic-form-question.module'
+
 const routes = [
     {
         path: '',
@@ -23,9 +32,7 @@ const routes = [
     declarations: [
         DropshippingManagementComponent,
         AddNewDropshippingDialog,
-        DropshippingInfoBottomSheet,
-        DynamicFormQuestionComponent,
-        DynamicFormQuestionDropdownInputComponent
+        DropshippingInfoBottomSheet
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -34,19 +41,18 @@ const routes = [
         PipeModule,
         MatIconModule,
         MatTableModule,
-        MatCheckboxModule,
-        MatFormFieldModule,
         MatInputModule,
         MatButtonModule,
         MatDialogModule,
-        MatRadioModule,
-        MatListModule,
-        MatSelectModule,
         MatSortModule,
+        MatCheckboxModule,
         MatBottomSheetModule,
-        MatPaginatorModule
+        MatPaginatorModule,
+        DynamicFormQuestionModule,
+        RichTextEdiorModule,
+        MatListModule
     ],
-    entryComponents: [DropshippingManagementComponent, AddNewDropshippingDialog, DropshippingInfoBottomSheet, DynamicFormQuestionComponent, DynamicFormQuestionDropdownInputComponent]
+    entryComponents: [DropshippingManagementComponent, AddNewDropshippingDialog, DropshippingInfoBottomSheet]
 })
 
 export class DropshippingManagementModule { }

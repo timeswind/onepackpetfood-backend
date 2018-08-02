@@ -5,6 +5,7 @@ import { MatFormFieldModule, MatInputModule, MatButtonModule, MatDialogModule, M
 ,MatTableModule, MatCheckboxModule, MatIconModule } from '@angular/material';
 import { GoodManagementRoutingModule } from "./good_management.routing.module";
 import { GoodManagementComponent, AddGoodDialog } from './good_management.component';
+import { RichTextEdiorModule } from 'app/components/richTextEditor/rich-text-editor.module'
 
 @NgModule({
     declarations: [
@@ -22,10 +23,10 @@ import { GoodManagementComponent, AddGoodDialog } from './good_management.compon
         MatTableModule,
         MatCheckboxModule,
         MatIconModule,
-        CommonModule
+        CommonModule,
+        RichTextEdiorModule
     ],
     entryComponents: [GoodManagementComponent, AddGoodDialog]
 })
 
-export class GoodManagementModule {
-}
+export class GoodManagementModule {}

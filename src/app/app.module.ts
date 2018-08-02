@@ -27,6 +27,7 @@ import { reducer as EssentialDataReducer } from './reducers/essential_data.reduc
 import { environment } from '../environments/environment'; // Angular CLI environemnt
 import { MatPaginatorIntl } from '@angular/material';
 import { MatPaginatorIntlChinese } from '../customize/MatPaginatorIntlChinese';
+import { QuillModule } from 'ngx-quill';
 
 @NgModule({
     declarations: [
@@ -61,8 +62,8 @@ import { MatPaginatorIntlChinese } from '../customize/MatPaginatorIntlChinese';
         // App modules
         LayoutModule,
         AppRoutingModule,
-        AppServiceModule
-
+        AppServiceModule,
+        QuillModule
     ],
     providers: [
         { provide: MatPaginatorIntl, useClass: MatPaginatorIntlChinese }

@@ -35,6 +35,14 @@ export class TextboxQuestion extends QuestionBase<string> {
     }
 }
 
+export class RichTextInputQuestion extends QuestionBase<string> {
+    controlType = 'richtext';
+
+    constructor(options: {} = {}) {
+        super(options);
+    }
+}
+
 export class DropdownQuestion extends QuestionBase<string> {
     controlType = 'dropdown';
     options: { key: string, value: string }[] = [];

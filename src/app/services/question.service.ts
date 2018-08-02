@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { QuestionBase, DropdownQuestion, TextboxQuestion, ImageUploadQuestion, ArraySetQuestion } from './question-base';
+import { QuestionBase, DropdownQuestion, TextboxQuestion, ImageUploadQuestion, ArraySetQuestion, RichTextInputQuestion } from './question-base';
 
 @Injectable()
 export class QuestionService {
@@ -101,7 +101,7 @@ export class QuestionService {
             }),
             new ArraySetQuestion({
                 key: 'specifications',
-                label: '商品规格',
+                label: '商品参数',
                 value: [],
                 array: [
                     new TextboxQuestion({
@@ -184,6 +184,11 @@ export class QuestionService {
                 options: [],
                 LOCAL_OPTIONS_KEY: 'CHILD_CATEGORIES_OPTIONS',
                 order: 17
+            }),
+            new RichTextInputQuestion({
+                key: 'detail',
+                label: '商品介绍',
+                order: 18
             }),
         ];
 

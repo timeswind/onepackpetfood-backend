@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { environment } from 'environments/environment';
-import { Good } from '../models/good.model';
+import { GoodInterface } from '../models/good.model';
 
 @Injectable()
 export class GoodApiService {
@@ -39,7 +39,7 @@ export class GoodApiService {
             }));
     }
 
-    togglePublished(data: Good) {
+    togglePublished(data: GoodInterface) {
         console.log('togglePublished api called')
         return this.http.post<any>(`${environment.apiUrl}/protect/good/toggle-published`, data)
             .pipe(map(result => {

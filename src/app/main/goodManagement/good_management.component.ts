@@ -5,14 +5,16 @@ import { first } from 'rxjs/operators';
 import { GoodApiService } from '../../services/good.api.service';
 import { CategoryApiService } from '../../services/category.api.service';
 import { AuthenticationService } from '../../services/authentication.service';
+
 import { IMAGE_CDN_URL, GOOD_IMAGE_SMALL_SQUARE_SUFFIX, DEFAULT_ROOT_CATEGORY_SCOPE } from '../../constants';
 import { NotificationService } from '../../services/notification.service';
-import { goodTableDisplayScheme, Good, priceSetScheme, specificationScheme } from '../../models/good.model'
+import { goodTableDisplayScheme, GoodInterface, Good, priceSetScheme, specificationScheme } from '../../models/good.model'
 import * as EssentialDataAction from '../../actions/essential_data.action'
 import { AppState } from '../../app.state';
 import { Store, select } from '@ngrx/store';
 import { selectEssentialDataRootCategories, selectEssentialDataChildCategoriesCollection } from '../../reducers/essential_data.reducer';
 import { Dropshipping } from '../../models/dropshipping.model';
+
 @Component({
     selector: 'good_management',
     templateUrl: './good_management.component.html',
@@ -69,9 +71,11 @@ export class GoodManagementComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe(result => {
-            // console.log('The dialog was closed 2', result);
+            console.log('The dialog was closed 2', result);
             if (result && result.data) {
-                this.updateGood(result.data)
+                const newGood: Good = new Good()
+                newGood.initFromData(result.data)
+                this.updateGood(newGood.toObject())
             }
         });
     }
@@ -88,7 +92,7 @@ export class GoodManagementComponent implements OnInit {
             })
     }
 
-    updateGood(data: Good) {
+    updateGood(data: GoodInterface) {
         this.goodApiService.updateGood(data)
             .pipe(first())
             .subscribe(data => {
@@ -124,7 +128,7 @@ export class GoodManagementComponent implements OnInit {
             })
     }
 
-    togglePublishState(element: Good) {
+    togglePublishState(element: GoodInterface) {
         this.goodApiService.togglePublished(element)
             .pipe(first())
             .subscribe(data => {
@@ -144,12 +148,14 @@ export class GoodManagementComponent implements OnInit {
 export class AddGoodDialog {
     IMAGE_CDN_URL = IMAGE_CDN_URL
     GOOD_IMAGE_SMALL_SQUARE_SUFFIX = GOOD_IMAGE_SMALL_SQUARE_SUFFIX
-    newGoodData: Good;
+    newGoodData: GoodInterface;
     rootCategoryOptions: any[];
     childCategoryOptions: any[];
     title: string;
     proceed_button_text: string;
+    selectedPriceSetIndex: number = -1;
     constructor(
+        private notificationService: NotificationService,
         private authenticationService: AuthenticationService,
         public dialogRef: MatDialogRef<AddGoodDialog>,
         private store: Store<AppState>,
@@ -204,11 +210,84 @@ export class AddGoodDialog {
         this.dialogRef.close();
     }
 
-    prepareTokenToUploadImage(event): void {
-        console.log(event.path[0].files[0])
+    onImageDrop(event) {
+        event.preventDefault();
+
+        if ('index' in event.target.dataset) {
+            var index = event.target.dataset.index
+            var file = event.dataTransfer.files[0]
+            if (file.type.indexOf('image') === -1) {
+                alert("您拖的不是图片！");
+                return false;
+            } else {
+                const key = 'dropshipping_image/' + new Date().getTime() + file.name
+                const pathname = '/' + key
+                this.notificationService.subj_notification.next("图片上传中")
+                this.authenticationService.getCosUploadSigniture(pathname, 'put')
+                    .pipe(first())
+                    .subscribe(
+                        data => {
+                            this.uploadFileForPriceSet(file, key, data.data, index)
+                        });
+            }
+        } else {
+            var file = event.dataTransfer.files[0]
+            if (file.type.indexOf('image') === -1) {
+                alert("您拖的不是图片！");
+                return false;
+            } else {
+                const key = 'dropshipping_image/' + new Date().getTime() + file.name
+                const pathname = '/' + key
+                this.notificationService.subj_notification.next("图片上传中")
+                this.authenticationService.getCosUploadSigniture(pathname, 'put')
+                    .pipe(first())
+                    .subscribe(
+                        data => {
+                            this.uploadFile(file, key, data.data)
+                        });
+            }
+        }
+    }
+
+    onDragOver(event) {
+        event.stopPropagation();
+        event.preventDefault();
+    }
+
+    prepareTokenToUploadImageForPriceSet(event): void {
         var file = event.path[0].files[0]
         const key = 'good_image/' + new Date().getTime() + file.name
         const pathname = '/' + key
+        this.notificationService.subj_notification.next("图片上传中")
+        this.authenticationService.getCosUploadSigniture(pathname, 'put')
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.uploadFileForPriceSet(file, key, data.data)
+                });
+
+    }
+
+    uploadFileForPriceSet(file: any, key: string, data: any, index?:number) {
+        this.authenticationService.uploadFile(file, key, data).subscribe(event => {
+            if (event instanceof HttpResponse) {
+                if (event.status === 200 || event.status === 206) {
+                    this.notificationService.subj_notification.next("图片上传成功")
+                    if (index) {
+                        this.newGoodData.price_sets[index]["image"] = '/' + key
+                    } else {
+                        this.newGoodData.price_sets[this.selectedPriceSetIndex]["image"] = '/' + key
+                    }
+                }
+            }
+        });
+    }
+
+    prepareTokenToUploadImage(event): void {
+        var file = event.path[0].files[0]
+        const key = 'good_image/' + new Date().getTime() + file.name
+        const pathname = '/' + key
+        this.notificationService.subj_notification.next("图片上传中")
         this.authenticationService.getCosUploadSigniture(pathname, 'put')
             .pipe(first())
             .subscribe(
@@ -218,11 +297,15 @@ export class AddGoodDialog {
 
     }
 
+    removeImageInPriceSet(index) {
+        this.newGoodData.price_sets[index]["image"] = null
+    }
+
     uploadFile(file: any, key: string, data: any) {
         this.authenticationService.uploadFile(file, key, data).subscribe(event => {
             if (event instanceof HttpResponse) {
-                console.log('File is completely uploaded!', event);
                 if (event.status === 200 || event.status === 206) {
+                    this.notificationService.subj_notification.next("图片上传成功")
                     this.newGoodData.images.push('/' + key)
                 }
             }
