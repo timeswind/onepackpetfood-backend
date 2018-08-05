@@ -14,6 +14,8 @@ import { AppState } from '../../app.state';
 import { Store, select } from '@ngrx/store';
 import { selectEssentialDataRootCategories, selectEssentialDataChildCategoriesCollection } from '../../reducers/essential_data.reducer';
 import { Dropshipping } from '../../models/dropshipping.model';
+import { environment } from '../../../environments/environment'
+
 
 @Component({
     selector: 'good_management',
@@ -22,6 +24,7 @@ import { Dropshipping } from '../../models/dropshipping.model';
 })
 
 export class GoodManagementComponent implements OnInit {
+    wechat_miniprogram_url_for_good = environment.wechat_miniprogram_url_for_good
     IMAGE_CDN_URL = IMAGE_CDN_URL;
     GOOD_IMAGE_SMALL_SQUARE_SUFFIX = GOOD_IMAGE_SMALL_SQUARE_SUFFIX;
     displayedColumns: string[] = ['images', 'name', 'view_count', 'stock', 'total_sales_count', 'created_at', 'tools'];

@@ -105,14 +105,14 @@ export class OrderDetailDialog {
 }
 
 
-@Component({
-    selector: 'order.info.bottom.sheet',
-    templateUrl: 'order.info.bottom.sheet.html',
-    styleUrls: ['./ordertrack.component.scss']
-})
-export class OrderInfoBottomSheet {
-    constructor(private notificationService: NotificationService,
-        private bottomSheetRef: MatBottomSheetRef<OrderInfoBottomSheet>,
-        @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) {
-    }
-}
+// @Component({
+//     selector: 'order.info.bottom.sheet',
+//     templateUrl: 'order.info.bottom.sheet.html',
+//     styleUrls: ['./ordertrack.component.scss']
+// })
+// export class OrderInfoBottomSheet {
+//     constructor(private notificationService: NotificationService,
+//         private bottomSheetRef: MatBottomSheetRef<OrderInfoBottomSheet>,
+//         @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) {
+//     }
+// }

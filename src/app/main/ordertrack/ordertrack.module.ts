@@ -5,7 +5,7 @@ import  { MatTableModule, MatFormFieldModule, MatInputModule, MatButtonModule, M
 import { CommonModule} from "@angular/common"
 import { FuseSharedModule } from '@fuse/shared.module';
 
-import { OrdertrackComponent, OrderDetailDialog, OrderInfoBottomSheet } from './ordertrack.component';
+import { OrdertrackComponent, OrderDetailDialog } from './ordertrack.component';
 import { AdminAuthGuard } from 'app/services/auth.guard.service';
 
 const routes = [
@@ -19,8 +19,7 @@ const routes = [
 @NgModule({
     declarations: [
         OrdertrackComponent,
-        OrderDetailDialog,
-        OrderInfoBottomSheet
+        OrderDetailDialog
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -37,7 +36,7 @@ const routes = [
         MatBottomSheetModule,
         CommonModule
     ],
-    entryComponents: [OrdertrackComponent, OrderDetailDialog, OrderInfoBottomSheet]
+    entryComponents: [OrdertrackComponent, OrderDetailDialog]
 })
 
 export class OrdertrackModule
