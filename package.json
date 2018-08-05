@@ -1,7 +1,7 @@
 {
-  "name": "fuse",
-  "version": "6.1.1",
-  "license": "https://themeforest.net/licenses/terms/regular",
+  "name": "xiaoquanju-backend-sites",
+  "version": "0.0.1",
+  "license": "no license",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open",
