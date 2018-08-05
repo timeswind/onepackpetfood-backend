@@ -6,6 +6,7 @@ import { MatFormFieldModule, MatInputModule, MatButtonModule, MatDialogModule, M
 import { GoodManagementRoutingModule } from "./good_management.routing.module";
 import { GoodManagementComponent, AddGoodDialog } from './good_management.component';
 import { RichTextEdiorModule } from 'app/components/richTextEditor/rich-text-editor.module'
+import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
     declarations: [
@@ -14,6 +15,7 @@ import { RichTextEdiorModule } from 'app/components/richTextEditor/rich-text-edi
     ],
     imports: [
         GoodManagementRoutingModule,
+        QRCodeModule,
         MatFormFieldModule,
         MatButtonModule,
         FormsModule,

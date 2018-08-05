@@ -19,7 +19,14 @@ export class OrderApiService {
         console.log('getAllOrders api called')
         return this.http.get<any>(`${environment.apiUrl}/internal/orders`)
         .pipe(map(result => {
-            console.log('result', result)
+            return result;
+        }));
+    }
+
+    getOrderDetail(order_id: string) {
+        console.log('getOrderDetail api called')
+        return this.http.get<any>(`${environment.apiUrl}/internal/order?id=${order_id}`)
+        .pipe(map(result => {
             return result;
         }));
     }

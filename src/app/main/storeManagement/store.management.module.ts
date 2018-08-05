@@ -25,9 +25,8 @@ const routes = [
     ],
     imports     : [
         RouterModule.forChild(routes),
-
         TranslateModule,
-
+        QRCodeModule,
         FuseSharedModule,
         MatTableModule,
         MatFormFieldModule,
@@ -37,8 +36,7 @@ const routes = [
         MatRadioModule,
         MatListModule,
         MatSelectModule,
-        MatBottomSheetModule,
-        QRCodeModule
+        MatBottomSheetModule
     ],
     entryComponents: [StoreManagementComponent, AddNewStoreDialog, StoreInfoBottomSheet]
 })

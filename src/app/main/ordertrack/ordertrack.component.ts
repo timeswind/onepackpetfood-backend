@@ -1,24 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MAT_BOTTOM_SHEET_DATA, MatTableDataSource, MatBottomSheet, MatBottomSheetRef } from '@angular/material';
 import { Router, NavigationEnd } from '@angular/router';
-import { TagtraceApiService } from '../../services/tagtrace.api.service';
-// import { StoreApiService } from '../../services/store.api.service';
 import { first, filter } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { NotificationService } from '../../services/notification.service';
-// export interface StoreInfoScheme {
-//     name: string;
-//     code: string;
-//     type: string;
-//     packageCode: string;
-//     active: boolean;
-//     active_date: Date;
-//     created_at: Date;
-//     _id: string;
-// }
+import { OrderApiService } from '../../services/order.api.service';
 
-// import { locale as english } from './i18n/en';
-// import { locale as turkish } from './i18n/tr';
 
 @Component({
     selector: 'ordertrack',
@@ -27,50 +14,35 @@ import { NotificationService } from '../../services/notification.service';
 })
 
 export class OrdertrackComponent {
-    /**
-     * Constructor
-     *
-     * @param {FuseTranslationLoaderService} _fuseTranslationLoaderService
-     */
-    // constructor(
-    //     private _fuseTranslationLoaderService: FuseTranslationLoaderService
-    // )
-    // {
-    //     this._fuseTranslationLoaderService.loadTranslations(english, turkish);
-    // }
     dataSource: any;
     constructor(public dialog: MatDialog,
-        private tagTraceApiService: TagtraceApiService,
+        private orderApiService: OrderApiService,
         private router: Router,
         private bottomSheet: MatBottomSheet) {
     }
 
     ngOnInit(): void {
-        this.fetchStores();
+        this.fetchOrders();
     }
     applyFilter(filterValue: string) {
         this.dataSource.filter = filterValue.trim().toLowerCase();
     }
 
-    rowClick(row: any): void {
-        this.bottomSheet.open(OrderInfoBottomSheet, { data: row });
-    }
-
-    fetchStores(): void {
-        // this.storeApiService.getAllStore()
-        //     .pipe(first())
-        //     .subscribe(
-        //         data => {
-        //             console.log(data)
-        //             this.dataSource = new MatTableDataSource(data.records);
-        //         },
-        //         error => {
-        //             // this.loading = false;
-        //         });
+    fetchOrders(): void {
+        this.orderApiService.getAllOrders()
+            .pipe(first())
+            .subscribe(
+                data => {
+                    console.log(data)
+                    this.dataSource = new MatTableDataSource(data.orders);
+                },
+                error => {
+                    // this.loading = false;
+                });
     }
     openDialog(): void {
-        const dialogRef = this.dialog.open(AddNewOrderDialog, {
-            width: '250px',
+        const dialogRef = this.dialog.open(OrderDetailDialog, {
+            width: '800px',
             data: {}
         });
 
@@ -92,42 +64,39 @@ export class OrdertrackComponent {
         });
     }
 
-    displayedColumns: string[] = ['_id', 'item_name', 'count', 'address'];
-}
+    rowClick(row: any): void {
+        const dialogRef = this.dialog.open(OrderDetailDialog, {
+            width: '250px',
+            data: {
+                order_id: row._id
+            }
+        });
+    }
 
-export interface NewOrderInfoScheme {
-    _id: String;
-    item_name: String;
-    count: Number;
-    address: String;
+    displayedColumns: string[] = ['sku', 'status', 'address', 'total_fee'];
 }
-
 
 @Component({
-    selector: 'new.order.dialog',
-    templateUrl: 'new.order.dialog.html',
+    selector: 'order-detail-dialog',
+    templateUrl: 'order-detail-dialog.html',
     styleUrls: ['./ordertrack.component.scss']
 })
-export class AddNewOrderDialog {
-    inactive_tagtracks: any;
-    newStore = new FormControl();
+export class OrderDetailDialog {
+    order: any;
     constructor(
-        public dialogRef: MatDialogRef<AddNewOrderDialog>,
-        private tagtraceApiService: TagtraceApiService,
-        @Inject(MAT_DIALOG_DATA) public data: NewOrderInfoScheme
+        public dialogRef: MatDialogRef<OrderDetailDialog>,
+        private orderApiService: OrderApiService,
+        @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         console.log(this.data)
-        this.tagtraceApiService.getAllInactiveTagrackOfStore()
+        this.orderApiService.getOrderDetail(this.data.order_id)
             .pipe(first())
             .subscribe(
                 data => {
-                    console.log(data)
-                    this.inactive_tagtracks = data.records
-                },
-                error => {
-                    // this.loading = false;
+                    this.order = data
                 });
     }
+
 
     onNoClick(): void {
         this.dialogRef.close();
@@ -142,26 +111,8 @@ export class AddNewOrderDialog {
     styleUrls: ['./ordertrack.component.scss']
 })
 export class OrderInfoBottomSheet {
-    storeInfoData: any;
     constructor(private notificationService: NotificationService,
         private bottomSheetRef: MatBottomSheetRef<OrderInfoBottomSheet>,
         @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) {
-        this.storeInfoData = data
-    }
-
-    updateStoreInfo(): void {
-        // this.storeApiService.updateStoreInfo(this.storeInfoData)
-        //     .pipe(first())
-        //     .subscribe(
-        //         data => {
-        //             console.log(data)
-        //             this.bottomSheetRef.dismiss();
-        //             // this.fetchTagtracks();
-        //             this.notificationService.subj_notification.next("更新成功")
-        //         },
-        //         error => {
-        //             // this.loading = false;
-        //             this.notificationService.subj_notification.next("更新失败")
-        //         });
     }
 }

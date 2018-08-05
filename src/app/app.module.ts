@@ -8,6 +8,7 @@ import 'hammerjs';
 import { FuseModule } from '@fuse/fuse.module';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
+import { QRCodeModule } from 'angularx-qrcode';
 
 import { fuseConfig } from 'app/fuse-config';
 
@@ -60,6 +61,7 @@ import { QuillModule } from 'ngx-quill';
         FuseThemeOptionsModule,
 
         // App modules
+        QRCodeModule,
         LayoutModule,
         AppRoutingModule,
         AppServiceModule,

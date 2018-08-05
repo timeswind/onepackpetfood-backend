@@ -50,9 +50,13 @@
                         <div style="display: flex;flex-direction: row;align-items: center;cursor: pointer; color: #2d323e">
                             <button mat-stroked-button color="primary" (click)="togglePublishState(element)">{{element.published ? '下架' : '上架'}}</button>
                         </div>
+                        <div class="tooltip">Hover over me
+                            <qrcode class="tooltiptext" [qrdata]="'qrcode_data'" [size]="100" [level]="'M'" style="width: 100px;align-self:center"></qrcode>
+                        </div>
                     </div>
                 </td>
             </ng-container>
+
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>

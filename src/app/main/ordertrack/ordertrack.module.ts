@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import  { MatTableModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDialogModule, MatRadioModule, MatListModule, MatBottomSheetModule,MatSelectModule} from '@angular/material';
-
+import { CommonModule} from "@angular/common"
 import { FuseSharedModule } from '@fuse/shared.module';
 
-import { OrdertrackComponent, AddNewOrderDialog, OrderInfoBottomSheet } from './ordertrack.component';
+import { OrdertrackComponent, OrderDetailDialog, OrderInfoBottomSheet } from './ordertrack.component';
 import { AdminAuthGuard } from 'app/services/auth.guard.service';
 
 const routes = [
@@ -19,14 +19,12 @@ const routes = [
 @NgModule({
     declarations: [
         OrdertrackComponent,
-        AddNewOrderDialog,
+        OrderDetailDialog,
         OrderInfoBottomSheet
     ],
     imports     : [
         RouterModule.forChild(routes),
-
         TranslateModule,
-
         FuseSharedModule,
         MatTableModule,
         MatFormFieldModule,
@@ -36,9 +34,10 @@ const routes = [
         MatRadioModule,
         MatListModule,
         MatSelectModule,
-        MatBottomSheetModule
+        MatBottomSheetModule,
+        CommonModule
     ],
-    entryComponents: [OrdertrackComponent, AddNewOrderDialog, OrderInfoBottomSheet]
+    entryComponents: [OrdertrackComponent, OrderDetailDialog, OrderInfoBottomSheet]
 })
 
 export class OrdertrackModule
