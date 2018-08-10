@@ -7,7 +7,8 @@ import { Store, select } from '@ngrx/store';
 import { AppState } from '../../app.state';
 import { selectAuthIsLogin } from '../../reducers/auth.reducer';
 import * as AuthActions from '../../actions/auth.action'
-
+import { WindowRef } from 'app/services/native-window.service';
+import { environment } from 'environments/environment';
 @Component({
     selector: 'login',
     templateUrl: './login.component.html',
@@ -18,7 +19,9 @@ export class LoginComponent implements OnInit {
     registerForm: FormGroup;
     submitted = false;
     token: any;
+    mode:string = 'ww_login';
     constructor(
+        private winRef: WindowRef,
         private formBuilder: FormBuilder,
         private router: Router,
         private route: ActivatedRoute,
@@ -26,8 +29,22 @@ export class LoginComponent implements OnInit {
         private store: Store<AppState>
     ) {
         this.route.queryParams.subscribe(params => {
-            //处理微信登入
-            if (!!params["name"] && !!params["role"] && !!params["avatar"] && !!params["token"]) {
+            if ('type' in params && params.type === 'ww_login') {
+                localStorage.setItem('currentUser', JSON.stringify({ token: params["token"], avatar: params["avatar"], name: params["name"], role: params["role"]}));
+                let data = {
+                    name: params["name"],
+                    email: "",
+                    role: parseInt(params["role"]) || 0,
+                    avatar: params["avatar"] || "",
+                    token: params["token"],
+                    isLogin: true,
+                    redirectUrl: ""
+                }
+                if (params["state"]) {
+                    localStorage.setItem("wx_state", params["state"])
+                }
+                this.login(data)
+            } else if ('name' in params && 'role' in params && 'token' in params) {
                 localStorage.setItem('currentUser', JSON.stringify({ token: params["token"], avatar: params["avatar"], name: params["name"], role: params["role"] }));
                 let data = {
                     name: params["name"],
@@ -42,6 +59,8 @@ export class LoginComponent implements OnInit {
                     localStorage.setItem("wx_state", params["state"])
                 }
                 this.login(data)
+            } else {
+
             }
         });
     }
@@ -50,6 +69,26 @@ export class LoginComponent implements OnInit {
         this.registerForm = this.formBuilder.group({
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required, Validators.minLength(6)]]
+        });
+        this.prepareWwLoginQrCode()
+    }
+
+    switchMode() {
+        if (this.mode === 'email') {
+            this.mode = 'ww_login'
+        } else {
+            this.mode = 'email'
+        }
+    }
+
+    prepareWwLoginQrCode() {
+        this.winRef.nativeWindow.WwLogin({
+            "id": "ww_login_qrcode",
+            "appid": "ww887fc00c230ccefc",
+            "agentid": "1000008",
+            "redirect_uri": `${environment.apiUrlPrefix}/public/wechat_work/login_redirect`,
+            "state": "",
+            "href": "",
         });
     }
 

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { TokenInterceptor } from 'app/services/token.interceptor';
 // import { StorageService } from 'app/services/storage.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthGuard, AdminAuthGuard, AlreadyLoginAuthGuard } from './auth.guard.service'
+import { AuthGuard, AdminAuthGuard, AlreadyLoginAuthGuard, isLoginAuthGuard } from './auth.guard.service'
 import { NotificationService } from 'app/services/notification.service';
 import { AuthenticationService } from 'app/services/authentication.service';
 import { TagtraceApiService } from 'app/services/tagtrace.api.service';
@@ -11,11 +11,13 @@ import { StoreApiService } from 'app/services/store.api.service';
 import { CategoryApiService } from 'app/services/category.api.service';
 import { GoodApiService } from 'app/services/good.api.service';
 import { DropshippingApiService } from 'app/services/dropshipping.api.service';
+import {  WindowRef} from 'app/services/native-window.service';
 @NgModule({
     providers: [
         AuthGuard,
         AdminAuthGuard,
         AlreadyLoginAuthGuard,
+        isLoginAuthGuard,
         // StorageService,
         AuthenticationService,
         NotificationService,
@@ -29,7 +31,8 @@ import { DropshippingApiService } from 'app/services/dropshipping.api.service';
             provide: HTTP_INTERCEPTORS,
             useClass: TokenInterceptor,
             multi: true
-        }
+        },
+        WindowRef
     ]
 })
 

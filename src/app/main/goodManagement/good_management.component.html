@@ -50,10 +50,10 @@
                         <div style="display: flex;flex-direction: row;align-items: center;cursor: pointer; color: #2d323e">
                             <button mat-stroked-button color="primary" (click)="togglePublishState(element)">{{element.published ? '下架' : '上架'}}</button>
                         </div>
-                        <div class="tooltip">
+                        <span class="tooltip_miniprogram">
                             小程序
                             <qrcode class="tooltiptext" [qrdata]="wechat_miniprogram_url_for_good + element._id" [size]="100" [level]="'M'" style="width: 100px;align-self:center"></qrcode>
-                        </div>
+                        </span>
                     </div>
                 </td>
             </ng-container>

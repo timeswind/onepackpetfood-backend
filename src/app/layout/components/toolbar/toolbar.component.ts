@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, HostBinding } from '@angular/core';
-import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, NavigationCancel, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,20 +9,19 @@ import { AuthenticationService } from '../../../services/authentication.service'
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AppState } from '../../../app.state';
-import { Store, select, createSelector } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { selectAuthName, selectAuthAvatar, selectAuthIsLogin } from '../../../reducers/auth.reducer';
 import { Observable } from 'rxjs/Observable'
 import * as AuthActions from '../../../actions/auth.action';
 // import { navigation } from 'app/navigation/navigation';
 
 @Component({
-    selector   : 'toolbar',
+    selector: 'toolbar',
     templateUrl: './toolbar.component.html',
-    styleUrls  : ['./toolbar.component.scss']
+    styleUrls: ['./toolbar.component.scss']
 })
 
-export class ToolbarComponent implements OnInit, OnDestroy
-{
+export class ToolbarComponent implements OnInit, OnDestroy {
     horizontalNavbar: boolean;
     rightNavbar: boolean;
     hiddenNavbar: boolean;
@@ -53,8 +52,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
         private _translateService: TranslateService,
         private authenticationService: AuthenticationService,
         private store: Store<AppState>
-    )
-    {
+    ) {
         this.name = this.store.pipe(select(selectAuthName))
         this.avatar = this.store.pipe(select(selectAuthAvatar))
         this.isLogin = this.store.pipe(select(selectAuthIsLogin))
@@ -121,8 +119,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         // this.appState.email.subscribe(params => {
         //     this.useremail = this.appState.email;
         // });
@@ -134,6 +131,14 @@ export class ToolbarComponent implements OnInit, OnDestroy
             )
             .subscribe((event) => {
                 this.showLoadingBar = true;
+            });
+
+        this._router.events
+            .pipe(
+                filter((event) => event instanceof NavigationCancel)
+            )
+            .subscribe((event) => {
+                this.showLoadingBar = false;
             });
 
         this._router.events
@@ -154,14 +159,13 @@ export class ToolbarComponent implements OnInit, OnDestroy
             });
 
         // Set the selected language from default languages
-        this.selectedLanguage = _.find(this.languages, {'id': this._translateService.currentLang});
+        this.selectedLanguage = _.find(this.languages, { 'id': this._translateService.currentLang });
     }
 
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
@@ -176,8 +180,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
      *
      * @param key
      */
-    toggleSidebarOpen(key): void
-    {
+    toggleSidebarOpen(key): void {
         this._fuseSidebarService.getSidebar(key).toggleOpen();
     }
 
@@ -186,8 +189,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
      *
      * @param value
      */
-    search(value): void
-    {
+    search(value): void {
         // Do your search here...
         console.log(value);
     }
@@ -197,10 +199,9 @@ export class ToolbarComponent implements OnInit, OnDestroy
      *
      * @param langId
      */
-    setLanguage(langId): void
-    {
+    setLanguage(langId): void {
         // Set the selected language for toolbar
-        this.selectedLanguage = _.find(this.languages, {'id': langId});
+        this.selectedLanguage = _.find(this.languages, { 'id': langId });
 
         // Use the selected language for translations
         this._translateService.use(langId);

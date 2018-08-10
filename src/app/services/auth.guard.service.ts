@@ -107,3 +107,35 @@ export class AlreadyLoginAuthGuard implements CanActivate {
   //   }
   // }
 }
+
+@Injectable()
+export class isLoginAuthGuard implements CanActivate, CanLoad {
+  constructor(
+    private router: Router,
+    private store: Store<AppState>) { }
+
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+    let url: string = state.url;
+    return this.checkPermission(url);
+
+  }
+
+  canLoad(route: Route): Observable<boolean> {
+    let url = `/${route.path}`;
+    return this.checkPermission(url);
+  }
+
+  checkPermission(url: string): Observable<boolean> {
+    return this.store.pipe(
+      select(selectAuth),
+      map(auth => {
+        if (auth.isLogin) {
+          return true;
+        }
+        this.router.navigate(['/login']);
+        return false;
+      }),
+      take(1)
+    );
+  }
+}

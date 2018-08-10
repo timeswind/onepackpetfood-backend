@@ -11,7 +11,8 @@ import { CategoryApiService } from '../../services/category.api.service';
 import { AuthenticationService } from '../../services/authentication.service';
 import { DEFAULT_ROOT_CATEGORY_SCOPE, IMAGE_CDN_URL, CATEGORY_ICON_RESIZE_SUFFIX } from '../../constants';
 import { NotificationService } from '../../services/notification.service';
-
+import { Subject } from 'rxjs/Subject'
+import { debounceTime } from 'rxjs/operators'
 export interface categoryScheme {
     _id: string;
     name: string;
@@ -32,7 +33,9 @@ export class CategoryManagementComponent implements OnInit {
     rootCategorySelected: any = null;
     childCategories: any;
     selectedCategory: categoryScheme;
-    displayedColumns: string[] = ['id', 'name', 'image'];
+    displayedColumns: string[] = ['name', 'image'];
+    public updateCategorySubject = new Subject<{category: any}>();
+
     @ViewChild('uploader', { read: ElementRef }) uploader: ElementRef;
 
     constructor(
@@ -49,6 +52,26 @@ export class CategoryManagementComponent implements OnInit {
 
     ngOnInit() {
         this.getRootCategories();
+        this.updateCategorySubject.pipe(debounceTime(2000)).subscribe(val => {
+            delete val.category.edit
+            this.updateCategory(val.category);
+        });
+    }
+
+    ngOnDestroy(): void {
+        this.updateCategorySubject.unsubscribe()
+    }
+
+    deleteCategory(category: any) {
+
+    }
+
+    editCategory(category: any) {
+
+    }
+
+    categoryNameUpdate(category) {
+        this.updateCategorySubject.next({category: category})
     }
 
     openAddRootCategoryDialog(): void {
@@ -138,7 +161,6 @@ export class CategoryManagementComponent implements OnInit {
 
     tdClick(selectedCategory: categoryScheme) {
         this.selectedCategory = selectedCategory;
-        // from http://stackoverflow.com/a/32010791/217408
         let event = new MouseEvent('click', { bubbles: true });
         this.uploader.nativeElement.dispatchEvent(event);
     }
@@ -175,12 +197,9 @@ export class CategoryManagementComponent implements OnInit {
     private updateCategory(data: categoryScheme): void {
         this.categoryApiService.updateCategory(data)
             .pipe(first())
-            .subscribe(data => {
-                console.log(data)
-            },
-                error => {
-                    // this.loading = false;
-                });
+            .subscribe(_ => {
+                this.notificationService.subj_notification.next("更新成功")
+            });
     }
 }
 

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatFormFieldModule, MatInputModule, MatButtonModule, MatDialogModule, MatSelectModule
-,MatTableModule } from '@angular/material';
+,MatTableModule, MatIconModule } from '@angular/material';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { CategoryManagementRoutingModule } from "./category_management.routing.module";
 import { CategoryManagementComponent, AddRootCategoryDialog } from './category_management.component';
@@ -20,7 +20,8 @@ import { CategoryManagementComponent, AddRootCategoryDialog } from './category_m
         MatInputModule,
         MatDialogModule,
         MatSelectModule,
-        MatTableModule
+        MatTableModule,
+        MatIconModule
     ],
     entryComponents: [CategoryManagementComponent, AddRootCategoryDialog]
 

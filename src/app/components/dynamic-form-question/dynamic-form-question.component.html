@@ -1,4 +1,4 @@
-<div [formGroup]="form" class="q-form">
+<div [formGroup]="form" style="display: flex">
     <!-- <label [attr.for]="question.key">{{question.label}}</label> -->
     <input hidden type="file" accept="image/*" #uploader (change)="prepareTokenToUploadImage($event)"/>
     <div [ngSwitch]="question.controlType">

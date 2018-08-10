@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { AdminAuthGuard } from 'app/services/auth.guard.service';
+import { AdminAuthGuard, isLoginAuthGuard } from 'app/services/auth.guard.service';
 
 const routes: Routes = [
     {
@@ -48,7 +48,8 @@ const routes: Routes = [
     },
     {
         path: "user_setting",
-        loadChildren: 'app/main/userSetting/user.setting.module#UserSettingModule'
+        loadChildren: 'app/main/userSetting/user.setting.module#UserSettingModule',
+        canLoad: [isLoginAuthGuard]
     },
     {
         path: "my_store",
