@@ -22,6 +22,8 @@ export function reducer(state: AuthData = initialState, action: AuthActions.Acti
             return action.payload;
         case AuthActions.AuthActionTypes.USER_LOGOUT:
             localStorage.removeItem('currentUser');
+            localStorage.removeItem('isFromWxwork');
+            localStorage.removeItem('redirectUrl');
             return initialState;
         default:
             return state;

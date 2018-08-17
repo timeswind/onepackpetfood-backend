@@ -8,7 +8,6 @@ import 'hammerjs';
 import { FuseModule } from '@fuse/fuse.module';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
-import { QRCodeModule } from 'angularx-qrcode';
 
 import { fuseConfig } from 'app/fuse-config';
 
@@ -28,7 +27,6 @@ import { reducer as EssentialDataReducer } from './reducers/essential_data.reduc
 import { environment } from '../environments/environment'; // Angular CLI environemnt
 import { MatPaginatorIntl } from '@angular/material';
 import { MatPaginatorIntlChinese } from '../customize/MatPaginatorIntlChinese';
-import { QuillModule } from 'ngx-quill';
 
 @NgModule({
     declarations: [
@@ -61,11 +59,9 @@ import { QuillModule } from 'ngx-quill';
         FuseThemeOptionsModule,
 
         // App modules
-        QRCodeModule,
         LayoutModule,
         AppRoutingModule,
-        AppServiceModule,
-        QuillModule
+        AppServiceModule
     ],
     providers: [
         { provide: MatPaginatorIntl, useClass: MatPaginatorIntlChinese }

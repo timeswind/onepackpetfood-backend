@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
     ) {
         this.route.queryParams.subscribe(params => {
             if ('type' in params && params.type === 'ww_login') {
-                localStorage.setItem('currentUser', JSON.stringify({ token: params["token"], avatar: params["avatar"], name: params["name"], role: params["role"]}));
+                localStorage.setItem('currentUser', JSON.stringify({ token: params["token"], avatar: params["avatar"], name: params["name"], role: parseInt(params["role"])}));
                 let data = {
                     name: params["name"],
                     email: "",
@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
                 }
                 this.login(data)
             } else if ('name' in params && 'role' in params && 'token' in params) {
-                localStorage.setItem('currentUser', JSON.stringify({ token: params["token"], avatar: params["avatar"], name: params["name"], role: params["role"] }));
+                localStorage.setItem('currentUser', JSON.stringify({ token: params["token"], avatar: params["avatar"], name: params["name"], role: parseInt(params["role"]) }));
                 let data = {
                     name: params["name"],
                     email: "",

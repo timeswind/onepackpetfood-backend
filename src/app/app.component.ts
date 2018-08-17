@@ -12,6 +12,7 @@ import { navigationForAdmin, navigationForShopOwnerUser } from 'app/navigation/n
 import { locale as navigationEnglish } from 'app/navigation/i18n/en';
 import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
 import { MatSnackBar } from '../../node_modules/@angular/material';
+import { WindowRef } from 'app/services/native-window.service';
 
 import { Store, select } from '@ngrx/store';
 import { AppState } from './app.state';
@@ -41,6 +42,7 @@ export class AppComponent implements OnInit, OnDestroy {
      * @param {TranslateService} _translateService
      */
     constructor(
+        private winRef: WindowRef,
         private notificationService: NotificationService,
         private snackBar: MatSnackBar,
         private _fuseConfigService: FuseConfigService,
@@ -55,9 +57,11 @@ export class AppComponent implements OnInit, OnDestroy {
         this.notificationService.subj_notification.subscribe(message => {
             snackBar.open(message, "", { duration: 2000 });
         });
-        this.relogin();
-        this.loadNavigationSettings();
-        this.observeUserLoginStatus();
+        if (this.winRef.nativeWindow.navigator.appVersion.indexOf('wxwork') >= 0) {
+            localStorage.setItem("isFromWxwork", "true")
+        } else {
+            localStorage.setItem("isFromWxwork", "false")
+        }
         // Add languages
         this._translateService.addLangs(['en', 'tr']);
 
@@ -90,9 +94,13 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     public observeUserLoginStatus(): void {
+        console.log("observeUserLoginStatus")
         this.store.pipe(select(selectAuthIsLogin)).subscribe(isLogin => {
-            if (!isLogin && window.location.pathname !== "/login" && window.location.pathname !== "/signup") {
+            if (!isLogin && window.location.pathname !== "/login" && window.location.pathname !== "/signup" && localStorage.getItem('isFromWxwork') === "false") {
                 this.router.navigate(['/login']);
+            } else if (!isLogin && window.location.pathname !== "/login" && localStorage.getItem('isFromWxwork') === "true") {
+                localStorage.setItem("redirectUrl", location.href)
+                location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=ww887fc00c230ccefc&redirect_uri=https://api.xiaoquanjia.com/api/public/wechat_work/login_redirect&response_type=code&scope=snsapi_base#wechat_redirect"
             }
         })
     }
@@ -104,20 +112,24 @@ export class AppComponent implements OnInit, OnDestroy {
             } else {
                 this.navigation = navigationForShopOwnerUser;
             }
-            this._fuseNavigationService.unregister('main');
+            if (this._fuseNavigationService.getNavigation('main')) {
+                this._fuseNavigationService.unregister('main');
+            }
             this._fuseNavigationService.register('main', this.navigation);
             this._fuseNavigationService.setCurrentNavigation('main');
         })
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * On init
-     */
     ngOnInit(): void {
+        this.relogin();
+        console.log("ngOnInit")
+        let redirectUrl = localStorage.getItem("redirectUrl")
+        if (redirectUrl && redirectUrl !== "") {
+            localStorage.setItem("redirectUrl", "")
+            location.href = redirectUrl
+        }
+        this.observeUserLoginStatus()
+        this.loadNavigationSettings();
         // Subscribe to config changes
         this._fuseConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
@@ -126,24 +138,12 @@ export class AppComponent implements OnInit, OnDestroy {
             });
     }
 
-    /**
-     * On destroy
-     */
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Toggle sidebar open
-     *
-     * @param key
-     */
     toggleSidebarOpen(key): void {
         this._fuseSidebarService.getSidebar(key).toggleOpen();
     }

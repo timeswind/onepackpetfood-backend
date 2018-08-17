@@ -54,6 +54,10 @@ const routes: Routes = [
     {
         path: "my_store",
         loadChildren: 'app/store_owner/my_store/my_store.module#MyStoreModule'
+    },
+    {
+        path: '**',
+        loadChildren: 'app/main/pageNotFound/page_not_found.module#PageNotFoundModule'
     }
 ];
 
