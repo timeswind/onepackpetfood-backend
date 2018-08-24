@@ -24,45 +24,10 @@ export class LoginComponent implements OnInit {
         private winRef: WindowRef,
         private formBuilder: FormBuilder,
         private router: Router,
-        private route: ActivatedRoute,
         private authenticationService: AuthenticationService,
         private store: Store<AppState>
     ) {
-        this.route.queryParams.subscribe(params => {
-            if ('type' in params && params.type === 'ww_login') {
-                localStorage.setItem('currentUser', JSON.stringify({ token: params["token"], avatar: params["avatar"], name: params["name"], role: parseInt(params["role"])}));
-                let data = {
-                    name: params["name"],
-                    email: "",
-                    role: parseInt(params["role"]) || 0,
-                    avatar: params["avatar"] || "",
-                    token: params["token"],
-                    isLogin: true,
-                    redirectUrl: ""
-                }
-                if (params["state"]) {
-                    localStorage.setItem("wx_state", params["state"])
-                }
-                this.login(data)
-            } else if ('name' in params && 'role' in params && 'token' in params) {
-                localStorage.setItem('currentUser', JSON.stringify({ token: params["token"], avatar: params["avatar"], name: params["name"], role: parseInt(params["role"]) }));
-                let data = {
-                    name: params["name"],
-                    email: "",
-                    role: parseInt(params["role"]) || 0,
-                    avatar: params["avatar"] || "",
-                    token: params["token"],
-                    isLogin: true,
-                    redirectUrl: ""
-                }
-                if (params["state"]) {
-                    localStorage.setItem("wx_state", params["state"])
-                }
-                this.login(data)
-            } else {
 
-            }
-        });
     }
 
     ngOnInit() {

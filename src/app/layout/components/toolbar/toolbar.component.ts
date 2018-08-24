@@ -209,5 +209,6 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
     logout(): void {
         this.store.dispatch(new AuthActions.UserLogout())
+        this._router.navigate(["/login"])
     }
 }

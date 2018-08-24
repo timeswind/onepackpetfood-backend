@@ -17,7 +17,7 @@ import { WindowRef } from 'app/services/native-window.service';
 import { Store, select } from '@ngrx/store';
 import { AppState } from './app.state';
 import { selectAuthRole, selectAuthIsLogin } from './reducers/auth.reducer';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as AuthActions from './actions/auth.action';
 @Component({
     selector: 'app',
@@ -52,7 +52,8 @@ export class AppComponent implements OnInit, OnDestroy {
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _translateService: TranslateService,
         private store: Store<AppState>,
-        private router: Router
+        private router: Router,
+        private route: ActivatedRoute
     ) {
         this.notificationService.subj_notification.subscribe(message => {
             snackBar.open(message, "", { duration: 2000 });
@@ -78,6 +79,42 @@ export class AppComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
     }
 
+    private watchParams() {
+        this.route.queryParams.subscribe(params => {
+            if ('type' in params && params.type === 'ww_login') {
+                localStorage.setItem('currentUser', JSON.stringify({ token: params["token"], avatar: params["avatar"], name: params["name"], role: parseInt(params["role"]) }));
+                let data = {
+                    name: params["name"],
+                    email: "",
+                    role: parseInt(params["role"]) || 0,
+                    avatar: params["avatar"] || "",
+                    token: params["token"],
+                    isLogin: true,
+                    redirectUrl: ""
+                }
+                if (params["state"]) {
+                    localStorage.setItem("wx_state", params["state"])
+                }
+                this.login(data)
+            } else if ('name' in params && 'role' in params && 'token' in params) {
+                localStorage.setItem('currentUser', JSON.stringify({ token: params["token"], avatar: params["avatar"], name: params["name"], role: parseInt(params["role"]) }));
+                let data = {
+                    name: params["name"],
+                    email: "",
+                    role: parseInt(params["role"]) || 0,
+                    avatar: params["avatar"] || "",
+                    token: params["token"],
+                    isLogin: true,
+                    redirectUrl: ""
+                }
+                if (params["state"]) {
+                    localStorage.setItem("wx_state", params["state"])
+                }
+                this.login(data)
+            }
+        });
+    }
+
     public relogin(): void {
         if (localStorage.getItem('currentUser')) {
             let data: any = JSON.parse(localStorage.getItem('currentUser'));
@@ -93,6 +130,18 @@ export class AppComponent implements OnInit, OnDestroy {
         }
     }
 
+    private login(data): void {
+        this.store.dispatch(new AuthActions.UserLogin({
+            name: data.name,
+            email: data.email || "",
+            role: data.role || 0,
+            avatar: data.avatar || "",
+            token: data.token,
+            isLogin: true,
+            redirectUrl: ""
+        }))
+    }
+
     public observeUserLoginStatus(): void {
         console.log("observeUserLoginStatus")
         this.store.pipe(select(selectAuthIsLogin)).subscribe(isLogin => {
@@ -101,6 +150,8 @@ export class AppComponent implements OnInit, OnDestroy {
             } else if (!isLogin && window.location.pathname !== "/login" && localStorage.getItem('isFromWxwork') === "true") {
                 localStorage.setItem("redirectUrl", location.href)
                 location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=ww887fc00c230ccefc&redirect_uri=https://api.xiaoquanjia.com/api/public/wechat_work/login_redirect&response_type=code&scope=snsapi_base#wechat_redirect"
+            } else if (isLogin && !(!!localStorage.getItem("redirectUrl")) && location.pathname === "/") {
+                this.router.navigate(['/user_setting']);
             }
         })
     }
@@ -121,21 +172,26 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.relogin();
         console.log("ngOnInit")
-        let redirectUrl = localStorage.getItem("redirectUrl")
-        if (redirectUrl && redirectUrl !== "") {
-            localStorage.setItem("redirectUrl", "")
-            location.href = redirectUrl
-        }
+        this.relogin();
+        this.watchParams()
         this.observeUserLoginStatus()
         this.loadNavigationSettings();
+        this.restoreUrl();
         // Subscribe to config changes
         this._fuseConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((config) => {
                 this.fuseConfig = config;
             });
+    }
+
+    private restoreUrl() {
+        let redirectUrl = localStorage.getItem("redirectUrl")
+        if (redirectUrl && redirectUrl !== "") {
+            localStorage.setItem("redirectUrl", "")
+            location.href = redirectUrl
+        }
     }
 
     ngOnDestroy(): void {

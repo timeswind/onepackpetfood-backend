@@ -54,3 +54,8 @@ export const selectAuthToken= createSelector(
     selectAuth,
     (auth_data: AuthData) => auth_data.token
 );
+
+export const selectAuthRedirectUrl= createSelector(
+    selectAuth,
+    (auth_data: AuthData) => auth_data.redirectUrl
+);
